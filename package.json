@@ -2,7 +2,8 @@
   "scripts": {
     "format": "prettier --write .",
     "test:format": "prettier --check .",
-    "test": "npm run test:format"
+    "test:validate": "ajv compile --spec=draft2020 -s \"schemas/*.json\"",
+    "test": "npm run test:format && npm run test:validate"
   },
   "devDependencies": {
     "ajv-cli": "5.0.0",
