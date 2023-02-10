@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: asdf cache
+        uses: actions/cache@v3
+        id: asdf-cache
+        with:
+          path: ~/.asdf
+          key: cache-asdf-${{ hashFiles('.tool-versions') }}
+          # Can't do restore-keys until https://github.com/asdf-vm/actions/pull/394
+      - name: asdf install
+        uses: asdf-vm/actions/install@v1
+        if: steps.asdf-cache.outputs.cache-hit != 'true'
+      - name: asdf setup
+        uses: mbta/actions/reshim-asdf@v1
+      - name: node_modules cache
+        uses: actions/cache@v3
+        id: node-cache
+        with:
+          path: node_modules
+          key: cache-prod-node-${{ hashFiles('package.json') }}
+          restore-keys: cache-prod-node-
+      - name: npm ci
+        if: steps.node-cache.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: npm test
+        run: npm test
