@@ -1,8 +1,10 @@
 {
   "scripts": {
-
+    "format": "prettier --write .",
+    "test:format": "prettier --check .",
+    "test": "npm run test:format"
   },
   "devDependencies": {
-
+    "prettier": "2.8.4"
   }
 }
