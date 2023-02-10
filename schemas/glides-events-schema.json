@@ -32,30 +32,23 @@
       "$comment": "validated by the oneOf, below"
     }
   },
-  "required": [
-    "type",
-    "specversion",
-    "source",
-    "id",
-    "time",
-    "data"
-  ],
+  "required": ["type", "specversion", "source", "id", "time", "data"],
   "oneOf": [
     {
       "properties": {
-        "type": {"const": "com.mbta.ctd.glides.editors_changed.v1"},
+        "type": { "const": "com.mbta.ctd.glides.editors_changed.v1" },
         "data": { "$ref": "#/$defs/editors_changed_v1" }
       }
     },
     {
       "properties": {
-        "type": {"const": "com.mbta.ctd.glides.operator_signed_in.v1"},
+        "type": { "const": "com.mbta.ctd.glides.operator_signed_in.v1" },
         "data": { "$ref": "#/$defs/operator_signed_in_v1" }
       }
     },
     {
       "properties": {
-        "type": {"const": "com.mbta.ctd.glides.trips_updated.v1"},
+        "type": { "const": "com.mbta.ctd.glides.trips_updated.v1" },
         "data": { "$ref": "#/$defs/trips_updated_v1" }
       }
     }
