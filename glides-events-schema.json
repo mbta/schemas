@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mbta/schemas/blob/main/glides-events-schema.json",
+  "title": "Glides Events",
+  "description": "Kinesis events emitted by Glides",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "name of the event",
+      "$comment": "enforced to be a valid event name by the oneOf, below"
+    },
+    "specversion": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "source": {
+      "type": "string",
+      "const": "glides.mbta.com"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "examples": ["19fdb184-7dd6-4664-8472-04bd6177ec44"]
+    },
+    "time": {
+      "type": "string",
+      "examples": ["2023-01-20T09:30:00-05:00"]
+    },
+    "data": {
+      "type": "object",
+      "$comment": "validated by the oneOf, below"
+    }
+  },
+  "required": [
+    "type",
+    "specversion",
+    "source",
+    "id",
+    "time",
+    "data"
+  ],
+  "oneOf": [
+    {
+      "properties": {
+        "type": {"const": "com.mbta.ctd.glides.editors_changed.v1"},
+        "data": { "$ref": "#/$defs/editors_changed_v1" }
+      }
+    },
+    {
+      "properties": {
+        "type": {"const": "com.mbta.ctd.glides.operator_signed_in.v1"},
+        "data": { "$ref": "#/$defs/operator_signed_in_v1" }
+      }
+    },
+    {
+      "properties": {
+        "type": {"const": "com.mbta.ctd.glides.trips_updated.v1"},
+        "data": { "$ref": "#/$defs/trips_updated_v1" }
+      }
+    }
+  ],
+  "$defs": {
+    "editors_changed_v1": {},
+    "operator_signed_in_v1": {},
+    "trips_updated_v1": {}
+  }
+}
