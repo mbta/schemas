@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/mbta/schemas/blob/main/glides-events-schema.json",
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/glides-events-schema.json",
   "title": "Glides Events",
   "description": "Kinesis events emitted by Glides",
   "type": "object",
