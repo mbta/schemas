@@ -4,6 +4,8 @@ A collection of schemas for inter-app interchange formats. Schemas in this repos
 
 Schemas go in the `schemas/` folder.
 
+Examples go in the `examples/<schema>/` folders.
+
 ## Development
 
 A few npm scripts are included in order to validate the schemas.
@@ -16,9 +18,22 @@ asdf install
 npm ci
 ```
 
+### Tests
+
+JSON Schema examples are validated against their schemas by `npm run test:json:validate`.
+
+The test script assumes:
+
+- The schema is located at `schemas/<schema>.json`.
+- Each example file `examples/<schema>/*.json` is an array of valid examples.
+- The schema's `"$id"` is `"https://github.com/mbta/schemas/blob/main/schemas/<schema>.json"`
+
 ### Scripts
 
 - `npm run format`: Format all json files with prettier
-- `npm test`: Test that all schemas are valid JSON Schemas (and are formatted)
+- `npm test`: Runs all tests:
+  - All files are formatted
+  - All JSON Schemas are valid schemas
+  - All examples for JSON Schemas are valid for their schema.
 
 `npx ajv` ([docs](https://github.com/ajv-validator/ajv-cli)) has additional commands to validate that data matches a JSON Schema. Use the `--spec=draft2020` option.
