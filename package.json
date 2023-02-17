@@ -3,7 +3,7 @@
     "format": "prettier --write .",
     "test:format": "prettier --check .",
     "test:compile": "ajv compile --spec=draft2020 -s \"schemas/*.json\"",
-    "test:validate": "for dir in $(ls -d examples/* | xargs -n 1 basename); do ajv validate --spec=draft2020 -s schemas/$dir.json -d examples/$dir/\"*.json\"; done",
+    "test:validate": "bash scripts/validate",
     "test": "npm run test:format && npm run test:compile && npm run test:validate"
   },
   "devDependencies": {
