@@ -23,13 +23,14 @@
       "minLength": 1,
       "examples": ["19fdb184-7dd6-4664-8472-04bd6177ec44"]
     },
-    "time": {
-      "type": "string",
-      "examples": ["2023-01-20T09:30:00-05:00"]
-    },
+    "time": { "$ref": "#/$defs/timestamp" },
     "data": {
       "type": "object",
-      "$comment": "validated by the oneOf, below"
+      "properties": {
+        "metadata": { "$ref": "#/$defs/metadata" }
+      },
+      "required": ["metadata"],
+      "$comment": "other fields validated by the oneOf, below"
     }
   },
   "required": ["type", "specversion", "source", "id", "time", "data"],
@@ -54,8 +55,229 @@
     }
   ],
   "$defs": {
-    "editors_changed_v1": {},
-    "operator_signed_in_v1": {},
-    "trips_updated_v1": {}
+    "editors_changed_v1": {
+      "properties": {
+        "changes": {
+          "type": "array",
+          "contains": { "$ref": "#/$defs/editor_change" }
+        }
+      },
+      "required": ["changes"]
+    },
+    "operator_signed_in_v1": {
+      "properties": {
+        "operator": { "$ref": "#/$defs/operator" },
+        "signedInAt": { "$ref": "#/$defs/timestamp" },
+        "signature": { "$ref": "#/$defs/signature" }
+      },
+      "required": []
+    },
+    "trips_updated_v1": {
+      "properties": {
+        "tripUpdates": {
+          "type": "array",
+          "contains": {
+            "anyOf": [
+              { "$ref": "#/$defs/trip_updated" },
+              { "$ref": "#/$defs/trip_added" }
+            ]
+          }
+        }
+      },
+      "required": ["tripUpdates"]
+    },
+    "car": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "oneOf": [{ "const": "none" }, { "type": "string", "minLength": 1 }]
+        },
+        "operator": {
+          "oneOf": [
+            { "type": "string", "const": "none" },
+            { "type": "string", "const": "unset" },
+            { "$ref": "#/$defs/operator" }
+          ]
+        }
+      }
+    },
+    "dropped_reason": {
+      "type": "object",
+      "properties": {
+        "reason": { "type": "string" }
+      },
+      "required": ["reason"]
+    },
+    "editor_change": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "oneOf": [{ "const": "start" }, { "const": "stop" }]
+        },
+        "location": { "$ref": "#/$defs/location" },
+        "editor": { "$ref": "#/$defs/glides_user" }
+      },
+      "required": ["type", "location", "editor"]
+    },
+    "glides_user": {
+      "type": "object",
+      "properties": {
+        "emailAddress": { "type": "string", "minLength": 1 },
+        "badgeNumber": { "type": "string", "minLength": 1 }
+      },
+      "required": ["emailAddress"]
+    },
+    "location": {
+      "type": "object",
+      "oneOf": [
+        {
+          "properties": {
+            "gtfsId": { "type": "string", "minLength": 1 }
+          },
+          "required": ["gtfsId"]
+        },
+        {
+          "properties": {
+            "glidesId": { "type": "string", "minLength": 1 }
+          },
+          "required": ["gtfsId"]
+        }
+      ]
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "author": { "$ref": "#/$defs/glides_user " },
+        "inputTimestamp": { "$ref": "#/$defs/timestamp" },
+        "inputType": { "type": "string", "minLength": 1 },
+        "location": { "$ref": "#/$defs/location" }
+      }
+    },
+    "operator": {
+      "type": "object",
+      "properties": {
+        "badgeNumber": { "type": "string", "minLength": 1 }
+      },
+      "required": ["badgeNumber"]
+    },
+    "scheduled": {
+      "type": "object",
+      "properties": {
+        "scheduledCars": {
+          "type": "array",
+          "contains": { "$ref": "#/$defs/scheduled_car" }
+        }
+      },
+      "required": ["scheduledCars"]
+    },
+    "scheduledCars": {
+      "type": "object",
+      "properties": {
+        "run": { "type": "string", "minLength": 1 },
+        "operator": { "$ref": "#/$defs/operator" }
+      }
+    },
+    "service_date": {
+      "type": "string",
+      "$comment": "RFC3999 date",
+      "pattern": "^[0-9]{4}-[01][0-9]-[0-3][0-9]$",
+      "examples": ["2023-12-31"]
+    },
+    "signature": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "examples": ["tap", "type"]
+        }
+      }
+    },
+    "time": {
+      "type": "string",
+      "pattern": "^[012][0-9]:[0-5][0-9]:[0-5][0-9]$",
+      "$comment": "HH:MM:SS, measured from 12hr before noon",
+      "examples": ["04:30:00", "25:35:00"]
+    },
+    "timestamp": {
+      "type": "string",
+      "minLength": 1,
+      "$comment": "RFC3999 timestamp",
+      "examples": ["2023-01-20T09:30:00-05:00"]
+    },
+    "trip_added": {
+      "allOf": [
+        { "$ref": "#/$defs/trip_updated" },
+        {
+          "properties": {
+            "nextTripKey": { "$ref": "#/$defs/trip_key" },
+            "previousTripKey": { "$ref": "#/$defs/trip_key" },
+            "type": { "const": "added" },
+            "trip_key": { "required": ["glides_id"] }
+          }
+        }
+      ]
+    },
+    "trip_key": {
+      "type": "object",
+      "properties": {
+        "serviceDate": { "$ref": "#/$defs/service_date" }
+      },
+      "required": ["service_date"],
+      "oneOf": [
+        {
+          "$comment": "added trip",
+          "properties": {
+            "glidesId": { "type": "string", "minLength": 1 }
+          },
+          "required": ["glidesId"]
+        },
+        {
+          "$comment": "scheduled trip",
+          "properties": {
+            "startLocation": { "$ref": "#/$defs/location" },
+            "endLocation": { "$ref": "#/$defs/location" },
+            "startTime": { "$ref": "#/$defs/time" },
+            "endTime": { "$ref": "#/$defs/time" }
+          },
+          "required": ["startLocation", "endLocation", "startTime", "endTime"]
+        }
+      ]
+    },
+    "trip_updated": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "oneOf": [{ "const": "updated" }, { "const": "added" }]
+        },
+        "tripKey": { "$ref": "#/$defs/trip_key" },
+        "comment": { "type": "string" },
+        "startLocation": {
+          "oneOf": [{ "$ref": "#/$defs/location" }, { "const": "unset" }]
+        },
+        "endLocation": {
+          "oneOf": [{ "$ref": "#/$defs/location" }, { "const": "unset" }]
+        },
+        "startTime": {
+          "oneOf": [{ "$ref": "#/$defs/time" }, { "const": "unset" }]
+        },
+        "endTime": {
+          "oneOf": [{ "$ref": "#/$defs/time" }, { "const": "unset" }]
+        },
+        "cars": {
+          "type": "array",
+          "minLength": 1,
+          "maxLength": 2,
+          "contains": { "$ref": "#/$defs/car" }
+        },
+        "dropped": {
+          "oneOf": [{ "$ref": "#/$defs/dropped_reason" }, { "const": false }]
+        },
+        "scheduled": {
+          "oneOf": [{ "$ref": "#/$defs/scheduled" }, { "const": null }]
+        }
+      },
+      "required": ["type", "tripKey", "scheduled"]
+    }
   }
 }
