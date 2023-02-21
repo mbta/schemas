@@ -26,7 +26,6 @@ The test script assumes:
 
 - The schema is located at `schemas/<schema>.json`.
 - Each example file `examples/<schema>/*.json` is an array of valid examples.
-- The schema's `"$id"` is `"https://github.com/mbta/schemas/blob/main/schemas/<schema>.json"`
 
 ### Scripts
 

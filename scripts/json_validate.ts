@@ -1,7 +1,7 @@
 import * as fs from "node:fs";
 import Ajv from "ajv/dist/2020";
 
-const ajvOpts = {strict: true}
+const ajvOpts = { strict: true };
 
 let fail = false;
 fs.readdirSync("examples/").forEach((schemaName) => {
@@ -22,8 +22,9 @@ fs.readdirSync("examples/").forEach((schemaName) => {
     return;
   }
   const ajv = new Ajv(ajvOpts);
+  let validate: ReturnType<Ajv["compile"]>;
   try {
-    ajv.addSchema(schema);
+    validate = ajv.compile(schema);
   } catch (e) {
     fail = true;
     console.error(`${schemaFileName} is not a valid JSON schema`);
@@ -31,9 +32,6 @@ fs.readdirSync("examples/").forEach((schemaName) => {
     return;
   }
   // example files are lists of examples, so we need a schema to unwrap the array
-  const schemaId = schema.$id;
-  const arraySchema = { type: "array", contains: { $ref: schemaId } };
-  const validate = ajv.compile(arraySchema);
   fs.readdirSync(`examples/${schemaName}/`).forEach((exampleName) => {
     const exampleFileName = `examples/${schemaName}/${exampleName}`;
     if (!exampleName.endsWith(".json")) {
@@ -50,12 +48,23 @@ fs.readdirSync("examples/").forEach((schemaName) => {
       console.error(e);
       return;
     }
-    if (!validate(exampleData)) {
+    if (!Array.isArray(exampleData)) {
       fail = true;
-      console.error(
-        `${exampleFileName} is not valid according to schema ${schemaFileName}`
-      );
-      console.error(validate.errors);
+      console.error(`${exampleFileName} is not an array of examples.`);
+    }
+    let failFile = false;
+    (exampleData as Array<unknown>).forEach((example, index) => {
+      if (!validate(example)) {
+        fail = true;
+        failFile = true;
+        console.error(
+          `${exampleFileName}[${index}] is not valid according to ${schemaFileName}`
+        );
+        console.error(validate.errors);
+        return;
+      }
+    });
+    if (failFile) {
       return;
     }
     console.log(`${exampleFileName} is valid`);
