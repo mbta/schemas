@@ -144,7 +144,7 @@
           "properties": {
             "glidesId": { "type": "string", "minLength": 1 }
           },
-          "required": ["gtfsId"]
+          "required": ["glidesId"]
         }
       ]
     },
@@ -222,7 +222,7 @@
             "tripKey": {
               "$comment": "must use the added form of trip_key",
               "type": "object",
-              "properties": {"glidesId": true},
+              "properties": { "glidesId": true },
               "required": ["glidesId"]
             }
           }

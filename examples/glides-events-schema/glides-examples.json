@@ -146,7 +146,7 @@
       "metadata": {
         "inputType": "dropped-trip"
       },
-      "updatedTrips": [
+      "tripUpdates": [
         {
           "type": "updated",
           "tripKey": {
@@ -183,7 +183,7 @@
       "metadata": {
         "inputType": "edit-trip"
       },
-      "updatedTrips": [
+      "tripUpdates": [
         {
           "type": "updated",
           "tripKey": {
@@ -226,18 +226,18 @@
       "metadata": {
         "inputType": "add-trip"
       },
-      "updatedTrips": [
+      "tripUpdates": [
         {
           "type": "added",
           "tripKey": {
             "serviceDate": "2022-01-20",
-            "id": "ADDED-1"
+            "glidesId": "ADDED-1"
           },
           "startLocation": { "gtfsId": "place-lake" },
           "startTime": "10:00:00",
           "nextTripKey": {
             "serviceDate": "2022-01-20",
-            "id": "ADDED-2"
+            "glidesId": "ADDED-2"
           },
           "cars": [
             {
@@ -251,12 +251,12 @@
           "type": "added",
           "tripKey": {
             "serviceDate": "2022-01-20",
-            "id": "ADDED-2"
+            "glidesId": "ADDED-2"
           },
           "endLocation": { "gtfsId": "place-lake" },
           "previousTripKey": {
             "serviceDate": "2022-01-20",
-            "id": "ADDED-1"
+            "glidesId": "ADDED-1"
           },
           "cars": [
             {
@@ -279,7 +279,7 @@
       "metadata": {
         "inputType": "edit-trip"
       },
-      "updatedTrips": [
+      "tripUpdates": [
         {
           "type": "updated",
           "tripKey": {
@@ -290,7 +290,10 @@
             "endTime": "25:38:00"
           },
           "location": { "gtfsId": "place-matt" },
-          "startTime": "25:45:00"
+          "startTime": "25:45:00",
+          "scheduled": {
+            "scheduledCars": [{}]
+          }
         }
       ]
     }
