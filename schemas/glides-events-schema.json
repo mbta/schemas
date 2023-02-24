@@ -216,7 +216,6 @@
         { "$ref": "#/$defs/trip_updated" },
         {
           "properties": {
-            "nextTripKey": { "$ref": "#/$defs/trip_key" },
             "previousTripKey": { "$ref": "#/$defs/trip_key" },
             "type": { "const": "added" },
             "tripKey": {
@@ -226,6 +225,28 @@
               "required": ["glidesId"]
             }
           }
+        },
+        {
+          "anyOf": [
+            {
+              "properties": { "startLocation": true },
+              "required": ["startLocation"]
+            },
+            {
+              "properties": { "endLocation": true },
+              "required": ["endLocation"]
+            }
+          ]
+        },
+        {
+          "anyOf": [
+            { "properties": { "startTime": true }, "required": ["startTime"] },
+            { "properties": { "endTime": true }, "required": ["endTime"] },
+            {
+              "properties": { "previousTripKey": true },
+              "required": ["previousTripKey"]
+            }
+          ]
         }
       ]
     },

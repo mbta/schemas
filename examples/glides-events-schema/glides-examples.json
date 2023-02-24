@@ -235,10 +235,6 @@
           },
           "startLocation": { "gtfsId": "place-lake" },
           "startTime": "10:00:00",
-          "nextTripKey": {
-            "serviceDate": "2022-01-20",
-            "glidesId": "ADDED-2"
-          },
           "cars": [
             {
               "label": "3850",
