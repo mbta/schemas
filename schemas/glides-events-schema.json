@@ -3,6 +3,7 @@
   "$id": "https://github.com/mbta/schemas/blob/main/schemas/glides-events-schema.json",
   "title": "Glides Events",
   "description": "Kinesis events emitted by Glides",
+  "$ref": "cloudevents.json",
   "type": "object",
   "properties": {
     "type": {
@@ -10,19 +11,9 @@
       "description": "name of the event",
       "$comment": "enforced to be a valid event name by the oneOf, below"
     },
-    "specversion": {
-      "type": "string",
-      "const": "1.0"
-    },
-    "source": {
-      "type": "string",
-      "const": "glides.mbta.com"
-    },
-    "id": {
-      "type": "string",
-      "minLength": 1,
-      "examples": ["19fdb184-7dd6-4664-8472-04bd6177ec44"]
-    },
+    "specversion": { "const": "1.0" },
+    "source": { "const": "glides.mbta.com" },
+    "id": { "type": "string", "minLength": 1 },
     "time": { "$ref": "#/$defs/timestamp" },
     "data": {
       "type": "object",

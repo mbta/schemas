@@ -3,6 +3,10 @@ import Ajv from "ajv/dist/2020";
 
 const ajvOpts = { strict: true };
 
+const cloudeventsSchema = JSON.parse(
+  fs.readFileSync("schemas/cloudevents.json").toString()
+);
+
 let fail = false;
 fs.readdirSync("examples/").forEach((schemaName) => {
   const schemaFileName = `schemas/${schemaName}.json`;
@@ -22,6 +26,7 @@ fs.readdirSync("examples/").forEach((schemaName) => {
     return;
   }
   const ajv = new Ajv(ajvOpts);
+  ajv.addSchema(cloudeventsSchema, "cloudevents");
   let validate: ReturnType<Ajv["compile"]>;
   try {
     validate = ajv.compile(schema);

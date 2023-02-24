@@ -27,6 +27,8 @@ The test script assumes:
 - The schema is located at `schemas/<schema>.json`.
 - Each example file `examples/<schema>/*.json` is an array of valid examples.
 
+The `cloudevents.json` schema will be loaded during the tests and can be referenced by its `$id`.
+
 ### Scripts
 
 - `npm run format`: Format all json files with prettier
