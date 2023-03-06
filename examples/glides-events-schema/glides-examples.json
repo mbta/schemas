@@ -13,12 +13,12 @@
         },
         "inputTimestamp": "2023-01-20T09:29:59-05:00",
         "inputType": "take-over-editing",
-        "location": { "gtfsId": "place-lake" }
+        "location": { "odsId": "lakst" }
       },
       "changes": [
         {
           "type": "stop",
-          "location": { "gtfsId": "place-lake" },
+          "location": { "odsId": "lakst" },
           "editor": {
             "emailAddress": "binspector@example.com",
             "badgeNumber": "456"
@@ -26,7 +26,7 @@
         },
         {
           "type": "start",
-          "location": { "gtfsId": "place-lake" },
+          "location": { "odsId": "lakst" },
           "editor": {
             "emailAddress": "ainspector@example.com",
             "badgeNumber": "123"
@@ -285,7 +285,6 @@
             "startTime": "25:30:00",
             "endTime": "25:38:00"
           },
-          "location": { "gtfsId": "place-matt" },
           "startTime": "25:45:00",
           "scheduled": {
             "scheduledCars": [{}]

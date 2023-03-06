@@ -133,9 +133,9 @@
         },
         {
           "properties": {
-            "glidesId": { "type": "string", "minLength": 1 }
+            "odsId": { "type": "string", "minLength": 1 }
           },
-          "required": ["glidesId"]
+          "required": ["odsId"]
         }
       ]
     },
