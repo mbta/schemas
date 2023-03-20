@@ -1,5 +1,6 @@
 import * as fs from "node:fs";
 import Ajv from "ajv/dist/2020";
+import addFormats from "ajv-formats";
 
 const ajvOpts = { strict: true };
 
@@ -26,6 +27,7 @@ fs.readdirSync("examples/").forEach((schemaName) => {
     return;
   }
   const ajv = new Ajv(ajvOpts);
+  addFormats(ajv);
   ajv.addSchema(cloudeventsSchema, "cloudevents");
   let validate: ReturnType<Ajv["compile"]>;
   try {

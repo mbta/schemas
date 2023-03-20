@@ -78,7 +78,7 @@
     },
     "sourcedef": {
       "type": "string",
-      "$comment": "uri-reference",
+      "format": "uri-reference",
       "minLength": 1
     },
     "specversiondef": {
@@ -95,7 +95,7 @@
     },
     "dataschemadef": {
       "type": ["string", "null"],
-      "$comment": "uri",
+      "format": "uri",
       "minLength": 1
     },
     "subjectdef": {
@@ -104,7 +104,7 @@
     },
     "timedef": {
       "type": ["string", "null"],
-      "$comment": "date-time",
+      "format": "date-time",
       "minLength": 1
     },
     "datadef": {

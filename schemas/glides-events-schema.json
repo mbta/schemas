@@ -80,6 +80,12 @@
       },
       "required": ["tripUpdates"]
     },
+    "badge_number": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[1-9][0-9]*$",
+      "$comment": "without any leading 0s"
+    },
     "car": {
       "type": "object",
       "properties": {
@@ -88,8 +94,8 @@
         },
         "operator": {
           "oneOf": [
-            { "type": "string", "const": "none" },
-            { "type": "string", "const": "unset" },
+            { "const": "none" },
+            { "const": "unset" },
             { "$ref": "#/$defs/operator" }
           ]
         }
@@ -114,11 +120,18 @@
       },
       "required": ["type", "location", "editor"]
     },
+    "email_address": {
+      "$comment": "format validation isn't supported everywhere, so also do some simple string checks",
+      "type": "string",
+      "minLength": 3,
+      "format": "email",
+      "pattern": "@"
+    },
     "glides_user": {
       "type": "object",
       "properties": {
-        "emailAddress": { "type": "string", "minLength": 1 },
-        "badgeNumber": { "type": "string", "minLength": 1 }
+        "emailAddress": { "$ref": "#/$defs/email_address" },
+        "badgeNumber": { "$ref": "#/$defs/badge_number" }
       },
       "required": ["emailAddress"]
     },
@@ -151,7 +164,7 @@
     "operator": {
       "type": "object",
       "properties": {
-        "badgeNumber": { "type": "string", "minLength": 1 }
+        "badgeNumber": { "$ref": "#/$defs/badge_number" }
       },
       "required": ["badgeNumber"]
     },
@@ -170,13 +183,15 @@
     "scheduled_car": {
       "type": "object",
       "properties": {
-        "run": { "type": "string", "minLength": 1 },
+        "run": { "type": "string", "minLength": 1, "pattern": "^[1-9][0-9]*$" },
         "operator": { "$ref": "#/$defs/operator" }
       }
     },
     "service_date": {
       "type": "string",
-      "$comment": "RFC3999 date",
+      "minLength": 1,
+      "$comment": "The date of service, which may not match the calendar date after midnight. RFC3339",
+      "format": "date",
       "pattern": "^[0-9]{4}-[01][0-9]-[0-3][0-9]$",
       "examples": ["2023-12-31"]
     },
@@ -191,14 +206,16 @@
     },
     "time": {
       "type": "string",
-      "pattern": "^[012][0-9]:[0-5][0-9]:[0-5][0-9]$",
+      "pattern": "^[012][0-9]:[0-5][0-9]:[0-6][0-9]$",
       "$comment": "HH:MM:SS, measured from 12hr before noon",
       "examples": ["04:30:00", "25:35:00"]
     },
     "timestamp": {
       "type": "string",
-      "minLength": 1,
-      "$comment": "RFC3999 timestamp",
+      "minLength": 20,
+      "$comment": "RFC3339 timestamp",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[01][0-9]-[0-3][0-9]T[012][0-9]:[0-5][0-9]:[0-6][0-9](.[0-9]*)?(Z|[+-][012][0-9]:[0-5][0-9])$",
       "examples": ["2023-01-20T09:30:00-05:00"]
     },
     "trip_added": {
