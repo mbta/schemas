@@ -6,7 +6,7 @@ const ajvOpts = { strict: true };
 
 const sharedSchemas = [
   "schemas/cloudevents.json",
-  "schemas/glides-events-schema.json",
+  "schemas/glides-events.json",
 ];
 
 let fail = false;

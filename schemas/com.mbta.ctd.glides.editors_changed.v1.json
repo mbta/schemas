@@ -8,13 +8,13 @@
     "specversion": { "const": "1.0" },
     "source": { "const": "glides.mbta.com" },
     "id": { "$ref": "cloudevents.json#/properties/id" },
-    "time": { "$ref": "glides-events-schema.json#/$defs/timestamp" },
+    "time": { "$ref": "glides-events.json#/$defs/timestamp" },
     "data": {
       "type": "object",
       "properties": {
-        "metadata": { "$ref": "glides-events-schema.json#/$defs/metadata" },
+        "metadata": { "$ref": "glides-events.json#/$defs/metadata" },
         "changes": {
-          "$ref": "glides-events-schema.json#/$defs/editors_changed_v1/properties/changes"
+          "$ref": "glides-events.json#/$defs/editors_changed_v1/properties/changes"
         }
       },
       "required": ["metadata", "changes"]

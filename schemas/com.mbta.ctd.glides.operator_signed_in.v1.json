@@ -7,15 +7,15 @@
     "type": { "const": "com.ctd.glides.operator_signed_in.v1.json" },
     "specversion": { "const": "1.0" },
     "source": { "const": "glides.mbta.com" },
-    "id": { "$ref": "glides-events-schema.json#/properties/id" },
-    "time": { "$ref": "glides-events-schema.json#/$defs/timestamp" },
+    "id": { "$ref": "glides-events.json#/properties/id" },
+    "time": { "$ref": "glides-events.json#/$defs/timestamp" },
     "data": {
       "type": "object",
       "properties": {
-        "metadata": { "$ref": "glides-events-schema.json#/$defs/metadata" },
-        "operator": { "$ref": "glides-events-schema.json#/$defs/operator" },
-        "signedInAt": { "$ref": "glides-events-schema.json#/$defs/timestamp" },
-        "signature": { "$ref": "glides-events-schema.json#/$defs/signature" }
+        "metadata": { "$ref": "glides-events.json#/$defs/metadata" },
+        "operator": { "$ref": "glides-events.json#/$defs/operator" },
+        "signedInAt": { "$ref": "glides-events.json#/$defs/timestamp" },
+        "signature": { "$ref": "glides-events.json#/$defs/signature" }
       },
       "required": ["metadata"]
     }
