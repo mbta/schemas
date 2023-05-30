@@ -14,11 +14,26 @@
       "properties": {
         "metadata": { "$ref": "glides-events.json#/$defs/metadata" },
         "changes": {
-          "$ref": "glides-events.json#/$defs/editors_changed_v1/properties/changes"
+          "type": "array",
+          "contains": { "$ref": "#/$defs/editor_change" }
         }
       },
       "required": ["metadata", "changes"]
     }
   },
-  "required": ["type", "specversion", "source", "id", "time", "data"]
+  "required": ["type", "specversion", "source", "id", "time", "data"],
+  "$defs": {
+    "editor_change": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "oneOf": [{ "const": "start" }, { "const": "stop" }]
+        },
+        "location": { "$ref": "glides-events.json#/$defs/location" },
+        "editor": { "$ref": "glides-events.json#/$defs/glides_user" }
+      },
+      "required": ["type", "location", "editor"]
+    }
+  }
 }

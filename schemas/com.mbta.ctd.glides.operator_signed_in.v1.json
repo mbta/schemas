@@ -15,10 +15,21 @@
         "metadata": { "$ref": "glides-events.json#/$defs/metadata" },
         "operator": { "$ref": "glides-events.json#/$defs/operator" },
         "signedInAt": { "$ref": "glides-events.json#/$defs/timestamp" },
-        "signature": { "$ref": "glides-events.json#/$defs/signature" }
+        "signature": { "$ref": "#/$defs/signature" }
       },
       "required": ["metadata"]
     }
   },
-  "required": ["type", "specversion", "source", "id", "time", "data"]
+  "required": ["type", "specversion", "source", "id", "time", "data"],
+  "$defs": {
+    "signature": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "examples": ["tap", "type"]
+        }
+      }
+    }
+  }
 }
