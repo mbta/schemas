@@ -13,15 +13,12 @@ function ExampleTab(props: { example: object }): JSX.Element {
 export default function Examples(props: { examples: object }): JSX.Element {
   const examples = Object.entries(props.examples);
   return (
-    <div>
-      <h2>Examples</h2>
-      <Tabs>
-        {examples.map(([name, example]) => (
-          <TabItem label={name} value={name} key={name}>
-            <ExampleTab example={example} />
-          </TabItem>
-        ))}
-      </Tabs>
-    </div>
+    <Tabs>
+      {examples.map(([name, example]) => (
+        <TabItem label={name} value={name} key={name}>
+          <ExampleTab example={example} />
+        </TabItem>
+      ))}
+    </Tabs>
   );
 }
