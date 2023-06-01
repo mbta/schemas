@@ -88,7 +88,7 @@ const config = {
             items: [
               {
                 label: "Events",
-                to: "/category/events",
+                to: "/events",
               },
             ],
           },
