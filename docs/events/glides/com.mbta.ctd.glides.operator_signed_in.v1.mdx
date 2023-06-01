@@ -1,23 +1,40 @@
 ---
+sidebar_label: glides.operator_signed_in
 ---
 
 import GlidesExamples from "@site/examples/glides-events/glides-examples.json";
 import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
 import Examples from "@site/src/components/Examples.tsx";
 
-At the start of their shift, operators need to confirm that they are
-fit-for-duty and do not have any electronic devices. They currently do this by
-physically signing a paper trainsheet: in the future, they will do this
-digitally.
+# operator_signed_in
+event_type: com.mbta.ctd.glides.operator_signed_in.v1
 
-Fields in the event:
+At the start of their shift, operators need to confirm in Glides (on an inspector's device) that they are fit-for-duty and do not have any electronic devices.
 
-- `metadata` (Metadata): how the operator was signed in in Glides, including the inspector who signed them in.
-- `operator` (Operator): the operator who signed in
-- `signedInAt` (RFC3999 timestamp): the time at which they signed in (separate from the time of the event)
-- `signature` (Signature): how the operator confirmed that they signed in.
+## Data
 
-Originally described in [RFC18](https://github.com/mbta/technology-docs/blob/main/rfcs/accepted/0018-glides-trainsheet-events.md).
+Fields in the event's `data`:
+
+- `metadata` ([Metadata](.#metadata)): how the operator was signed in in Glides, including the inspector who signed them in.
+- `operator` ([Operator](.#operator)): the operator who signed in
+- `signedInAt` (RFC3999 timestamp): the time at which they signed in (this is separate from the event timestamp)
+- `signature` ([Signature](#signature)): how the operator signed in.
+
+### Signature
+How the operator signed that they were fit for duty.
+
+Fields:
+- `type` (string): How the the operator made their signature.
+
+Current values for `type` are
+- `"tap"` if they signed in by tapping their badge to an RFID scanner.
+- `"type"` if they signed in by typing their badge number into Glides as a signature.
+
+Represented as an object so we could include other types of signatures or other data about the signature in the future without a breaking change.
+
+The tapped badge's RFID serial number is not included in the stream for security reasons (it could be used to impersonate an employee).
+
+## Examples
 
 <Examples
   examples={{
@@ -26,4 +43,7 @@ Originally described in [RFC18](https://github.com/mbta/technology-docs/blob/mai
     ),
   }}
 />
+
+## Schema
+
 <EventSchemaPath event="com.mbta.ctd.glides.operator_signed_in.v1" />
