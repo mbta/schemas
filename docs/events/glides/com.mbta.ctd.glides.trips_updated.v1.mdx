@@ -1,0 +1,193 @@
+---
+sidebar_label: glides.trips_updated
+sidebar_position: 1
+---
+
+import GlidesExamples from "@site/examples/glides-events/glides-examples.json";
+import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
+import Examples from "@site/src/components/Examples.tsx";
+
+# trips_updated
+event type: `com.mbta.ctd.glides.trips_updated.v1`
+
+Published when Glides has new information about trips, for example operator assignments or dropped trips. Consumers who want to know what trains are running should pay attention to this event, and don't need to pay attention to any other events.
+
+## Data
+
+Fields in the event's `data`:
+- `metadata` ([Metadata](.#metadata)): how the updates were entered in Glides, including the inspector who made the change and the location of the trainsheet.
+- `tripUpdates` (array of ([TripUpdated](#tripupdated)|[TripAdded](#tripadded))): The list of one or more trips that have new information.
+
+### Car
+
+Fields:
+- `label` (string | `"none"`, optional): car number corresponding to the GTFS-RT `label` field. Or `"none"` if the inspector has unassigned the car. If the field is absent, it is not modified.
+- `operator` ([Operator](.#operator) | `"none"` | `"unset"`, optional): the operator assigned to this car. The string `"none"` means the inspector has unassigned the operator without reassigning another. The string `"unset"` means to discard the previous value as if the field had never been modified. If the field is absent, it is not modified from its previous value.
+
+`"unset"` and `"none"` are semantically different, and used consistently with the `"unset"` values in [TripUpdated](#tripupdated). If an operator is `"unset"`, then, as if no update had ever been made, clients SHOULD assume the scheduled operator will operate the car. If an operator is `"none"`, then we don't know who will operate the car.
+
+An empty object `{}` is valid if nothing about the car has been modified.
+
+The length of `cars` always reflects the known length of the train.
+
+### DroppedReason
+
+An object representing the reason that a trip was dropped. The presence of this object implies that the trip was dropped.
+
+Fields:
+- `reason` (string): free-text description about why a trip was dropped.
+
+Currently the reason is entered by inspectors in a free-text field. It's published in an object so that if Glides collects more structured data in the future, then extra fields can be added. If more fields are added, then a generated text description would be filled into the `reason` field, and it would not be a breaking change.
+
+`reason` MAY be the empty string if for some reason Glides does not have information about why a trip was dropped.
+
+### Location
+
+See [Location](.#location)
+
+### Metadata
+
+See [Metadata](.#metadata)
+
+### Operator
+
+See [Operator](.#operator)
+
+### Scheduled
+
+Scheduled information about the trip. It was not updated in Glides, but is included in the event stream so that consumers can know the schedule information that Glides uses. If data here was never overriden by a corresponding field in [TripUpdated](#tripupdated), then consumers can assume that the trip operated based on the scheduled information contained here.
+
+Fields:
+- `scheduledCars` (array of [ScheduledCar](#scheduledcar)): Array of length 1 or 2. The length reflects the scheduled length of the train. In a 2 car train, the front car is listed first.
+
+It does not include time and location fields, because for scheduled trips those fields are already in [TripKey](#tripKey)
+
+### ScheduledCar
+
+Fields:
+- `run` (string, optional): The run number scheduled to the trip.
+- `operator` ([Operator](#operator), optional): The operator who is scheduled to operate the run that day, and therefore scheduled to do the trip.
+
+If fields are missing from ScheduledCar, it is not known who is scheduled to operate that car. An empty object is valid if we know the car is scheduled to operate but don't know anything else about it.
+
+### Time
+
+Time in the `HH:MM:SS` format. The time is measured from "noon minus 12h" of the service day (effectively midnight except for days on which daylight savings time changes occur). For times occurring after midnight, enter the time as a value greater than 24:00:00 in `HH:MM:SS` local time for the day on which the trip schedule begins. Effectively, a [GTFS Time](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#field-types) but without support for `H:MM:SS` times.
+> _Example: `04:30:00` for 4:30AM or `25:35:00` for 1:35AM on the next day._
+
+Alternative: times as RFC3999 string.
+This would be easy to parse with standard tools, but doesn't match existing OCS behavior which only provides a time.
+
+### TripAdded
+
+There is a new trip, that does not appear in the Glides' schedule data. "Added" is relative to the schedule that Glides uses, and an added trip may correspond to a trip that appears in a different schedule.
+
+Any added trips SHOULD appear exactly once as a TripAdded object, and any future updates SHOULD appear as TripUpdated objects, (except in case of a duplicate event due to a network error, in which case the two events SHOULD have the same TripKey and data). Clients SHOULD ignore TripAdded events with a TripKey that has already been added.
+
+The event SHOULD only include values which were explicitly included by the author: inferred values SHOULD NOT be included.
+
+TripAdded objects are the same as [TripUpdated](#tripupdated) with the following new restrictions, so that enough is specified about the trip to know or infer where and when the trip will happen. (This extension means all TripAdded objects also happen to be valid TripUpdated objects according to the spec below.)
+
+New fields:
+- `previousTripKey` ([TripKey](#tripkey), conditionally required): The added trip will happen immediately after the trip referred to by `previousTripKey`. Required if `startTime` and `endTime` are both not set. (If no time is specified, then the previous trip is necessary so the trip's time can be inferred.) This field MAY refer to a trip that has not been already seen in the event stream.
+
+New restrictions on existing fields:
+- `type` (string): MUST be `"added"` (as opposed to `"updated"`).
+- `tripKey` ([TripKey](#tripkey)): will always be the added trip form, and never the scheduled trip form.
+- `startLocation` ([Location](.#location), conditionally required): where the trip will start. Required if `startTime` is specified.
+- `endLocation` ([Location](.#location), conditionally required): where the trip will end. Required if `endTime` is specified.
+- At least one of `startLocation` and `endLocation` is required.
+- At least one of `startTime`, `endTime`, and `previousTripKey` is required.
+- `dropped` SHOULD NOT be set.
+- All data SHOULD NOT be `"none"` or `"unset"`. (Instead, the fields would not be included).
+
+Glides SHOULD include the `cars` field to indicate the length of the train, even if no information is known about each car.
+
+### TripKey
+
+For scheduled trips, Glides does not have the same trip ID used by RTR. For added trips, while an ID is provided, it can be the case that an added trip from the Glides perspective is matched to a GTFS trip, in which case RTR will use the GTFS trip ID in publishing the information.
+
+In order to reduce event duplication, a TripKey is used to identify both added and scheduled trips.
+
+The added/scheduled distinction here is internal to Glides, and may not align with what is in other data sources. For example, an Added Trip in Glides may still correspond to a scheduled GTFS trip, and a Scheduled Trip may not appear in GTFS (due to track closures, for example).
+
+#### Added Trip
+- `serviceDate` (RFC3999 date): the service date for the trip.
+- `glidesId` (string): unique value representing this trip for the given `serviceDate`.
+
+Example:
+```json
+{"serviceDate": "2023-01-20", "glidesId": "ADDED-123"}
+```
+
+#### Scheduled Trip
+- `serviceDate` (RFC3999 date): the service date for the trip.
+- `startLocation` ([Location](.#location)): where the trip is scheduled to start.
+- `endLocation` ([Location](.#location)): where the trip is scheduled to end.
+- `startTime` ([Time](#time)): when the trip is scheduled to depart `startLocation`.
+- `endTime` ([Time](#time)): when the trip is scheduled to arrive at `endLocation`.
+
+Example:
+```json
+{
+  "serviceDate": "2023-01-20",
+  "startLocation": {"gtfsId": "place-mdftf"},
+  "endLocation": {"gtfsId": "place-heath"},
+  "startTime": "04:47:00",
+  "endTime": "05:34:00"
+}
+```
+
+### TripUpdated
+
+This indicates that a trip was updated in some fashion: e.g. consist, operators, departure time. The trip is either a scheduled trip, or an added trip that has already appeared in the events stream. Fields which are not present are not considered to be updated.
+
+Fields in the object:
+- `type` (string): `"updated"|"added"`. If this field is `"updated"`, the object is this TripUpdated object. If it's `"added"`, it's a [TripAdded](#tripadded) object that extends TripUpdated and has all these fields but with additional meaning, fields, and restrictions, see above. Subsequent updates to previously-added trips have `type` `"updated"`.
+- `tripKey` ([TripKey](#tripkey)): which trip is being updated.
+- `comment` (string, optional): free text information about the trip. Could potentially be the empty string, if a comment was deleted.
+- `startLocation` ([Location](.#location) | "unset", optional): the new destination of the train.
+- `endLocation` ([Location](.#location) | "unset", optional): the new destination of the train.
+- `startTime` ([Time](#time) | "unset", optional): if present, the new time that the train is expected to depart `startLocation` (or the existing `startLocation` of the trip).
+- `endTime` ([Time](#time) | "unset", optional): if present, the new time that the train is expected to arrive at `endLocation` (or the existing `endLocation` of the trip).
+- `cars` (array of [Car](#car), optional): array of length 1 or 2, containing the car numbers and operators for each car in the train assigned to the trip. If absent, there are no changes to any cars. If present, the length of the array is the length of the train. In a two car train, the front car is listed first.
+- `dropped` ([DroppedReason](#droppedreason) | false, optional): If present the trip was dropped for the provided reason. If set to `false`, the trip is not dropped (and restored if previously dropped).
+- `scheduled` ([Scheduled](#scheduled) | null): For trips in Glides' schedule, this represents the scheduled data for the trip. It will always be present and won't change between subsequent updates to the same trip. For added trips, this will always be `null`.
+
+Some values might be the special string `"unset"`. This means to treat the field as if it had never been modified. This is semantically slightly different than setting the value to the scheduled value. For example, setting `startTime` to `"unset"` implies we don't know when the trip will leave, and the scheduled time might be a good guess, but setting `startTime` to equal the scheduled start time implies that an inspector has confirmed the trip will leave at that time.
+
+*Notes*
+- setting a new location or time does not modify the [TripKey](#tripkey) for a scheduled trip.
+- If `cars` is updated from a 1-element list to a 2-element list, then Glides SHOULD include data for the 2nd car. This is relevant if a two-car train has a car removed and then re-added. If a field was set before the car was dropped, then when the car is restored, clients MUST assume that the field is `"none"` as opposed to retaining its previous value, but Glides SHOULD include the data to avoid the ambiguity.
+- Some fields, such as `startTime` or `cars`, are not relevant to dropped trips. Those fields SHOULD NOT be set in an update that drops a trip or any following updates, until the trip is undropped by setting `dropped` to `false`. However, if a trip is undropped, clients MUST assume all fields retain their values from before the field was undropped. Clients MUST NOT ignore updates to fields when a trip is dropped, even if they aren't relevant for dropped trips. For example, if a trip is dropped, and then the `startTime` is updated, and then it's undropped, the trip's `startTime` is the value set while the trip was dropped. Glides MAY include extra fields in an update that undrops a trip, if they are changed as part of the same event that undropped the trip, or just to remind clients about them now that they're relevant.
+
+## Examples
+
+<Examples
+  examples={{
+    Example: GlidesExamples.find(
+      (example) => example.type == "com.mbta.ctd.glides.editors_changed.v1"
+    ),
+  }}
+/>
+
+## Schema
+
+<EventSchemaPath event="com.mbta.ctd.glides.editors_changed.v1" />
+
+## Unsupported Features
+
+### Mid-route data
+
+This event has no way to publish data about the middle of trips, only the endpoints. This is because Glides does not currently collect data from inspectors about the middles of trips. It's likely that in the future, Glides might add features to allow Chief Inspectors, Dispatchers, or others to input short turns, holds, expresses, or other adjustments, in which case this event would be updated or another event would be added.
+
+### More specific events
+
+This event lumps all service updates into a single event. Other proposals considered having separate events for `trip_added`, `trip_dropped`, or even separate events for updating each field. This would have portrayed inspectors' intent more clearly, and allowed more specific data to be sent in each case.
+However, it is easier for consumers to understand the effects on service from this single [state-transfer event](https://github.com/mbta/technology-docs/blob/main/rfcs/accepted/0019-event-driven-architecture.md#kinds-of-events). 
+Consumers who want more transparency into how an official entered the update in Glides should look at the [`metadata.inputType` field](.#metadata).
+For more explanation, see the [alternatives section of RFC 18](https://github.com/mbta/technology-docs/blob/main/rfcs/accepted/0018-glides-trainsheet-events.md#alternative-more-specific-trip-update-events).
+
+### Include all known data, not just changes
+
+This event only includes updated fields, which means that clients must listen and remember all past changes if they want to know the state of a trip. In the future, if a client needs it, Glides could start including in this event a snapshot of all known data about the trip, but there hasn't been a concrete reason to add it yet. For more explanation, see the [alternatives section of RFC 18](https://github.com/mbta/technology-docs/blob/main/rfcs/accepted/0018-glides-trainsheet-events.md#alternative-include-snapshot-of-all-data-not-just-changes). See also: [Kinds of Events](https://github.com/mbta/technology-docs/blob/main/rfcs/accepted/0019-event-driven-architecture.md#kinds-of-events)
