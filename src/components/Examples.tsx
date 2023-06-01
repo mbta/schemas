@@ -3,22 +3,41 @@ import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import CodeBlock from "@theme/CodeBlock";
 
-function ExampleTab(props: { example: object }): JSX.Element {
-  return (
-    <CodeBlock language="json">
-      {JSON.stringify(props.example, null, 2)}
-    </CodeBlock>
-  );
-}
-export default function Examples(props: { examples: object }): JSX.Element {
-  const examples = Object.entries(props.examples);
-  return (
-    <Tabs>
-      {examples.map(([name, example]) => (
-        <TabItem label={name} value={name} key={name}>
-          <ExampleTab example={example} />
-        </TabItem>
-      ))}
-    </Tabs>
-  );
+type Example = {
+  label?: string;
+  description?: string | JSX.Element;
+  json: any;
+};
+
+export default function Examples({
+  examples,
+}: {
+  examples: Example[];
+}): JSX.Element {
+  if (examples.length === 1 && examples[0].label === undefined) {
+    const [{ description, json }] = examples;
+    return (
+      <>
+        {description}
+        <CodeBlock language="json">{JSON.stringify(json, null, 2)}</CodeBlock>
+      </>
+    );
+  } else {
+    return (
+      <Tabs>
+        {examples.map(({ label, description, json }, index) => (
+          <TabItem
+            label={label ?? "Example"}
+            value={label ?? `${index}`}
+            key={label ?? index}
+          >
+            {description}
+            <CodeBlock language="json">
+              {JSON.stringify(json, null, 2)}
+            </CodeBlock>
+          </TabItem>
+        ))}
+      </Tabs>
+    );
+  }
 }

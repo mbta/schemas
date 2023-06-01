@@ -49,11 +49,15 @@ The tapped badge's RFID serial number is not included in the stream for security
 ## Examples
 
 <Examples
-  examples={{
-    Example: GlidesExamples.find(
-      (example) => example.type == "com.mbta.ctd.glides.operator_signed_in.v1"
-    ),
-  }}
+  examples={[
+    {
+      description:
+        "Operator Charlie (badge: 789) returns from his break and stops by Inspector Alice's booth. Alice checks him as fit for duty, and he signs in by tapping his badge to the RFID reader attached to Alice's computer.",
+      json: GlidesExamples.find(
+        (example) => example.type == "com.mbta.ctd.glides.operator_signed_in.v1"
+      ),
+    },
+  ]}
 />
 
 ## Schema

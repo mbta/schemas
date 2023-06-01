@@ -3,6 +3,7 @@ sidebar_label: glides.editors_changed
 ---
 
 import GlidesExamples from "@site/examples/glides-events/glides-examples.json";
+//import example from "@site/examples/glides-events/com.mbta.ctd.glides.editors_changed.v1.json";
 import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
 import Examples from "@site/src/components/Examples.tsx";
 
@@ -51,11 +52,15 @@ See [Metadata](.#metadata)
 ## Examples
 
 <Examples
-  examples={{
-    TakeOver: GlidesExamples.find(
-      (example) => example.type == "com.mbta.ctd.glides.editors_changed.v1"
-    ),
-  }}
+  examples={[
+    {
+      description:
+        'Inspector Alice (badge number: 123) starts her shift at Boston College. The previous inspector (badge number: 456) did not stop editing, so Alice clicks the "Take Over" button in Glides.',
+      json: GlidesExamples.find(
+        (example) => example.type == "com.mbta.ctd.glides.editors_changed.v1"
+      ),
+    },
+  ]}
 />
 
 ## Schema
