@@ -7,6 +7,7 @@ import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
 import Examples from "@site/src/components/Examples.tsx";
 
 # operator_signed_in
+
 event type: `com.mbta.ctd.glides.operator_signed_in.v1`
 
 At the start of their shift, operators need to confirm in Glides (on an inspector's device) that they are fit-for-duty and do not have any electronic devices.
@@ -29,12 +30,15 @@ See [Metadata](.#metadata)
 See [Operator](.#operator)
 
 ### Signature
+
 How the operator signed that they were fit for duty.
 
 Fields:
+
 - `type` (string): How the the operator made their signature.
 
 Current values for `type` are
+
 - `"tap"` if they signed in by tapping their badge to an RFID scanner.
 - `"type"` if they signed in by typing their badge number into Glides as a signature.
 
