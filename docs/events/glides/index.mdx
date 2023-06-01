@@ -56,6 +56,8 @@ Published when an operator signs in as fit for duty.
 
 ## Shared Types
 
+Types used by multiple of the events are documented here. Types used by only one of the events are documented on each event page.
+
 ### GlidesUser
 
 Fields:
@@ -108,3 +110,55 @@ Fields:
 MAY refer to other non-operator Area 132 employees in some cases, for example if an inspector signs in as fit for duty in Glides (they aren't required to).
 
 It is represented as an object to provide future extensibility if needed.
+
+## Details
+
+Events are in the [CloudEvents](https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md) format, and published via AWS Kinesis. See [RFC 19 Event Driven Architecture](https://github.com/mbta/technology-docs/blob/main/rfcs/accepted/0019-event-driven-architecture.md) for more about CTD's approach to publishing events.
+
+### Kinesis
+
+Events will be written as records to a Kinesis stream. Each Glides environment (`dev`, `dev-green`, and `prod`) will have a separate stream, named `ctd-glides-<environment>`.
+
+The partition key will be a hash of the station at which the inspector is working and the inspector's identity, which ensures that multiple events from a single inspector are ordered correctly if the records are distributed across multiple shards.
+
+Multiple events can be included in a single Kinesis record, by wrapping them in a JSON array. This is an optimization for improving write speeds: further steps in the Kinesis pipeline may break up or rearrange these arrays.
+
+Kinesis only adds a limited (<1s) latency between when the event is generated and when it is available to consumers.
+
+### Short-term storage
+
+Events are only maintained in Kinesis for 24 hours. Some events (such as a [trips_updated](com.mbta.ctd.glides.trips_updated.v1) which modifies the operators) can affect trips more than 24 hours in the future. Clients SHOULD maintain records internally of these future changes. Clients MUST NOT expect that reading the Kinesis stream from the trim horizon will return all events affecting the current service day. Clients MUST tolerate receiving updates for events that reference unseen past events (such as an update to an added trip that the client did not see get added, or a [`editors_changed`](com.mbta.ctd.glides.editors_changed.v1) event that stops editing for an inspector the client did not see start editing).
+
+### Long-term storage / querying
+
+[LAMP](https://github.com/mbta/lamp) is planning to archive these events in AWS S3 for future use.
+
+As the stream contains potential PII (operator badge information) any long-term storage (S3, database) MUST be encrypted at rest.
+
+### Idempotence
+
+Glides SHOULD produce idempotent events. Consumers SHOULD assume events are idempotent.
+
+If an event is submitted to the stream twice, due to a network error, then the events SHOULD have the same event id, and clients MAY ignore duplicate events, however, they can safely replay events if they occur in short succession.
+
+If an [TripAdded](com.mbta.ctd.glides.trips_updated.v1#tripadded) object has the same [TripKey](com.mbta.ctd.glides.trips_updated.v1#tripkey) as a previous TripAdded event, it SHOULD have the same data, and SHOULD be ignored. If two [OperatorSignedIn](com.mbta.ctd.glides.operator_signed_in.v1) events have the same `operator` and `signedInAt`, then clients SHOULD assume they are the same signature, and the second SHOULD be ignored.
+
+### Compatibility
+
+These event schemas may be updated, according to [RFC 19 Event Driven Architecture #Compatibility](https://github.com/mbta/technology-docs/blob/main/rfcs/accepted/0019-event-driven-architecture.md#compatibility).
+
+A change is backwards-compatible if all old events are valid with the new schema, all new events are valid with the old schema, and their semantics have not changed. In that case, Glides MAY publish events with the new format without warning, and the event version number will not be bumped.
+
+In the case of a backwards-incompatible change, a new event `type` MUST be created (probably by bumping the `v1` version number). Glides MUST continue to generate old events alongside the new events until no more consumers depend on the old version.
+
+In either case, this documentation MUST be updated.
+
+Examples of backwards-compatible changes:
+- Adding an optional `reason` field to [TripAdded](com.mbta.ctd.glides.trips_updated.v1#tripadded).
+- Adding a new event `type` (which is not replacing an existing event `type`).
+
+#### Consumer Responsibilities
+
+- Consumers MUST ignore event `type`s that they do not understand.
+- Consumers MUST ignore fields in events (and in nested objects in events) which they do not understand, trusting that any additional fields are not required to process the event.
+- Consumers SHOULD ignore earlier versions of the same event if they can parse a later version (i.e. ignoring `v1` events if they can parse `v2`).
