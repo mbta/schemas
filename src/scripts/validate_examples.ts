@@ -34,8 +34,22 @@ fs.readdirSync("schemas/").forEach((schemaFileName) => {
     );
     return;
   }
+  // doesn't compile or check the schema yet
+  ajv.addSchema(schema, schemaFileName);
+  schemas[schemaFileName] = schema;
+  console.log(`loaded schemas/${schemaFileName}`);
+});
+
+if (fail) {
+  console.log("errors in schemas, skipping compilation");
+  process.exit(1);
+}
+console.log("compiling schemas...");
+
+// Check that schemas compile after adding all of them, so that references can be resolved.
+Object.entries(schemas).forEach(([schemaFileName, schema]) => {
   try {
-    ajv.addSchema(schema);
+    ajv.compile(schema);
   } catch (e) {
     fail = true;
     console.error(
@@ -45,9 +59,12 @@ fs.readdirSync("schemas/").forEach((schemaFileName) => {
     console.error("");
     return;
   }
-  schemas[schemaFileName] = schema;
-  console.log(`loaded schemas/${schemaFileName}`);
 });
+
+if (fail) {
+  console.log("errors in schemas, skipping example validation");
+  process.exit(1);
+}
 
 console.log("validating examples...");
 fs.readdirSync("examples/").forEach((eventName) => {
@@ -56,18 +73,6 @@ fs.readdirSync("examples/").forEach((eventName) => {
     console.log(
       `skipping examples/${eventName}/, no matching JSON Schema in schemas/${schemaFileName}`,
     );
-    return;
-  }
-
-  const schema = schemas[schemaFileName];
-  let validate: ReturnType<Ajv["compile"]>;
-  try {
-    validate = ajv.compile(schema);
-  } catch (e) {
-    fail = true;
-    console.error(`\nerror: ${schemaFileName} is not a valid JSON schema`);
-    console.error(e);
-    console.error("");
     return;
   }
 
@@ -93,13 +98,13 @@ fs.readdirSync("examples/").forEach((eventName) => {
     }
     let failFile = false;
     (exampleData as Array<unknown>).forEach((example, index) => {
-      if (!validate(example)) {
+      if (!ajv.validate(schemaFileName, example)) {
         fail = true;
         failFile = true;
         console.error(
-          `\nerror: ${exampleFileName}[${index}] is not valid according to ${schemaFileName}`,
+          `\nerror: ${exampleFileName}[${index}] is not valid according to schemas/${schemaFileName}`,
         );
-        console.error(validate.errors);
+        console.error(ajv.errors);
         return;
       }
     });
@@ -114,3 +119,4 @@ fs.readdirSync("examples/").forEach((eventName) => {
 if (fail) {
   process.exit(1);
 }
+console.log("Tests passed!");
