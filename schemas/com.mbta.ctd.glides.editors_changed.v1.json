@@ -4,7 +4,7 @@
   "description": "Editors Changed",
   "type": "object",
   "properties": {
-    "type": { "const": "com.ctd.glides.editors_changed.v1.json" },
+    "type": { "const": "com.mbta.ctd.glides.editors_changed.v1" },
     "specversion": { "const": "1.0" },
     "source": { "const": "glides.mbta.com" },
     "id": { "$ref": "cloudevents.json#/properties/id" },

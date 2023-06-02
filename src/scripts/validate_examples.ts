@@ -3,47 +3,61 @@ import Ajv from "ajv/dist/2020";
 import addFormats from "ajv-formats";
 
 const ajvOpts = { strict: true };
+const ajv = new Ajv(ajvOpts);
+addFormats(ajv);
 
 let fail = false;
 
+console.log("loading schemas...");
 const schemas: { [schemaFileName: string]: any } = {};
 fs.readdirSync("schemas/").forEach((schemaFileName) => {
   if (!schemaFileName.endsWith(".json")) {
     console.log(`skipping schemas/${schemaFileName}, not a json file`);
     return;
   }
+  let schema;
   try {
-    schemas[schemaFileName] = JSON.parse(
+    schema = JSON.parse(
       fs.readFileSync(`schemas/${schemaFileName}`).toString(),
     );
-    // TODO check that id matches name?
   } catch (e) {
     fail = true;
     console.error(`\nerror: schemas/${schemaFileName} is not valid JSON`);
     console.error(e);
     console.error("");
+    return;
   }
-});
-
-fs.readdirSync("examples/").forEach((schemaName) => {
-  const schemaFileName = `${schemaName}.json`;
-  if (!(schemaFileName in schemas)) {
-    console.log(
-      `skipping examples/${schemaName}/, no matching JSON Schema in schemas/${schemaFileName}`,
+  if (!schema.$id || !schema.$id.endsWith(schemaFileName)) {
+    fail = true;
+    console.error(
+      `error: schemas/${schemaFileName} $id "${schemas.$id}" does not match filename`,
     );
     return;
   }
-  console.log(`validating ${schemaName}...`);
-  const ajv = new Ajv(ajvOpts);
-  addFormats(ajv);
-  Object.entries(schemas).forEach(([schemaFileName, schema]) => {
-    //if (filename != schemaFileName) {
-    // TODO should you skip schema under test?
-    // TODO do you need to specify filename?
-    // TODO try/catch for each?
-    ajv.addSchema(schema, schemaFileName);
-    //}
-  });
+  try {
+    ajv.addSchema(schema);
+  } catch (e) {
+    fail = true;
+    console.error(
+      `\nerror: schemas/${schemaFileName} is not a valid JSON Schema`,
+    );
+    console.error(e);
+    console.error("");
+    return;
+  }
+  schemas[schemaFileName] = schema;
+  console.log(`loaded schemas/${schemaFileName}`);
+});
+
+console.log("validating examples...");
+fs.readdirSync("examples/").forEach((eventName) => {
+  const schemaFileName = `${eventName}.json`;
+  if (!(schemaFileName in schemas)) {
+    console.log(
+      `skipping examples/${eventName}/, no matching JSON Schema in schemas/${schemaFileName}`,
+    );
+    return;
+  }
 
   const schema = schemas[schemaFileName];
   let validate: ReturnType<Ajv["compile"]>;
@@ -56,9 +70,9 @@ fs.readdirSync("examples/").forEach((schemaName) => {
     console.error("");
     return;
   }
-  // example files are either a single example or list of examples, so we need a schema to unwrap the array
-  fs.readdirSync(`examples/${schemaName}/`).forEach((exampleName) => {
-    const exampleFileName = `examples/${schemaName}/${exampleName}`;
+
+  fs.readdirSync(`examples/${eventName}/`).forEach((exampleName) => {
+    const exampleFileName = `examples/${eventName}/${exampleName}`;
     if (!exampleName.endsWith(".json")) {
       console.log(`skipping ${exampleFileName}, not a json file`);
       return;
@@ -69,8 +83,9 @@ fs.readdirSync("examples/").forEach((schemaName) => {
       exampleData = JSON.parse(exampleFile);
     } catch (e) {
       fail = true;
-      console.error(`${exampleFileName} is not valid JSON`);
+      console.error(`\nerror: ${exampleFileName} is not valid JSON`);
       console.error(e);
+      console.error("");
       return;
     }
     if (!Array.isArray(exampleData)) {
@@ -82,7 +97,7 @@ fs.readdirSync("examples/").forEach((schemaName) => {
         fail = true;
         failFile = true;
         console.error(
-          `${exampleFileName}[${index}] is not valid according to ${schemaFileName}`,
+          `\nerror: ${exampleFileName}[${index}] is not valid according to ${schemaFileName}`,
         );
         console.error(validate.errors);
         return;
@@ -92,7 +107,7 @@ fs.readdirSync("examples/").forEach((schemaName) => {
       console.error("");
       return;
     }
-    console.log(`${exampleFileName} is valid`);
+    console.log(`validated ${exampleFileName}`);
   });
 });
 
