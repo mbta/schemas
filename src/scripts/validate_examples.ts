@@ -18,7 +18,7 @@ fs.readdirSync("schemas/").forEach((schemaFileName) => {
   let schema;
   try {
     schema = JSON.parse(
-      fs.readFileSync(`schemas/${schemaFileName}`).toString(),
+      fs.readFileSync(`schemas/${schemaFileName}`).toString()
     );
   } catch (e) {
     fail = true;
@@ -30,7 +30,7 @@ fs.readdirSync("schemas/").forEach((schemaFileName) => {
   if (!schema.$id || !schema.$id.endsWith(schemaFileName)) {
     fail = true;
     console.error(
-      `error: schemas/${schemaFileName} $id "${schemas.$id}" does not match filename`,
+      `error: schemas/${schemaFileName} $id "${schemas.$id}" does not match filename`
     );
     return;
   }
@@ -53,7 +53,7 @@ Object.entries(schemas).forEach(([schemaFileName, schema]) => {
   } catch (e) {
     fail = true;
     console.error(
-      `\nerror: schemas/${schemaFileName} is not a valid JSON Schema`,
+      `\nerror: schemas/${schemaFileName} is not a valid JSON Schema`
     );
     console.error(e);
     console.error("");
@@ -71,7 +71,7 @@ fs.readdirSync("examples/").forEach((eventName) => {
   const schemaFileName = `${eventName}.json`;
   if (!(schemaFileName in schemas)) {
     console.log(
-      `skipping examples/${eventName}/, no matching JSON Schema in schemas/${schemaFileName}`,
+      `skipping examples/${eventName}/, no matching JSON Schema in schemas/${schemaFileName}`
     );
     return;
   }
@@ -102,7 +102,7 @@ fs.readdirSync("examples/").forEach((eventName) => {
         fail = true;
         failFile = true;
         console.error(
-          `\nerror: ${exampleFileName}[${index}] is not valid according to schemas/${schemaFileName}`,
+          `\nerror: ${exampleFileName}[${index}] is not valid according to schemas/${schemaFileName}`
         );
         console.error(ajv.errors);
         return;
