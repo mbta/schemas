@@ -28,21 +28,21 @@
   "oneOf": [
     {
       "properties": {
-        "type": { "const": "com.mbta.ctd.glides.editors_changed.v1" },
-        "data": { "$ref": "com.mbta.ctd.glides.editors_changed.v1.json#/" }
-      }
+        "type": { "const": "com.mbta.ctd.glides.editors_changed.v1" }
+      },
+      "$ref": "com.mbta.ctd.glides.editors_changed.v1.json#/"
     },
     {
       "properties": {
-        "type": { "const": "com.mbta.ctd.glides.operator_signed_in.v1" },
-        "data": { "$ref": "com.mbta.ctd.glides.operator_signed_in.v1.json#/" }
-      }
+        "type": { "const": "com.mbta.ctd.glides.operator_signed_in.v1" }
+      },
+      "$ref": "com.mbta.ctd.glides.operator_signed_in.v1.json#/"
     },
     {
       "properties": {
-        "type": { "const": "com.mbta.ctd.glides.trips_updated.v1" },
-        "data": { "$ref": "com.mbta.ctd.glides.trips_updated.v1.json#/" }
-      }
+        "type": { "const": "com.mbta.ctd.glides.trips_updated.v1" }
+      },
+      "$ref": "com.mbta.ctd.glides.trips_updated.v1.json#/"
     }
   ],
   "$defs": {
