@@ -5,6 +5,7 @@ This website is built using [Docusaurus 2](https://docusaurus.io/), a modern sta
 ### Installation
 
 ```
+$ asdf install
 $ yarn
 ```
 
@@ -16,23 +17,21 @@ $ yarn start
 
 This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
 
-### Schema Validation
+### Testing
+
+To check that the schemas in `schemas/` and the examples in `examples/` are valid:
 
 ``` shell
-# Check that the schemas in `schemas/` are valid
 $ yarn test:schemas
-
-# Check that the examples in `examples/` match the schemas in `schemas/`
-$ yarn test:examples
 ```
 
-### Testing
+Each file `examples/<schema name>/<example name>.json` is validated against the schema `schemas/<schema name>.json`.
+
+To run all tests:
 
 ``` shell
 $ yarn ci
-# or 
-$ yarn format --check
-$ yarn typecheck
+# or
 $ yarn test
 ```
 
