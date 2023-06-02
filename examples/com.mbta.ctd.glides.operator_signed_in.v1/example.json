@@ -1,0 +1,21 @@
+{
+  "type": "com.mbta.ctd.glides.operator_signed_in.v1",
+  "specversion": "1.0",
+  "source": "glides.mbta.com",
+  "id": "19fdb184-7dd6-4664-8472-04bd6177ec44",
+  "time": "2023-01-20T09:30:00-05:00",
+  "data": {
+    "metadata": {
+      "author": {
+        "emailAddress": "ainspector@example.com",
+        "badgeNumber": "123"
+      },
+      "inputTimestamp": "2023-01-20T09:29:59-05:00",
+      "inputType": "sign-in",
+      "location": { "odsId": "lakst" }
+    },
+    "operator": { "badgeNumber": "789" },
+    "signedInAt": "2023-01-20T09:45:00-05:00",
+    "signature": { "type": "tap" }
+  }
+}
