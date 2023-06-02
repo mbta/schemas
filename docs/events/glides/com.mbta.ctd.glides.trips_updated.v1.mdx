@@ -3,9 +3,11 @@ sidebar_label: glides.trips_updated
 sidebar_position: 1
 ---
 
-import GlidesExamples from "@site/examples/glides-events/glides-examples.json";
 import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
 import Examples from "@site/src/components/Examples.tsx";
+import exampleDelay from "@site/examples/glides-events/trips_updated.v1.delay.json";
+import exampleDroppedAndHeadway from "@site/examples/glides-events/trips_updated.v1.dropped_and_headway.json";
+import exampleSplit from "@site/examples/glides-events/trips_updated.v1.split.json";
 
 # trips_updated
 
@@ -179,271 +181,45 @@ _Notes_
 ## Examples
 
 <Examples
-  examples={{
-    Example: GlidesExamples.find(
-      (example) => example.type == "com.mbta.ctd.glides.trips_updated.v1"
-    ),
-  }}
+  examples={[
+    {label: "15 Minute Delay",
+    description: (<div>
+      Inspector Alice (badge number: 123) is working at Mattapan. The 1:30am trip is being held 15 minutes to wait for a final Red Line train.
+
+      Note that the date of the the event is 2023-01-23, but the service date is 2023-01-22. The hour in the time itself is greater than 24 hours, to reflect that the time is the next calendar day.
+    </div>),
+    json: exampleDelay,
+    },
+    {label: "Dropped Trip and Manage Headways",
+    description: (<div>
+      There are four scheduled trips going to Government Center: 9:55am, 10:00am, 10:05am, and 10:10am.
+
+      Due to staffing issues, the 10:05am trip is dropped, along with its return trip. (First event with two updated trips).
+
+      Using the "Manage Headways" feature, Alice changes the expected departure times of the remaining trips to 9:56am, 10:02am, and 10:08am. (Second event with three updated trips).
+
+      (Scheduled data is unrealistically abbreviated for this example. Normally there would be information about scheduled operators. See the next example for realistic scheduled operator data.)
+    </div>),
+    json: exampleDroppedAndHeadway,
+    },
+    {label: "Splitting a Train",
+    description: (<div>
+      Splitting a 2-car train into two 1-car trips.
+
+      - There are two scheduled trips: 9:55am and 10:00am.
+      - Operator A (badge number: 456) and Operator B (badge number: 567) are scheduled to perform the 9:55am.
+      - Only 1 trainset (3800 and 3850) is available.
+      - In order to maintain headways, Inspector Alice splits the trainset.
+      - Operator A will take 3800 and run the 9:55am.
+      - Operator B will take 3850 and run the 10:00am.
+      - Alice does this by dropping the second trip and adding a new one-car trip (and also its return).
+
+      (In real life she would probably assign B to the 2nd trip. The example does it this way to provide an example of adding a trip. Ideally, consumers would treat both ways the same, because they describe the same service.)
+    </div>),
+    json: exampleSplit
+    }
+  ]}
 />
-
----
-
-### Managing headways
-
-- There are four scheduled trips going to Government Center: 9:55am, 10:00am, 10:05am, and 10:10am
-- Due to staffing issues, the 10:05am trip is dropped, along with its return trip.
-- Using the "Manage Headways" feature, Alice changes the expected departure times of the remaining trips to 9:56am, 10:02am, and 10:08am.
-
-(Scheduled data is unrealistically abbreviated for this example. Normally there would be information about scheduled operators. See the next example for realistic scheduled operator data.)
-
-```json
-{
-  "type": "com.mbta.ctd.glides.trips_updated.v1",
-  "data": {
-    "metadata": {
-      "inputType": "dropped-trip"
-    },
-    "tripUpdates": [
-      {
-        "type": "updated",
-        "tripKey": {
-          "serviceDate": "2022-01-20",
-          "startLocation": {"gtfsId": "place-lake"},
-          "endLocation": {"gtfsId": "place-gover"},
-          "startTime": "10:05:00",
-          "endTime": "10:52:00"
-        },
-        "dropped": {"reason": "staffing"},
-        "scheduled": {"scheduledCars": [{}]}
-      },
-      {
-        "type": "updated",
-        "tripKey": {
-          "serviceDate": "2022-01-20",
-          "startLocation": {"gtfsId": "place-gover"},
-          "endLocation": {"gtfsId": "place-lake"},
-          "startTime": "10:55:00",
-          "endTime": "10:42:00"
-        },
-        "dropped": {"reason": "staffing"},
-        "scheduled": {"scheduledCars": [{}]}
-      }
-    ]
-  }
-}
-{
-  "type": "com.mbta.ctd.glides.trips_updated.v1",
-  "data": {
-    "metadata": {
-      "inputType": "manage-headways"
-    },
-    "tripUpdates": [
-      {
-        "type": "updated",
-        "tripKey": {
-          "serviceDate": "2022-01-20",
-          "startLocation": {"gtfsId": "place-lake"},
-          "endLocation": {"gtfsId": "place-gover"},
-          "startTime": "09:55:00",
-          "endTime": "10:42:00"
-        },
-        "startTime": "9:56:00",
-        "scheduled": {"scheduledCars": [{}]}
-      },
-      {
-        "type": "updated",
-        "tripKey": {
-          "serviceDate": "2022-01-20",
-          "startLocation": {"gtfsId": "place-lake"},
-          "endLocation": {"gtfsId": "place-gover"},
-          "startTime": "10:00:00",
-          "endTime": "10:47:00"
-        },
-        "startTime": "10:02:00",
-        "scheduled": {"scheduledCars": [{}]}
-      },
-      {
-        "type": "updated",
-        "tripKey": {
-          "serviceDate": "2022-01-20",
-          "startLocation": {"gtfsId": "place-lake"},
-          "endLocation": {"gtfsId": "place-gover"},
-          "startTime": "10:10:00",
-          "endTime": "10:57:00"
-        },
-        "startTime": "10:08:00",
-        "scheduled": {"scheduledCars": [{}]}
-      }
-    ]
-  }
-}
-```
-
-### Splitting a 2-car train into two 1-car trips
-
-- There are two scheduled trips: 9:55am and 10:00am
-- Operator A (badge number: 456) and Operator B (badge number: 567) are scheduled to perform the 9:55am
-- Only 1 trainset (3800 and 3850) is available
-- In order to maintain headways, Inspector Alice will split the trainset
-- Operator A will take 3800 and run the 9:55am
-- Operator B will take 3850 and run the 10:00am
-- Alice does this by dropping the second trip and adding a new one-car trip (and also its return). In real life she would probably assign B to the 2nd trip, and all the trips would be round trips. The example does it this way to provide an example of adding a trip and an example of how trips in the stream might not align to GTFS trips.
-
-```json
-{
-  "type": "com.mbta.ctd.glides.trips_updated.v1",
-  "data": {
-    "metadata": {
-      "inputType": "dropped-trip"
-    },
-    "tripUpdates": [
-      {
-        "type": "updated",
-        "tripKey": {
-          "serviceDate": "2022-01-20",
-          "startLocation": {"gtfsId": "place-lake"},
-          "endLocation": {"gtfsId": "place-gover"},
-          "startTime": "10:00:00",
-          "endTime": "10:47:00"
-        },
-        "dropped": {"reason": "ran as single"},
-        "scheduled": {
-          "scheduledCars": [
-            {
-              "run": "506",
-              "operator": {"badgeNumber": "678"}
-            },
-            {
-              "run": "507",
-              "operator": {"badgeNumber": "789"}
-            }
-          ]
-        }
-      }
-    ]
-  }
-}
-{
-  "type": "com.mbta.ctd.glides.trips_updated.v1",
-  "data": {
-    "metadata": {
-      "inputType": "edit-trip"
-    },
-    "tripUpdates": [
-      {
-        "type": "updated",
-        "tripKey": {
-          "serviceDate": "2022-01-20",
-          "startLocation": {"gtfsId": "place-lake"},
-          "endLocation": {"gtfsId": "place-gover"},
-          "startTime": "09:55:00",
-          "endTime": "10:42:00"
-        },
-        "comment": "single",
-        "cars": [
-          {
-            "label": "3800",
-            "operator": {"badgeNumber": "456"}
-          }
-          /* note that there is no second car, this is how the second car is removed */
-        ],
-        "scheduled": {
-          "scheduledCars": [
-            {
-              "run": "504",
-              "operator": {"badgeNumber": "456"}
-            },
-            {
-              "run": "505",
-              "operator": {"badgeNumber": "567"}
-            }
-          ]
-        }
-      }
-    ]
-  }
-}
-{
-  "type": "com.mbta.ctd.glides.trips_updated.v1",
-  "data": {
-    "metadata": {
-      "inputType": "add-trip"
-    },
-    "tripUpdates": [
-      {
-        "type": "added",
-        "tripKey": {
-          "serviceDate": "2022-01-20",
-          "glidesId": "ADDED-1"
-        },
-        "startLocation": {"gtfsId": "place-lake"},
-        "startTime": "10:00:00",
-        "cars": [
-          {
-            "label": "3850",
-            "operator": {"badgeNumber": "567"}
-          }
-        ],
-        "scheduled": null
-      },
-      {
-        "type": "added",
-        "tripKey": {
-          "serviceDate": "2022-01-20",
-          "glidesId": "ADDED-2"
-        },
-        "endLocation": {"gtfsId": "place-lake"},
-        "previousTripKey": {
-          "serviceDate": "2022-01-20",
-          "glidesId": "ADDED-1"
-        },
-        "cars": [
-          {
-            "label": "3850",
-            "operator": {"badgeNumber": "567"}
-          }
-        ],
-        "scheduled": null
-      }
-    ]
-  }
-}
-```
-
-In this instance, the inspector dropped the 10:00am trip, and created a new trip with the same departure time. Ideally, RTR will treat this the same as if the 10:00am were updated to be a 1-car trip, but inspectors do not always enter the data in that fashion.
-
-### Train departing 15 minutes later than scheduled
-
-- Inspector Alice (badge number: 123) is working at Mattapan
-- The 1:30am trip is being held 15 minutes to wait for a final Red Line train
-
-```json
-{
-  "type": "com.mbta.ctd.glides.trips_updated.v1",
-  "time": "2023-01-23T01:25:00-05:00",
-  "data": {
-    "metadata": {
-      "inputType": "edit-trip"
-    },
-    "tripUpdates": [
-      {
-        "type": "updated",
-        "tripKey": {
-          "serviceDate": "2023-01-22",
-          "startLocation": { "gtfsId": "place-matt" },
-          "endLocation": { "gtfsId": "place-ashmt" },
-          "startTime": "25:30:00",
-          "endTime": "25:38:00"
-        },
-        "startTime": "25:45:00",
-        "scheduled": { "scheduledCars": [{}] }
-      }
-    ]
-  }
-}
-```
-
-Note that the date of the the event is 2023-01-23, but the service date is 2023-01-22. The hour in the time itself is greater than 24 hours, to reflect that the time is the next calendar day.
 
 ## Schema
 

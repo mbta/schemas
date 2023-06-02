@@ -129,7 +129,7 @@ Kinesis only adds a limited (<1s) latency between when the event is generated an
 
 Events are only maintained in Kinesis for 24 hours. Some events (such as a [trips_updated](com.mbta.ctd.glides.trips_updated.v1) which modifies the operators) can affect trips more than 24 hours in the future. Clients SHOULD maintain records internally of these future changes. Clients MUST NOT expect that reading the Kinesis stream from the trim horizon will return all events affecting the current service day. Clients MUST tolerate receiving updates for events that reference unseen past events (such as an update to an added trip that the client did not see get added, or a [`editors_changed`](com.mbta.ctd.glides.editors_changed.v1) event that stops editing for an inspector the client did not see start editing).
 
-### Long-term storage / querying
+### Long-term storage
 
 [LAMP](https://github.com/mbta/lamp) is planning to archive these events in AWS S3 for future use.
 
