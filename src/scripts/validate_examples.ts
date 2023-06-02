@@ -4,46 +4,56 @@ import addFormats from "ajv-formats";
 
 const ajvOpts = { strict: true };
 
-const sharedSchemas = [
-  "schemas/cloudevents.json",
-  "schemas/glides-events.json",
-];
-
 let fail = false;
+
+const schemas: { [schemaFileName: string]: any } = {};
+fs.readdirSync("schemas/").forEach((schemaFileName) => {
+  if (!schemaFileName.endsWith(".json")) {
+    console.log(`skipping schemas/${schemaFileName}, not a json file`);
+    return;
+  }
+  try {
+    schemas[schemaFileName] = JSON.parse(
+      fs.readFileSync(`schemas/${schemaFileName}`).toString(),
+    );
+    // TODO check that id matches name?
+  } catch (e) {
+    fail = true;
+    console.error(`\nerror: schemas/${schemaFileName} is not valid JSON`);
+    console.error(e);
+    console.error("");
+  }
+});
+
 fs.readdirSync("examples/").forEach((schemaName) => {
-  const schemaFileName = `schemas/${schemaName}.json`;
-  if (!fs.existsSync(schemaFileName)) {
-    console.log(`skipping examples/${schemaName}/, no matching JSON Schema`);
+  const schemaFileName = `${schemaName}.json`;
+  if (!(schemaFileName in schemas)) {
+    console.log(
+      `skipping examples/${schemaName}/, no matching JSON Schema in schemas/${schemaFileName}`,
+    );
     return;
   }
   console.log(`validating ${schemaName}...`);
-  const schemaFile = fs.readFileSync(schemaFileName).toString();
-  let schema;
-  try {
-    schema = JSON.parse(schemaFile);
-  } catch (e) {
-    fail = true;
-    console.error(`${schemaFileName} is not valid JSON`);
-    console.error(e);
-    return;
-  }
   const ajv = new Ajv(ajvOpts);
-
   addFormats(ajv);
-
-  sharedSchemas.map((filename) => {
-    if (filename != schemaFileName) {
-      ajv.addSchema(JSON.parse(fs.readFileSync(filename).toString()), filename);
-    }
+  Object.entries(schemas).forEach(([schemaFileName, schema]) => {
+    //if (filename != schemaFileName) {
+    // TODO should you skip schema under test?
+    // TODO do you need to specify filename?
+    // TODO try/catch for each?
+    ajv.addSchema(schema, schemaFileName);
+    //}
   });
 
+  const schema = schemas[schemaFileName];
   let validate: ReturnType<Ajv["compile"]>;
   try {
     validate = ajv.compile(schema);
   } catch (e) {
     fail = true;
-    console.error(`${schemaFileName} is not a valid JSON schema`);
+    console.error(`\nerror: ${schemaFileName} is not a valid JSON schema`);
     console.error(e);
+    console.error("");
     return;
   }
   // example files are either a single example or list of examples, so we need a schema to unwrap the array
@@ -72,13 +82,14 @@ fs.readdirSync("examples/").forEach((schemaName) => {
         fail = true;
         failFile = true;
         console.error(
-          `${exampleFileName}[${index}] is not valid according to ${schemaFileName}`
+          `${exampleFileName}[${index}] is not valid according to ${schemaFileName}`,
         );
         console.error(validate.errors);
         return;
       }
     });
     if (failFile) {
+      console.error("");
       return;
     }
     console.log(`${exampleFileName} is valid`);
