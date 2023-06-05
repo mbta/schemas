@@ -15,7 +15,7 @@
         "metadata": { "$ref": "glides-events.json#/$defs/metadata" },
         "changes": {
           "type": "array",
-          "contains": { "$ref": "#/$defs/editor_change" }
+          "items": { "$ref": "#/$defs/editor_change" }
         }
       },
       "required": ["metadata", "changes"]

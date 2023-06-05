@@ -15,7 +15,7 @@
         "metadata": { "$ref": "glides-events.json#/$defs/metadata" },
         "tripUpdates": {
           "type": "array",
-          "contains": {
+          "items": {
             "anyOf": [
               { "$ref": "#/$defs/trip_updated" },
               { "$ref": "#/$defs/trip_added" }
@@ -57,7 +57,7 @@
           "type": "array",
           "minItems": 1,
           "maxItems": 2,
-          "contains": { "$ref": "#/$defs/scheduled_car" }
+          "items": { "$ref": "#/$defs/scheduled_car" }
         }
       },
       "required": ["scheduledCars"]
@@ -179,7 +179,7 @@
           "type": "array",
           "minItems": 1,
           "maxItems": 2,
-          "contains": { "$ref": "#/$defs/car" }
+          "items": { "$ref": "#/$defs/car" }
         },
         "dropped": {
           "oneOf": [{ "$ref": "#/$defs/dropped_reason" }, { "const": false }]
