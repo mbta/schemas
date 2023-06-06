@@ -12,7 +12,13 @@
       "$comment": "enforced to be a valid event name by the oneOf, below"
     },
     "specversion": { "const": "1.0" },
-    "source": { "const": "glides.mbta.com" },
+    "source": {
+      "examples": [
+        "glides.mbta.com",
+        "glides-dev.mbtace.com",
+        "glides-dev-green.mbtace.com"
+      ]
+    },
     "id": { "type": "string", "minLength": 1 },
     "time": { "$ref": "#/$defs/timestamp" },
     "data": {

@@ -6,8 +6,8 @@
   "properties": {
     "type": { "const": "com.mbta.ctd.glides.editors_changed.v1" },
     "specversion": { "const": "1.0" },
-    "source": { "const": "glides.mbta.com" },
-    "id": { "$ref": "cloudevents.json#/properties/id" },
+    "source": { "$ref": "glides-events.json#/properties/source" },
+    "id": { "$ref": "glides-events.json#/properties/id" },
     "time": { "$ref": "glides-events.json#/$defs/timestamp" },
     "data": {
       "type": "object",

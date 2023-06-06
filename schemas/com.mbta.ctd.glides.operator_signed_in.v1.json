@@ -6,7 +6,7 @@
   "properties": {
     "type": { "const": "com.mbta.ctd.glides.operator_signed_in.v1" },
     "specversion": { "const": "1.0" },
-    "source": { "const": "glides.mbta.com" },
+    "source": { "$ref": "glides-events.json#/properties/source" },
     "id": { "$ref": "glides-events.json#/properties/id" },
     "time": { "$ref": "glides-events.json#/$defs/timestamp" },
     "data": {
