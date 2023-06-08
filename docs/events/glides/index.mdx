@@ -135,14 +135,6 @@ Events are only maintained in Kinesis for 24 hours. Some events (such as a [trip
 
 As the stream contains potential PII (operator badge information) any long-term storage (S3, database) MUST be encrypted at rest.
 
-### Idempotence
-
-Glides SHOULD produce idempotent events. Consumers SHOULD assume events are idempotent.
-
-If an event is submitted to the stream twice, due to a network error, then the events SHOULD have the same event id, and clients MAY ignore duplicate events, however, they can safely replay events if they occur in short succession.
-
-If an [TripAdded](com.mbta.ctd.glides.trips_updated.v1#tripadded) object has the same [TripKey](com.mbta.ctd.glides.trips_updated.v1#tripkey) as a previous TripAdded event, it SHOULD have the same data, and SHOULD be ignored. If two [OperatorSignedIn](com.mbta.ctd.glides.operator_signed_in.v1) events have the same `operator` and `signedInAt`, then clients SHOULD assume they are the same signature, and the second SHOULD be ignored.
-
 ### Compatibility
 
 These event schemas may be updated, according to [RFC 19 Event Driven Architecture #Compatibility](https://github.com/mbta/technology-docs/blob/main/rfcs/accepted/0019-event-driven-architecture.md#compatibility).
@@ -163,3 +155,13 @@ Examples of backwards-compatible changes:
 - Consumers MUST ignore event `type`s that they do not understand.
 - Consumers MUST ignore fields in events (and in nested objects in events) which they do not understand, trusting that any additional fields are not required to process the event.
 - Consumers SHOULD ignore earlier versions of the same event if they can parse a later version (i.e. ignoring `v1` events if they can parse `v2`).
+
+### Idempotence
+
+All Glides events are idempotent (and to remove that promise would be a non backwards compatible change).
+
+If an event is submitted to the stream twice, due to a network error, then the events will have the same event id, and the same data. Clients MAY ignore duplicate events, however, they can safely replay events if they occur in short succession.
+
+A [TripAdded](com.mbta.ctd.glides.trips_updated.v1#tripadded) will not have the same [TripKey](com.mbta.ctd.glides.trips_updated.v1#tripkey) as a previous TripAdded event, unless it's a duplicate due to a network error, in which case the event will be identical. A client who recieves duplicate events with TripAdded SHOULD take care not to add two trips.
+
+A client who receives duplicate [OperatorSignedIn](com.mbta.ctd.glides.operator_signed_in.v1) events SHOULD take care not to add two signatures. Clients MAY do this by assuming that if two OperatorSignedIn events have the same `operator` and `signedInAt`, then they are duplicates.
