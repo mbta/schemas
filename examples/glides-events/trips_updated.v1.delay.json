@@ -20,7 +20,12 @@
         },
         "startTime": "25:45:00",
         "scheduled": {
-          "scheduledCars": [{}]
+          "scheduledCars": [
+            {
+              "run": "500",
+              "operator": { "badgeNumber": "1234" }
+            }
+          ]
         }
       }
     ]
