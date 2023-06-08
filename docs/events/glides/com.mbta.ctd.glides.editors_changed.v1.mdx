@@ -26,7 +26,7 @@ Then they would issue a stop change for the previous editor and a start change f
 Fields in the event's `data`:
 
 - `metadata` ([Metadata](.#metadata)): how the changes were entered in Glides, including the author.
-- `changes` (array of [EditorChange](#editor-change)): a list of start and stop editing events.
+- `changes` (array of [EditorChange](#editorchange)): a list of start and stop editing events.
 
 ### EditorChange
 
@@ -34,7 +34,7 @@ Fields:
 
 - `type` (string `"start"`|`"stop"`): Whether the editor started or stopped editing.
 - `location` ([Location](.#location)): the location the editor started or stopped managing.
-- `editor` ([GlidesUser](.#glides-user)): the affected editor.
+- `editor` ([GlidesUser](.#glidesuser)): the affected editor.
 
 ### GlidesUser
 
