@@ -13,6 +13,7 @@
     },
     "specversion": { "const": "1.0" },
     "source": {
+      "$ref": "cloudevents.json#/properties/source",
       "examples": [
         "glides.mbta.com",
         "glides-dev.mbtace.com",
