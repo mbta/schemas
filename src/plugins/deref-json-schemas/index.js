@@ -1,7 +1,6 @@
+// @ts-check
 const { schemasPath, derefSchemaPath } = require("./deref-json-schema");
 const fs = require("fs");
-
-const resolvedSchemas = {};
 
 function schemas() {
   return fs
@@ -10,7 +9,8 @@ function schemas() {
     .map((file) => `${schemasPath}/${file}`);
 }
 
-module.exports = async function derefJsonSchemas(context, options) {
+/** @returns {import('@docusaurus/types').Plugin}  */
+module.exports = function derefJsonSchemas(context, options) {
   return {
     name: "deref-json-schemas",
     async loadContent() {},
@@ -23,11 +23,12 @@ module.exports = async function derefJsonSchemas(context, options) {
         const schema = await derefSchemaPath(schemaPath);
         fs.writeFileSync(
           `${props.outDir}/${schemaPath}`,
-          JSON.stringify(schema)
+          JSON.stringify(schema),
         );
         console.log(`Wrote ${schemaPath}.`);
       }
     },
+    /** @returns {any} devServer is missing from the webpack config definition? */
     configureWebpack() {
       return {
         devServer: {
@@ -45,7 +46,7 @@ module.exports = async function derefJsonSchemas(context, options) {
                 } else {
                   resp.sendStatus(404);
                 }
-              }
+              },
             );
           },
         },

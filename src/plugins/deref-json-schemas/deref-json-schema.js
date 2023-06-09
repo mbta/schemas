@@ -1,3 +1,4 @@
+// @ts-check
 const { Resolver } = require("@stoplight/json-ref-resolver");
 const { resolveHttp } = require("@stoplight/json-ref-readers");
 const { merge, mergeWithCustomize } = require("webpack-merge");
@@ -13,7 +14,7 @@ function resolveFile(path) {
     path = `${schemasPath}/${path}`;
   }
 
-  return JSON.parse(fs.readFileSync(path));
+  return JSON.parse(fs.readFileSync(path, "utf-8"));
 }
 
 const resolver = new Resolver({
@@ -42,7 +43,7 @@ async function derefJsonSchema(schema) {
 }
 
 async function derefSchemaPath(schemaPath) {
-  const schema = JSON.parse(fs.readFileSync(schemaPath));
+  const schema = JSON.parse(fs.readFileSync(schemaPath, "utf-8"));
   return await derefJsonSchema(schema);
 }
 
