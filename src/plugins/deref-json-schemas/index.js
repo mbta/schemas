@@ -1,6 +1,8 @@
 // @ts-check
-const { schemasPath, derefSchemaPath } = require("./deref-json-schema");
+const { derefSchemaPath } = require("./deref-json-schema");
 const fs = require("fs");
+
+const schemasPath = "schemas";
 
 function schemas() {
   return fs
