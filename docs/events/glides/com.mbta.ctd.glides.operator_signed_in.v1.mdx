@@ -42,7 +42,7 @@ Current values for `type` are
 - `"tap"` if they signed in by tapping their badge to an RFID scanner.
 - `"type"` if they signed in by typing their badge number into Glides as a signature.
 
-Represented as an object so we could include other types of signatures or other data about the signature in the future without a breaking change.
+Represented as an object with a string field instead of `const`s, so that we could include other types of signatures or other data about the signature in the future without a breaking change.
 
 The tapped badge's RFID serial number is not included in the stream for security reasons (it could be used to impersonate an employee).
 
