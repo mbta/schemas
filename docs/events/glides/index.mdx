@@ -123,7 +123,7 @@ The partition key will be a hash of the station at which the inspector is workin
 
 Multiple events can be included in a single Kinesis record, by wrapping them in a JSON array. This is an optimization for improving write speeds: further steps in the Kinesis pipeline may break up or rearrange these arrays.
 
-Kinesis only adds a limited (<1s) latency between when the event is generated and when it is available to consumers.
+Kinesis only adds a limited (&lt;1s) latency between when the event is generated and when it is available to consumers.
 
 ### Short-term storage
 
