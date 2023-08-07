@@ -1,0 +1,22 @@
+---
+---
+
+import basic from "@site/examples/com.mbta.ctd.subwayside.train-heartbeat/basic.json";
+import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
+import Examples from "@site/src/components/Examples.tsx";
+
+Train heartbeat received from the OL/RL wayside servers.
+
+Heartbeats are sent approximately every 15 seconds, with a delay of approximately 10-15 seconds.
+
+<Examples examples={[{ json: basic }]} />
+<EventSchemaPath event="com.mbta.ctd.subwayside.train-heartbeat" />
+
+## Crowding
+
+For calculating crowding, the important fields are:
+
+- `/data/leadCarNumber`: the lead car has the operator (one additional person)
+- `/data/cars[*]/type`: `CAB` or `NON_CAB` (non-cab cars have a higher capacity)
+- `/data/cars[*]/loadWeightLb[*]`: weights from the two MBCU sensors. it's
+  possible for one or both of them to be 0.

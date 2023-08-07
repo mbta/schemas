@@ -1,0 +1,394 @@
+{
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.ctd.subwayside.train-heartbeat.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Train Heartbeat message received by the wayside server",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "cloudevents.json#/properties/id",
+      "examples": ["200081266220230427135628421"]
+    },
+    "source": {
+      "$ref": "cloudevents.json#/properties/source",
+      "examples": ["hsctdprd.mbta.com/subwayside-12345"]
+    },
+    "specversion": {
+      "const": "1.0",
+      "$ref": "cloudevents.json#/properties/specversion"
+    },
+    "type": {
+      "const": "com.mbta.ctd.subwayside.train-heartbeat",
+      "$ref": "cloudevents.json#/properties/type"
+    },
+    "time": {
+      "$ref": "cloudevents.json#/properties/time"
+    },
+    "partitionkey": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Key used to balance messages across multiple shards",
+      "examples": ["O200812662"]
+    },
+    "data": {
+      "description": "The event payload.",
+      "$ref": "#/$defs/datadef"
+    }
+  },
+  "required": [
+    "id",
+    "source",
+    "specversion",
+    "type",
+    "data",
+    "time",
+    "partitionkey"
+  ],
+  "$defs": {
+    "carNumber": {
+      "type": "string",
+      "description": "The 4 digit number of a car",
+      "pattern": "^\\d{4}$"
+    },
+    "timestamp": {
+      "description": "RFC3339 timestamp",
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-(0\\d|1[012])-([012]\\d|3[01])T([01]\\d|2[0-3]):([0-5]\\d):([0-5]\\d)([.]\\d{1,6})?(Z|[+-]\\d{1,2}:[0-5]\\d)$"
+    },
+    "trainFlags": {
+      "type": "object",
+      "required": [
+        "transmissionDtValid",
+        "shopMode",
+        "timeSyncGps",
+        "speedValid",
+        "gpsValid",
+        "operationDataValid",
+        "critical"
+      ],
+      "properties": {
+        "transmissionDtValid": { "type": "boolean" },
+        "shopMode": { "type": "boolean" },
+        "timeSyncGps": { "type": "boolean" },
+        "speedValid": { "type": "boolean" },
+        "gpsValid": { "type": "boolean" },
+        "operationDataValid": { "type": "boolean" },
+        "critical": { "type": "boolean" }
+      }
+    },
+    "carFlags": {
+      "type": "object",
+      "required": [
+        "dead",
+        "critical",
+        "master",
+        "faultLog",
+        "mileageValid",
+        "maintenancePasswordVersionValid",
+        "cellularUp",
+        "wifiUp"
+      ],
+      "properties": {
+        "dead": { "type": "boolean" },
+        "critical": { "type": "boolean" },
+        "master": { "type": "boolean" },
+        "faultLog": { "type": "boolean" },
+        "mileageValid": { "type": "boolean" },
+        "maintenancePasswordVersionValid": { "type": "boolean" },
+        "cellularUp": { "type": "boolean" },
+        "wifiUp": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 2,
+          "items": { "type": "boolean" }
+        }
+      }
+    },
+    "location": {
+      "type": "object",
+      "required": ["id", "name"],
+      "properties": {
+        "id": { "type": "number", "minimum": 1 },
+        "name": { "type": "string", "minLength": 1 }
+      }
+    },
+    "system": {
+      "type": "object",
+      "required": ["online"],
+      "properties": {
+        "valid": { "type": "boolean" },
+        "online": { "type": "boolean" },
+        "fault": { "type": "boolean" },
+        "faultSeverity": { "type": "integer", "minimum": 0, "maximum": 3 }
+      }
+    },
+    "car": {
+      "type": "object",
+      "required": [
+        "carNumber",
+        "type",
+        "flags",
+        "maintenancePasswordVersion",
+        "mileageMi",
+        "systems",
+        "faultSeverity",
+        "airSpringPressure",
+        "loadWeightLb",
+        "gwucWanState",
+        "wifiState"
+      ],
+      "properties": {
+        "carNumber": { "$ref": "#/$defs/carNumber" },
+        "type": { "type": "string", "enum": ["UNKNOWN", "CAB", "NON_CAB"] },
+        "flags": { "$ref": "#/$defs/carFlags" },
+        "maintenancePasswordVersion": {
+          "type": "string",
+          "pattern": "^\\d+[.]\\d+$"
+        },
+        "mileageMi": {
+          "type": "number",
+          "minimum": 0
+        },
+        "systems": {
+          "type": "object",
+          "required": [
+            "gcu1",
+            "gcu2",
+            "api",
+            "atpN",
+            "atpR",
+            "nvr",
+            "vms",
+            "mcu",
+            "dcuA1",
+            "dcuA2",
+            "dcuB1",
+            "dcuB2",
+            "dcuC1",
+            "dcuC2",
+            "dcuD1",
+            "dcuD2",
+            "dcuE1",
+            "dcuE2",
+            "dcuF1",
+            "dcuF2",
+            "dcuG1",
+            "dcuG2",
+            "dcuH1",
+            "dcuH2",
+            "ers",
+            "mbcu1",
+            "mbcu2",
+            "hvac1",
+            "hvac2",
+            "pcu1",
+            "pcu2",
+            "lvps",
+            "gwuc"
+          ],
+          "properties": {
+            "gcu1": { "$ref": "#/$defs/system" },
+            "gcu2": { "$ref": "#/$defs/system" },
+            "api": { "$ref": "#/$defs/system" },
+            "atpN": { "$ref": "#/$defs/system" },
+            "atpR": { "$ref": "#/$defs/system" },
+            "nvr": { "$ref": "#/$defs/system" },
+            "vms": { "$ref": "#/$defs/system" },
+            "mcu": { "$ref": "#/$defs/system" },
+            "dcuA1": { "$ref": "#/$defs/system" },
+            "dcuA2": { "$ref": "#/$defs/system" },
+            "dcuB1": { "$ref": "#/$defs/system" },
+            "dcuB2": { "$ref": "#/$defs/system" },
+            "dcuC1": { "$ref": "#/$defs/system" },
+            "dcuC2": { "$ref": "#/$defs/system" },
+            "dcuD1": { "$ref": "#/$defs/system" },
+            "dcuD2": { "$ref": "#/$defs/system" },
+            "dcuE1": { "$ref": "#/$defs/system" },
+            "dcuE2": { "$ref": "#/$defs/system" },
+            "dcuF1": { "$ref": "#/$defs/system" },
+            "dcuF2": { "$ref": "#/$defs/system" },
+            "dcuG1": { "$ref": "#/$defs/system" },
+            "dcuG2": { "$ref": "#/$defs/system" },
+            "dcuH1": { "$ref": "#/$defs/system" },
+            "dcuH2": { "$ref": "#/$defs/system" },
+            "ers": { "$ref": "#/$defs/system" },
+            "mbcu1": { "$ref": "#/$defs/system" },
+            "mbcu2": { "$ref": "#/$defs/system" },
+            "hvac1": { "$ref": "#/$defs/system" },
+            "hvac2": { "$ref": "#/$defs/system" },
+            "pcu1": { "$ref": "#/$defs/system" },
+            "pcu2": { "$ref": "#/$defs/system" },
+            "lvps": { "$ref": "#/$defs/system" },
+            "gwuc": { "$ref": "#/$defs/system" }
+          }
+        },
+        "faultSeverity": {
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": ["NORMAL", "FUNCTIONAL_FAULT", "SYSTEM_FAILURE"]
+            },
+            { "type": "null" }
+          ]
+        },
+        "airSpringPressure": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "loadWeightLb": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "gwucWanState": {
+          "type": "string",
+          "enum": [
+            "UNKNOWN",
+            "INITIALIZING",
+            "SIM_MISSING",
+            "SIM_READY",
+            "CONNECTING",
+            "CONNECTION_FAILURE",
+            "CONNECTED",
+            "DISCONNECTED",
+            "PIN_CODE_ERROR",
+            "DISABLED"
+          ]
+        },
+        "wifiState": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "string",
+            "enum": ["UNKNOWN", "CONNECTING", "CONNECTED", "DISABLED"]
+          }
+        }
+      }
+    },
+    "datadef": {
+      "type": "object",
+      "required": [
+        "receivedDt",
+        "createdDt",
+        "transmissionDt",
+        "flags",
+        "commId",
+        "commCarNumber",
+        "activeCarNumber",
+        "primaryCarNumber",
+        "sourceCarNumber",
+        "leadCarNumber",
+        "operationLine",
+        "trainDirection",
+        "numberOfCars",
+        "leaderMcuCarNumber",
+        "masterMcuCarNumbers",
+        "cars",
+        "speedMph",
+        "latitude",
+        "longitude",
+        "destinationStation",
+        "currentStation",
+        "nextStation",
+        "runningDistanceMi",
+        "routeCode"
+      ],
+      "properties": {
+        "receivedDt": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "createdDt": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "transmissionDt": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "flags": {
+          "$ref": "#/$defs/trainFlags"
+        },
+        "commId": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "commCarNumber": { "$ref": "#/$defs/carNumber" },
+        "activeCarNumber": {
+          "oneOf": [{ "$ref": "#/$defs/carNumber" }, { "type": "null" }]
+        },
+        "primaryCarNumber": { "$ref": "#/$defs/carNumber" },
+        "sourceCarNumber": { "$ref": "#/$defs/carNumber" },
+        "leadCarNumber": { "$ref": "#/$defs/carNumber" },
+        "operationLine": {
+          "type": "string",
+          "enum": ["Orange", "Red"]
+        },
+        "trainDirection": {
+          "type": "string",
+          "enum": ["NONE", "LEFT", "RIGHT", "UNKNOWN"]
+        },
+        "leaderMcuCarNumber": { "$ref": "#/$defs/carNumber" },
+        "masterMcuCarNumbers": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {
+            "$ref": "#/$defs/carNumber"
+          }
+        },
+        "numberOfCars": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "cars": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "$ref": "#/$defs/car"
+          }
+        },
+        "speedMph": {
+          "type": "number",
+          "minimum": 0
+        },
+        "latitude": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "longitude": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "destinationStation": {
+          "oneOf": [{ "$ref": "#/$defs/location" }, { "type": "null" }]
+        },
+        "currentStation": {
+          "oneOf": [{ "$ref": "#/$defs/location" }, { "type": "null" }]
+        },
+        "nextStation": {
+          "oneOf": [{ "$ref": "#/$defs/location" }, { "type": "null" }]
+        },
+        "runningDistanceMi": {
+          "type": "number",
+          "minimum": 0
+        },
+        "routeCode": {
+          "type": ["string", "null"],
+          "minLength": 4
+        }
+      }
+    }
+  }
+}

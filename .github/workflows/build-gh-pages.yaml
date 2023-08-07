@@ -33,6 +33,7 @@ jobs:
         env:
           GITHUB_ORIGIN: ${{ steps.configure.outputs.origin }}
           GITHUB_BASE: ${{ steps.configure.outputs.base_path }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           yarn
           yarn build

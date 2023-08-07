@@ -4,6 +4,13 @@
 const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
+let githubOrganization = "mbta";
+let githubProject = "schemas";
+if (process.env.GITHUB_REPOSITORY) {
+  [githubOrganization, githubProject] =
+    process.env.GITHUB_REPOSITORY.split("/");
+}
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "MBTA Event Schemas",
@@ -17,9 +24,8 @@ const config = {
   baseUrl: process.env.GITHUB_BASE || "/",
 
   // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: "mbta", // Usually your GitHub org/user name.
-  projectName: "schemas", // Usually your repo name.
+  organizationName: githubOrganization,
+  projectName: githubProject, // Usually your repo name.
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
@@ -43,7 +49,7 @@ const config = {
           sidebarCollapsed: false,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: "https://github.com/mbta/schemas/tree/main/",
+          editUrl: `https://github.com/${githubOrganization}/${githubProject}/tree/main/`,
         },
         blog: false,
         theme: {
@@ -74,7 +80,7 @@ const config = {
             label: "Events",
           },
           {
-            href: "https://github.com/mbta/schemas",
+            href: `https://github.com/${githubOrganization}/${githubProject}`,
             label: "GitHub",
             position: "right",
           },
@@ -97,7 +103,7 @@ const config = {
             items: [
               {
                 label: "GitHub",
-                href: "https://github.com/mbta/schemas",
+                href: `https://github.com/${githubOrganization}/${githubProject}`,
               },
             ],
           },
