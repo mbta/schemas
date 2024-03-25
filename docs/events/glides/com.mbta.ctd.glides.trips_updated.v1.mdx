@@ -106,7 +106,7 @@ New restrictions on existing fields:
 - `endLocation` ([Location](.#location), conditionally required): where the trip will end. Required if `endTime` is specified.
 - At least one of `startLocation` and `endLocation` is required.
 - At least one of `startTime`, `endTime`, and `previousTripKey` is required.
-- `revenue` (boolean, optional): If this field is missing when adding a trip, the default is that the trip is in revenue service.
+- `revenue` (`"revenue"` | `"nonrevenue"`, optional): If this field is missing when adding a trip, the default is that the trip is in revenue service.
 - `dropped` SHOULD NOT be set.
 - All data SHOULD NOT be `"none"` or `"unset"`. (Instead, the fields would not be included).
 
@@ -138,7 +138,7 @@ Example:
 - `endLocation` ([Location](.#location)): where the trip is scheduled to end.
 - `startTime` ([Time](#time)): when the trip is scheduled to depart `startLocation`.
 - `endTime` ([Time](#time)): when the trip is scheduled to arrive at `endLocation`.
-- `revenue` (boolean, optional): whether the trip is scheduled to be in revenue service. If this field is missing, consumers SHOULD assume the trip is scheduled to be in revenue service.
+- `revenue` (`"revenue"` | `"nonrevenue"`, optional): Whether the trip is scheduled to be in revenue service. If this field is missing, consumers SHOULD assume the trip is scheduled to be in revenue service.
 
 Example:
 
@@ -166,7 +166,7 @@ Fields in the object:
 - `startTime` ([Time](#time) | "unset", optional): if present, the new time that the train is expected to depart `startLocation` (or the existing `startLocation` of the trip).
 - `endTime` ([Time](#time) | "unset", optional): if present, the new time that the train is expected to arrive at `endLocation` (or the existing `endLocation` of the trip).
 - `cars` (array of [Car](#car), optional): array of length 1 or 2, containing the car numbers and operators for each car in the train assigned to the trip. If absent, there are no changes to any cars. If present, the length of the array is the length of the train. In a two car train, the front car is listed first.
-- `revenue` (boolean, optional): Whether the trip is in revenue service.
+- `revenue` (`"revenue"` | `"nonrevenue"`, optional): Whether the trip is in revenue service.
 - `dropped` ([DroppedReason](#droppedreason) | false, optional): If present the trip was dropped for the provided reason. If set to `false`, the trip is not dropped (and restored if previously dropped).
 - `scheduled` ([Scheduled](#scheduled) | null): For trips in Glides' schedule, this represents the scheduled data for the trip. It will always be present and won't change between subsequent updates to the same trip. For added trips, this will always be `null`.
 
