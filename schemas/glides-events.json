@@ -85,9 +85,9 @@
         },
         {
           "properties": {
-            "odsId": { "type": "string", "minLength": 1 }
+            "todsId": { "type": "string", "minLength": 1 }
           },
-          "required": ["odsId"]
+          "required": ["todsId"]
         }
       ]
     },
