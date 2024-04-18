@@ -69,10 +69,8 @@ Fields:
 
 One of:
 
-- `{"gtfsId": "<GTFS stop ID>"}`, where the GTFS `location_type` is `1` (station).
-- `{"todsId": "<TODS stop ID"}`: id corresponding to `ops_location_id` in the upcoming TODS data. The data is still undergoing development and the specific ids are not yet finalized.
-
-Glides does not collect or publish any location data with GTFS `location_type` `0` (platform).
+- `{"gtfsId": "<GTFS stop ID>"}`, where the GTFS `location_type` is `1` (station). Glides doesn't differentiate between children of GTFS stops, so won't publish any GTFS child stop IDs.
+- `{"todsId": "<TODS stop ID"}`: ID corresponding to `ops_location_id` in the upcoming TODS data. These stops' `location_type` may be `0` (stop) or `1` (station).
 
 ### Metadata
 
