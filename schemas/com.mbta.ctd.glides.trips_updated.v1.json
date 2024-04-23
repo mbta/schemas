@@ -120,6 +120,14 @@
               "required": ["previousTripKey"]
             }
           ]
+        },
+        {
+          "properties": {
+            "revenue": {
+              "$comment": "if revenue is missing when adding a trip, assume it's in revenue service. if revenue is missing when updating a trip, that means no change, so there is no default",
+              "default": "revenue"
+            }
+          }
         }
       ]
     },
@@ -143,7 +151,11 @@
             "startLocation": { "$ref": "glides-events.json#/$defs/location" },
             "endLocation": { "$ref": "glides-events.json#/$defs/location" },
             "startTime": { "$ref": "#/$defs/time" },
-            "endTime": { "$ref": "#/$defs/time" }
+            "endTime": { "$ref": "#/$defs/time" },
+            "revenue": {
+              "oneOf": [{ "const": "revenue" }, { "const": "nonrevenue" }],
+              "default": "revenue"
+            }
           },
           "required": ["startLocation", "endLocation", "startTime", "endTime"]
         }
@@ -180,6 +192,9 @@
           "minItems": 1,
           "maxItems": 2,
           "items": { "$ref": "#/$defs/car" }
+        },
+        "revenue": {
+          "oneOf": [{ "const": "revenue" }, { "const": "nonrevenue" }]
         },
         "dropped": {
           "oneOf": [{ "$ref": "#/$defs/dropped_reason" }, { "const": false }]
