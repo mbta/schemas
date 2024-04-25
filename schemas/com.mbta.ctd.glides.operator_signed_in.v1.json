@@ -5,7 +5,7 @@
   "type": "object",
   "properties": {
     "type": { "const": "com.mbta.ctd.glides.operator_signed_in.v1" },
-    "specversion": { "const": "1.0" },
+    "specversion": { "const": "1.1" },
     "source": { "$ref": "glides-events.json#/properties/source" },
     "id": { "$ref": "glides-events.json#/properties/id" },
     "time": { "$ref": "glides-events.json#/$defs/timestamp" },
@@ -28,6 +28,10 @@
         "type": {
           "type": "string",
           "examples": ["tap", "type"]
+        },
+        "version": {
+          "type": "integer",
+          "examples": [1]
         }
       }
     }
