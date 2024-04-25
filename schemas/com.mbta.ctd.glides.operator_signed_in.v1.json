@@ -17,7 +17,7 @@
         "signedInAt": { "$ref": "glides-events.json#/$defs/timestamp" },
         "signature": { "$ref": "#/$defs/signature" }
       },
-      "required": ["metadata"]
+      "required": ["metadata", "operator", "signedInAt", "signature"]
     }
   },
   "required": ["type", "specversion", "source", "id", "time", "data"],
@@ -28,6 +28,10 @@
         "type": {
           "type": "string",
           "examples": ["tap", "type"]
+        },
+        "version": {
+          "type": "integer",
+          "examples": [1]
         }
       }
     }

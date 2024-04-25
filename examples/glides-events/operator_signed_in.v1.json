@@ -16,6 +16,6 @@
     },
     "operator": { "badgeNumber": "789" },
     "signedInAt": "2023-01-20T09:45:00-05:00",
-    "signature": { "type": "tap" }
+    "signature": { "type": "tap", "version": 1 }
   }
 }
