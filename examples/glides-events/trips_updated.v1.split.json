@@ -14,6 +14,7 @@
           "type": "updated",
           "tripKey": {
             "serviceDate": "2022-01-20",
+            "tripId": "64101244",
             "startLocation": { "gtfsId": "place-lake" },
             "endLocation": { "gtfsId": "place-gover" },
             "startTime": "10:00:00",
@@ -51,6 +52,7 @@
           "type": "updated",
           "tripKey": {
             "serviceDate": "2022-01-20",
+            "tripId": "64101243",
             "startLocation": { "gtfsId": "place-lake" },
             "endLocation": { "gtfsId": "place-gover" },
             "startTime": "09:55:00",

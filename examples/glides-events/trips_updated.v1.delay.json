@@ -13,6 +13,7 @@
         "type": "updated",
         "tripKey": {
           "serviceDate": "2023-01-22",
+          "tripId": "64085858",
           "startLocation": { "gtfsId": "place-matt" },
           "endLocation": { "gtfsId": "place-ashmt" },
           "startTime": "25:30:00",

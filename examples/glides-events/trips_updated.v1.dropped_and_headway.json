@@ -14,6 +14,7 @@
           "type": "updated",
           "tripKey": {
             "serviceDate": "2022-01-20",
+            "tripId": "64101112",
             "startLocation": { "gtfsId": "place-lake" },
             "endLocation": { "gtfsId": "place-gover" },
             "startTime": "10:05:00",
@@ -26,9 +27,10 @@
           "type": "updated",
           "tripKey": {
             "serviceDate": "2022-01-20",
+            "tripId": "64101110",
             "startLocation": { "gtfsId": "place-gover" },
             "endLocation": { "gtfsId": "place-lake" },
-            "startTime": "10:55:00",
+            "startTime": "10:05:00",
             "endTime": "10:42:00"
           },
           "dropped": { "reason": "staffing" },
@@ -52,6 +54,7 @@
           "type": "updated",
           "tripKey": {
             "serviceDate": "2022-01-20",
+            "tripId": "64101093",
             "startLocation": { "gtfsId": "place-lake" },
             "endLocation": { "gtfsId": "place-gover" },
             "startTime": "09:55:00",
@@ -64,6 +67,7 @@
           "type": "updated",
           "tripKey": {
             "serviceDate": "2022-01-20",
+            "tripId": "64101094",
             "startLocation": { "gtfsId": "place-lake" },
             "endLocation": { "gtfsId": "place-gover" },
             "startTime": "10:00:00",
@@ -76,6 +80,7 @@
           "type": "updated",
           "tripKey": {
             "serviceDate": "2022-01-20",
+            "tripId": "64101095",
             "startLocation": { "gtfsId": "place-lake" },
             "endLocation": { "gtfsId": "place-gover" },
             "startTime": "10:10:00",
