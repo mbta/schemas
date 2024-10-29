@@ -148,6 +148,7 @@
         {
           "$comment": "scheduled trip",
           "properties": {
+            "tripId": { "type": "string", "minLength": 1 },
             "startLocation": { "$ref": "glides-events.json#/$defs/location" },
             "endLocation": { "$ref": "glides-events.json#/$defs/location" },
             "startTime": { "$ref": "#/$defs/time" },

@@ -114,11 +114,17 @@ Glides SHOULD include the `cars` field to indicate the length of the train, even
 
 ### TripKey
 
-For scheduled trips, Glides does not have the same trip ID used by RTR. For added trips, while an ID is provided, it can be the case that an added trip from the Glides perspective is matched to a GTFS trip, in which case RTR will use the GTFS trip ID in publishing the information.
+The event has different ways to label trips that are added or scheduled in Glides' schedule.
 
-In order to reduce event duplication, a TripKey is used to identify both added and scheduled trips.
+The added/scheduled distinction is according to the schedule in Glides. RTR and GTFS may have a different schedule than Glides (due to disruptions, for example), so a trip that Glides thinks is scheduled may not match up with scheduled trip in GTFS, and RTR may decide that a trip that was added in Glides lines up close enough to correspond to a scheduled trip in GTFS.
 
-The added/scheduled distinction here is internal to Glides, and may not align with what is in other data sources. For example, an Added Trip in Glides may still correspond to a scheduled GTFS trip, and a Scheduled Trip may not appear in GTFS (due to track closures, for example).
+For added trips, Glides makes up a new ID, which is kept the same for any subsequent updates to the same added trip.
+
+For scheduled trips, because Glides might be using a different schedule than any consumer, Glides provides the time and location of the trip, according to its own schedule. Glides also provides a `tripId` which is intended to line up to the trip IDs in GTFS most of the time, because they're derived from the same source (HASTUS's `trp_int_number`).
+
+Consumers MAY check `tripId` to help match trips in this feed to GTFS. If a consumer sees a `tripId` in this feed that also appears in GTFS on a trip on the same service date, it refers to the same trip (even if the given scheduled times aren't quite the same). If a `tripId` for a trip in this feed does not appear on any trip in GTFS (or if the `tripId` field is missing, or if a consumer doesn't check the `tripId` field), then the consumer may use the date, time, and location of the trip to try to associate it to a similar trip in whatever schedule it's using, or a consumer may treat the trip as if does not correspond to any trip in the consumer's schedule.
+
+`tripId` is optional because it was added as a backwards-compatible change. Glides SHOULD include it in all future data.
 
 #### Added Trip
 
@@ -134,6 +140,7 @@ Example:
 #### Scheduled Trip
 
 - `serviceDate` (RFC3999 date): the service date for the trip.
+- `tripId` (string, optional): ID, unique within the service date. Intended to match GTFS trip IDs, but may not.
 - `startLocation` ([Location](.#location)): where the trip is scheduled to start.
 - `endLocation` ([Location](.#location)): where the trip is scheduled to end.
 - `startTime` ([Time](#time)): when the trip is scheduled to depart `startLocation`.
@@ -145,6 +152,7 @@ Example:
 ```json
 {
   "serviceDate": "2023-01-20",
+  "tripId": "64100439",
   "startLocation": { "gtfsId": "place-mdftf" },
   "endLocation": { "gtfsId": "place-heath" },
   "startTime": "04:47:00",
@@ -250,7 +258,7 @@ _Notes:_
             <li>
               Add a new trip, set to 10:00am with Operator B and car 3850. Alice
               added it as a round trip, so there's also an added return trip
-              with no set time."
+              with no set time.
             </li>
           </ol>
           <p>
