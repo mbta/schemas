@@ -24,11 +24,7 @@
     "time": { "$ref": "#/$defs/timestamp" },
     "data": {
       "type": "object",
-      "properties": {
-        "metadata": { "$ref": "#/$defs/metadata" }
-      },
-      "required": ["metadata"],
-      "$comment": "other fields validated by the oneOf, below"
+      "$comment": "data object is validated by each event's schema in the oneOf below"
     }
   },
   "required": ["type", "specversion", "source", "id", "time", "data"],
