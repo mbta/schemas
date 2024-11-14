@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.ctd.glides.vehicle_trip_assignments.v1.json",
+  "description": "Vehicle Trip Assignments",
+  "type": "object",
+  "properties": {
+    "type": { "const": "com.mbta.ctd.glides.vehicle_trip_assignments.v1" },
+    "specversion": { "const": "1.0" },
+    "source": { "$ref": "glides-events.json#/properties/source" },
+    "id": { "$ref": "glides-events.json#/properties/id" },
+    "time": { "$ref": "glides-events.json#/$defs/timestamp" },
+    "data": {
+      "type": "object",
+      "properties": {
+        "assignments": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/vehicle_trip_assignment" }
+        }
+      },
+      "required": ["assignments"]
+    }
+  },
+  "required": ["type", "specversion", "source", "id", "time", "data"],
+  "$defs": {
+    "trip_key": {
+      "type": "object",
+      "properties": {
+        "serviceDate": {
+          "$ref": "glides-events.json#/$defs/service_date"
+        },
+        "tripId": { "type": "string", "minLength": 1 },
+        "scheduled": {
+          "oneOf": [{ "const": "scheduled" }, { "const": "added" }]
+        },
+        "revenue": {
+          "oneOf": [{ "const": "revenue" }, { "const": "nonrevenue" }]
+        }
+      },
+      "required": ["serviceDate", "tripId", "scheduled", "revenue"]
+    },
+    "vehicle": {
+      "type": "object",
+      "properties": {
+        "vehicleId": {
+          "type": "string",
+          "minLength": 1,
+          "examples": ["G-10223"]
+        },
+        "carNumbers": {
+          "type": ["array", "null"],
+          "items": { "type": "string", "minLength": 1 },
+          "examples": [["3900", "3901"]]
+        }
+      },
+      "required": ["vehicleId", "carNumbers"]
+    },
+    "vehicle_trip_assignment": {
+      "type": "object",
+      "$comment": "SHOULD NOT have both properties null (but if they are, the assignment can be ignored)",
+      "properties": {
+        "vehicle": {
+          "oneOf": [{ "$ref": "#/$defs/vehicle" }, { "const": null }]
+        },
+        "tripKey": {
+          "oneOf": [{ "$ref": "#/$defs/trip_key" }, { "const": null }]
+        }
+      },
+      "required": ["vehicle", "tripKey"]
+    }
+  }
+}

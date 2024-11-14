@@ -46,6 +46,12 @@
         "type": { "const": "com.mbta.ctd.glides.trips_updated.v1" }
       },
       "$ref": "com.mbta.ctd.glides.trips_updated.v1.json#/"
+    },
+    {
+      "properties": {
+        "type": { "const": "com.mbta.ctd.glides.vehicle_trip_assignments.v1" }
+      },
+      "$ref": "com.mbta.ctd.glides.vehicle_trip_assignments.v1.json#/"
     }
   ],
   "$defs": {
