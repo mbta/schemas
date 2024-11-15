@@ -50,7 +50,7 @@ The added/scheduled distinction is according to the schedule in Glides. If Glide
 
 Revenue is included because this is the most important information that Glides can provide to riders about a train, and its presence will make it less likely for a consumer of this feed to incorrectly interperet a nonrevenue train as being in service. Especially since nonrevenue trips are not in GTFS and their IDs are likely to not be recognized by a consumer.
 
-Consumers SHOULD use the use the entire object when comparing two `TripKey`s to see if they're equal, not just the `tripId` field. Otherwise, updates could be applied to the wrong trip, for example, updating the vehicle assignment for yesterday's trip instead of today's.
+Consumers SHOULD use the entire object when comparing two `TripKey`s to see if they're equal, not just the `tripId` field. Otherwise, updates could be applied to the wrong trip, for example, updating the vehicle assignment for yesterday's trip instead of today's.
 
 The `revenue` and `scheduled` fields use string enums instead of booleans so that other states could be added in the future. Clients MUST tolerate values for these strings that they don't recognize. A safe way to handle this would be to treat the TripKey like an unrecognized trip, or to treat it like it's `null` i.e. the trip doesn't exist and a vehicle assigned to it is treated like it's unassigned from any trips.
 
