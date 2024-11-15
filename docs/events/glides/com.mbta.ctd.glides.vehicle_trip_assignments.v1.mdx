@@ -48,7 +48,7 @@ For added trips, Glides makes up a new ID, which is kept consistent for any subs
 
 The added/scheduled distinction is according to the schedule in Glides. If Glides has a different schedule than RTR or GTFS, then a trip that Glides thinks is scheduled may not match up with scheduled trip in GTFS, and RTR (or other consumers) may decide that a trip that was added in Glides lines up close enough to correspond to a scheduled trip in GTFS.
 
-Revenue is included because this is the most important information that Glides can provide to riders about a train, and its presence will make it less likely for a consumer of this feed to incorrectly interperet a nonrevenue train as being in service. Especially since nonrevenue trips are not in GTFS and their IDs are likely to not be recognized by a consumer.
+Revenue is included because this is the most important information that Glides can provide to riders about a train, and its presence will make it less likely for a consumer of this feed to incorrectly interpret a nonrevenue train as being in service. Especially since nonrevenue trips are not in GTFS and their IDs are likely to not be recognized by a consumer.
 
 Consumers SHOULD use the entire object when comparing two `TripKey`s to see if they're equal, not just the `tripId` field. Otherwise, updates could be applied to the wrong trip, for example, updating the vehicle assignment for yesterday's trip instead of today's.
 
