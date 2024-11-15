@@ -3,8 +3,8 @@
     "type": "com.mbta.ctd.glides.vehicle_trip_assignments.v1",
     "specversion": "1.0",
     "source": "glides.mbta.com",
-    "id": "19fdb184-7dd6-4664-8472-04bd6177ec44",
-    "time": "2024-11-14T09:50:00-04:00",
+    "id": "3442e845-ec46-4c39-a817-6444c7ce93d8",
+    "time": "2024-11-14T09:50:00-05:00",
     "data": {
       "assignments": [
         {
@@ -21,8 +21,8 @@
     "type": "com.mbta.ctd.glides.vehicle_trip_assignments.v1",
     "specversion": "1.0",
     "source": "glides.mbta.com",
-    "id": "19fdb184-7dd6-4664-8472-04bd6177ec44",
-    "time": "2024-11-14T10:00:00-04:00",
+    "id": "af639735-b8f1-416a-baa7-812d06a8fbcf",
+    "time": "2024-11-14T10:00:00-05:00",
     "data": {
       "assignments": [
         {
@@ -44,8 +44,8 @@
     "type": "com.mbta.ctd.glides.vehicle_trip_assignments.v1",
     "specversion": "1.0",
     "source": "glides.mbta.com",
-    "id": "19fdb184-7dd6-4664-8472-04bd6177ec44",
-    "time": "2024-11-14T10:55:00-04:00",
+    "id": "9a708c96-3fdd-4a53-a2d7-a3f68bc9b7f5",
+    "time": "2024-11-14T10:55:00-05:00",
     "data": {
       "assignments": [
         {
@@ -76,8 +76,8 @@
     "type": "com.mbta.ctd.glides.vehicle_trip_assignments.v1",
     "specversion": "1.0",
     "source": "glides.mbta.com",
-    "id": "19fdb184-7dd6-4664-8472-04bd6177ec44",
-    "time": "2024-11-14T11:02:00-04:00",
+    "id": "9236b5d2-4209-4805-97ee-67ba6bda5ed1",
+    "time": "2024-11-14T11:02:00-05:00",
     "data": {
       "assignments": [
         {
@@ -99,8 +99,8 @@
     "type": "com.mbta.ctd.glides.vehicle_trip_assignments.v1",
     "specversion": "1.0",
     "source": "glides.mbta.com",
-    "id": "19fdb184-7dd6-4664-8472-04bd6177ec44",
-    "time": "2024-11-14T11:55:00-04:00",
+    "id": "16e65124-5b85-4522-bd93-9cacd6e57794",
+    "time": "2024-11-14T11:55:00-05:00",
     "data": {
       "assignments": [
         {
