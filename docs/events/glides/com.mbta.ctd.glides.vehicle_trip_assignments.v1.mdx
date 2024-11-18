@@ -99,9 +99,7 @@ Glides MUST NOT refer to the same vehicle or trip more than one time within all 
 
 ## Rules for Assignments
 
-This schema provides a method for saying which trains are assigned to which trips, but does not describe rules for when Glides will say a train is assigned to a trip. This section is a non-normative description of how Glides intends to decide which assigments to publish, but Glides may decide to change these rules and that would not be a breaking change to this schema, even if it has semantic consequences for consumers.
-
-This section may not be kept up to date as Glides' logic is updated.
+This document provides a method for saying which trains are assigned to which trips, but does not describe rules for when Glides will say a train is assigned to a trip. However, since understanding when, how, and why assignments are made is likely to be useful for consumers, a rough description of Glides' logic is given here. This section non-normative description Glides' intent. Glides may decide to change these rules and that would not be a breaking change to this schema, even if it has semantic consequences for consumers. This section may not be kept up to date as Glides' logic is updated.
 
 ### Inputs
 
@@ -115,17 +113,13 @@ Getting direction from RTR may lead to a circular dependency if RTR gets its dir
 
 Glides will do its best to make trip assignments even for trains that inspectors have not entered into the trainsheet, though the accuracy may decrease in that situation.
 
-### Layovers
+### Outputs
 
-At all terminals, as soon as Glides learns that a train has reached the terminal, Glides will unassign the vehicle from the completed trip. If Glides knows which trip the vehicle will do next, it will immediately assign it to the next trip, otherwise, the vehicle will not be assigned to a trip. (This also applies at some non-terminals if a train starts its next trip immediately from the same platform, such as Government Center's Brattle Loop during disruptions, and at East Somerville when pullouts switch from a nonrevenue trip to a revenue trip for the rest of the pullout to Medford.)
+At the start of a trip, Glides may assign a vehicle to a trip while waiting at the starting station before it departs on its trip, or while the train is on its way to the starting station if the vehicle is traveling in the same direction as the upcoming trip.
 
-If Glides expects a train to turn around at a station in the middle of the line at a station where trains must loop to a different platform (Government Center Eastbound to Westbound, North Station, Kenmore, Park Street), when the train reaches the last stop, Glides will leave the train assigned to the previous trip. Glides will not unassign it from the previous trip and assign the train to the next trip until the train has actually turned around onto track that goes the other direction. This is so that if a train is unexpectedly extended (e.g. continuing from Government Center until North Station), the train won't be unassigned from a trip until it _actually_ finishes the trip.
+When the vehicle reaches the end of a trip, Glides may immediately unassign it from the trip, or Glides may leave the vehicle assigned to the trip until the train turns around, depending on how certain Glides is that the train will not extend the trip.
 
-During layovers, Glides will assign a vehicle to the upcoming trip as long as Glides thinks that the vehicle will do that trip, the trip is leaving soon, and the train is at the station waiting to leave or traveling towards the station in the same direction as the upcoming trip. This is so that it's easier to provide riders with good information while a trip is waiting to start, and so that Glides can more reliably assign vehicles to trips in some situations. For example, consider the case of a westbound trip that's supposed to start at Government Center, but the train is starting at North Station because the previous trip was extended. When the train is heading back westbound, even before it reaches Goverment Center, we want the vehicle to be assigned to the westbound trip. And when the train is passing Government Center Westbound, it would be hard to tell that the train is actually in the middle of the trip and not waiting to start its trip. The most reliable way to make sure that the train is assigned to the trip at all times when it's doing it's trip is to assign it to the trip even before we think the trip has started, while it's laying over or on its way to the starting station.
-
-### Other
-
-Glides may unassign or reassign vehicles to trips at other times, too. For example, if a train unexpectedly takes a different branch, or if a train turns around in an unexpected place, or an inspector enters new information into Glides. This section is not a comprehensive spec of how Glides decides which trips to assign vehicles to.
+Glides may unassign or reassign vehicles to trips in the middle of a trip. For example, if a train unexpectedly takes a different branch, or if a train turns around in an unexpected place, or an inspector enters new information into Glides.
 
 Glides may not be able to make an assignment for every train. If it doesn't recognize the trip a train is doing, it will leave the train unassigned to any trip. It will not create a new added trip just to have a trip ID to reference. Trains will only be assigned to added trips if an official has written an added trip into the trainsheet in Glides.
 
