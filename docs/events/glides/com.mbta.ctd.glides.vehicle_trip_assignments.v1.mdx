@@ -25,6 +25,8 @@ Fields in the event's `data`:
 
 Note there is no [Metadata](index.mdx#metadata) field like in other events, because these events are more likely to be caused by updates from the realtime data than by data inputted into the Glides app by Green Line staff.
 
+The order of `assignments` is not meaningful.
+
 ### TripKey
 
 Fields:
@@ -81,23 +83,19 @@ Fields:
 
 ## Updating Assignments
 
-Consumers SHOULD maintain state about which vehicle-trip assignments are active, and update that state when they receive an assignment that refers to a `vehicleId` or `tripKey`.
+Consumers SHOULD maintain state about which vehicle-trip assignments are active, and update that state when they receive a new assignment.
 
-Vehicles can only be assigned to one trip at a time. A vehicle that was previously assigned to `TRIP A` MAY be assigned directly to `TRIP B` without a separate assignment that assigns its trip to `null` first. Conversely, a trip can only have one assigned vehicle at a time, and doesn't need a previous vehicle to be removed before having a new vehicle assigned to it.
+Vehicles can only be assigned to one trip at a time, and trips can only be assigned to one vehicle at a time. If `VEHICLE 1` was previously assigned to `TRIP A`, and then a new assignment assigns `VEHICLE 1` to a different trip or to `null`, then `TRIP A` is also implicitly unassigned at the same time. Similarly if a new assignment assigns `TRIP A` to a different vehicle or to `null`, then `VEHICLE 1` is implicitly unassigned at the same time.
 
-If `VEHICLE 1` was last assigned to `TRIP A`, and a new event assigns `VEHICLE 1` to `TRIP B`, Glides MUST also send another `VehicleTripAssignment` in the same event's batch to assign the `vehicle` for `TRIP A` to `null` or to a different vehicle. Consumers are not expected to deduce that `TRIP A` no longer has a vehicle assigned based on an update to `VEHICLE 1` and `TRIP B` (which doesn't mention `TRIP A`). Glides MUST ensure that after processing all updates in an event's batch, if the last update to `TRIP A` assigned `VEHICLE 1` to it, then `VEHICLE 1` MUST NOT have any other more recent updates.
-
-Conversely, if `VEHICLE 1` was last assigned to `TRIP A`, and a new event assigns `VEHICLE 2` to `TRIP A`, Glides MUST also assign `VEHICLE 1` to another trip or to a `null` trip in the same batch. By the end of processing all of the updates in each batch, if the last update to `VEHICLE 1` assigned it to `TRIP A`, then `TRIP A` MUST NOT have any other more recent updates.
-
-If there are no trains operating on any trips, for example, in the middle of the night after service ends, then for each `vehicleId` and `TripKey` in the feed, the last update to that vehicle or trip will be assigning it to a `null` trip or vehicle.
+Put another way, you can calculate the trip that a vehicle is assigned to by looking at the latest assignment that mentions the vehicle. If the assignment assigns the vehicle to a non-null trip and this is also the latest event that mentions that trip, then the vehicle is currently assigned to that trip. If that assignment's trip is `null`, or if that assignment's trip was mentioned in an assignment in a more recent event, then the vehicle is currently unassigned.
 
 Notes:
 
-Consumers MUST tolerate vehicles and trips being unassigned (assigned to `null`) even when the consumer didn't know they were previously assigned. This is needed because consumers might not have seen a previous update where they were assigned, as described in the docs on [Short-term storage](index.mdx#short-term-storage): "Clients MUST tolerate receiving updates for events that reference unseen past events". Updates that assign a vehicle or trip to a non-null trip or vehicle are unlikely to cause problems for consumers, though if consumers didn't see all past events, they might not know which trip or vehicle the vehicle or trip is being removed from.
+Glides MAY publish an event that assigns a vehicle to a trip that it was already assigned to in a previous event, assign a vehicle to `null` when it was already unassigned, or assign a trip to `null` when it was already unassigned, i.e. assignments that don't cause any changes to the state of assignments. Consumers MUST tolerate these redundant assignments. Glides might do this in order to update the `carNumbers` associated with a `vehicleId`, or for any other reason, or it may appear to consumers like Glides did this if they didn't see a past event. According to the docs on [Short-term storage](index.mdx#short-term-storage): "Clients MUST tolerate receiving updates for events that reference unseen past events".
 
-Glides MAY publish an event that assigns a vehicle to a trip even if the last update for that vehicle and trip assigned them to each other. Glides might do this to update the `carNumbers` associated with a `vehicleId`.
+[`VehicleTripAssignment`](#vehicletripassignment) does not contain information about which vehicle or trip a trip or vehicle was previously assigned to. If consumers care about that, then they would determine that by maintaining their own state.
 
-Glides MUST NOT refer to the same vehicle or trip more than one time within all the assignments in one event.
+Glides MUST NOT refer to the same vehicle or trip more than one time within all the assignments in one event. This makes it so that the order that consumers process assignments within one event does not matter.
 
 ## Rules for Assignments
 
