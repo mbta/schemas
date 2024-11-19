@@ -59,15 +59,6 @@
             "scheduled": "scheduled",
             "revenue": "revenue"
           }
-        },
-        {
-          "vehicle": null,
-          "tripKey": {
-            "serviceDate": "2024-11-14",
-            "tripId": "11111111",
-            "scheduled": "scheduled",
-            "revenue": "revenue"
-          }
         }
       ]
     }
@@ -109,15 +100,6 @@
             "carNumbers": null
           },
           "tripKey": null
-        },
-        {
-          "vehicle": null,
-          "tripKey": {
-            "serviceDate": "2024-11-14",
-            "tripId": "22222222",
-            "scheduled": "scheduled",
-            "revenue": "revenue"
-          }
         }
       ]
     }
