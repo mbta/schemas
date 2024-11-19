@@ -11,13 +11,16 @@
     "time": { "$ref": "glides-events.json#/$defs/timestamp" },
     "data": {
       "type": "object",
+      "$comment": "SHOULD NOT have both properties null (but if they are, the assignment can be ignored)",
       "properties": {
-        "assignments": {
-          "type": "array",
-          "items": { "$ref": "#/$defs/vehicle_trip_assignment" }
+        "vehicle": {
+          "oneOf": [{ "$ref": "#/$defs/vehicle" }, { "const": null }]
+        },
+        "tripKey": {
+          "oneOf": [{ "$ref": "#/$defs/trip_key" }, { "const": null }]
         }
       },
-      "required": ["assignments"]
+      "required": ["vehicle", "tripKey"]
     }
   },
   "required": ["type", "specversion", "source", "id", "time", "data"],
@@ -53,19 +56,6 @@
         }
       },
       "required": ["vehicleId", "carNumbers"]
-    },
-    "vehicle_trip_assignment": {
-      "type": "object",
-      "$comment": "SHOULD NOT have both properties null (but if they are, the assignment can be ignored)",
-      "properties": {
-        "vehicle": {
-          "oneOf": [{ "$ref": "#/$defs/vehicle" }, { "const": null }]
-        },
-        "tripKey": {
-          "oneOf": [{ "$ref": "#/$defs/trip_key" }, { "const": null }]
-        }
-      },
-      "required": ["vehicle", "tripKey"]
     }
   }
 }

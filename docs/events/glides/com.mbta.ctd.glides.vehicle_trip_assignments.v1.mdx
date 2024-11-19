@@ -11,7 +11,9 @@ import example from "@site/examples/glides-events/vehicle_trip_assignments.v1.js
 
 event type: `com.mbta.ctd.glides.vehicle_trip_assignments.v1`
 
-Describes which vehicle is operating on which trip at the current moment. An event is sent whenever a vehicle is assigned or unassigned from a trip. One event may batch multiple assignments.
+Describes which vehicle is operating on which trip at the current moment. An event is sent whenever a vehicle is assigned or unassigned from a trip.
+
+One event contains one assignment. If multiple assignments happen simultaneously, they will be sent as separate events.
 
 Does not provide predictions for which vehicles will be assigned to future trips.
 
@@ -21,11 +23,17 @@ See the the [Updating Assignments](#updating-assignments) section for how vehicl
 
 Fields in the event's `data`:
 
-- `assignments` (array of [VehicleTripAssignment](#vehicletripassignment)): The list of vehicles and trips with new assignments.
+- `vehicle` ([Vehicle](#vehicle) | null):
+- `tripKey` ([TripKey](#tripkey) | null):
+
+`null` means "unassigned":
+
+- An assignment that includes both a `tripKey` and a `vehicle` means that the given vehicle is operating the given trip at this point in time.
+- An assignment that includes a `tripKey` but a `null` `vehicle` means that no known vehicle is operating that trip right now.
+- An assignment that includes a `vehicle` but a `null` `tripKey` means that the vehicle is not currently operating a trip.
+- Assignments SHOULD NOT have both fields `null`, but if they do, they can be ignored.
 
 Note there is no [Metadata](index.mdx#metadata) field like in other events, because these events are more likely to be caused by updates from the realtime data than by data inputted into the Glides app by Green Line staff.
-
-The order of `assignments` is not meaningful.
 
 ### TripKey
 
@@ -67,35 +75,19 @@ The `vehicleId` should be used for checking for equality and tracking updates. T
 
 Glides SHOULD NOT publish a sequence of events that imply the same car number is associated with two different `vehicleId`s at the same time.
 
-### VehicleTripAssignment
-
-Fields:
-
-- `vehicle` ([Vehicle](#vehicle) | null):
-- `tripKey` ([TripKey](#tripkey) | null):
-
-`null` means "unassigned":
-
-- An assignment that includes both a `tripKey` and a `vehicle` means that the given vehicle is operating the given trip at this point in time.
-- An assignment that includes a `tripKey` but a `null` `vehicle` means that no known vehicle is operating that trip right now.
-- An assignment that includes a `vehicle` but a `null` `tripKey` means that the vehicle is not currently operating a trip.
-- Assignments SHOULD NOT have both fields `null`, but if they do, they can be ignored.
-
 ## Updating Assignments
 
 Consumers SHOULD maintain state about which vehicle-trip assignments are active, and update that state when they receive a new assignment.
 
-Vehicles can only be assigned to one trip at a time, and trips can only be assigned to one vehicle at a time. If `VEHICLE 1` was previously assigned to `TRIP A`, and then a new assignment assigns `VEHICLE 1` to a different trip or to `null`, then `TRIP A` is also implicitly unassigned at the same time. Similarly if a new assignment assigns `TRIP A` to a different vehicle or to `null`, then `VEHICLE 1` is implicitly unassigned at the same time.
+Vehicles can only be assigned to one trip at a time, and trips can only be assigned to one vehicle at a time. If `VEHICLE 1` was previously assigned to `TRIP A`, and then a new event assigns `VEHICLE 1` to a different trip or to `null`, then `TRIP A` is also implicitly unassigned at the same time. Similarly if a new event assigns `TRIP A` to a different vehicle or to `null`, then `VEHICLE 1` is implicitly unassigned at the same time.
 
-Put another way, you can calculate the trip that a vehicle is assigned to by looking at the latest assignment that mentions the vehicle. If the assignment assigns the vehicle to a non-null trip and this is also the latest event that mentions that trip, then the vehicle is currently assigned to that trip. If that assignment's trip is `null`, or if that assignment's trip was mentioned in an assignment in a more recent event, then the vehicle is currently unassigned.
+Put another way, you can calculate the trip that a vehicle is assigned to by looking at the latest event that mentions the vehicle. If the event assigns the vehicle to a non-null trip and this is also the latest event that mentions that trip, then the vehicle is currently assigned to that trip. If that event's trip is `null`, or if that event's trip was mentioned in a more recent event, then the vehicle is currently unassigned.
 
 Notes:
 
 Glides MAY publish an event that assigns a vehicle to a trip that it was already assigned to in a previous event, assign a vehicle to `null` when it was already unassigned, or assign a trip to `null` when it was already unassigned, i.e. assignments that don't cause any changes to the state of assignments. Consumers MUST tolerate these redundant assignments. Glides might do this in order to update the `carNumbers` associated with a `vehicleId`, or for any other reason, or it may appear to consumers like Glides did this if they didn't see a past event. According to the docs on [Short-term storage](index.mdx#short-term-storage): "Clients MUST tolerate receiving updates for events that reference unseen past events".
 
 [`VehicleTripAssignment`](#vehicletripassignment) does not contain information about which vehicle or trip a trip or vehicle was previously assigned to. If consumers care about that, then they would determine that by maintaining their own state.
-
-Glides MUST NOT refer to the same vehicle or trip more than one time within all the assignments in one event. This makes it so that the order that consumers process assignments within one event does not matter.
 
 ## Rules for Assignments
 
@@ -123,7 +115,7 @@ Glides may unassign or reassign vehicles to trips in the middle of a trip. For e
 
 Glides may not be able to make an assignment for every train. If it doesn't recognize the trip a train is doing, it will leave the train unassigned to any trip. It will not create a new added trip just to have a trip ID to reference. Trains will only be assigned to added trips if an official has written an added trip into the trainsheet in Glides.
 
-Glides may publish different assignments in the Glides app and in this event feed, if it decides the needs of operations staff (who use the Glides app) and riders (who use data powered by this feed) are different. We expect to follow slightly different rules around layovers for in-app trip assignments.
+Glides may publish different trip assignments in the Glides app and in this event feed, if it decides the needs of operations staff (who use the Glides app) and riders (who use data powered by this feed) are different. We expect to follow slightly different rules around layovers for in-app trip assignments.
 
 ## Examples
 
