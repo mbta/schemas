@@ -38,7 +38,6 @@ Fields:
 
 - `serviceDate` (RFC3999 date): the service date for the trip.
 - `tripId` (string): ID, unique within the service date. Trip IDs for scheduled trips are intended to match GTFS trip IDs, but may not.
-- `revenue` (`"revenue"` | `"nonrevenue"`): Whether the trip is a revenue trip.
 - `scheduled` (`"scheduled"` | `"added"`): Whether this is a trip that Glides has in its schedule or that Glides added.
 
 This is a different structure than the [`TripKey` used in `trips_updated`](com.mbta.ctd.glides.trips_updated.v1.mdx#tripkey). Added and scheduled trips use the same format, and are differentiated by the `scheduled` field instead of by using different formats.
@@ -55,11 +54,9 @@ For added trips, Glides makes up a new ID, which is kept consistent for any subs
 
 The added/scheduled distinction is according to the schedule in Glides. If Glides has a different schedule than RTR or GTFS, then a trip that Glides thinks is scheduled may not match up with scheduled trip in GTFS, and RTR (or other consumers) may decide that a trip that was added in Glides lines up close enough to correspond to a scheduled trip in GTFS.
 
-Revenue is included because this is the most important information that Glides can provide to riders about a train, and its presence will make it less likely for a consumer of this feed to incorrectly interpret a nonrevenue train as being in service. Especially since nonrevenue trips are not in GTFS and their IDs are likely to not be recognized by a consumer.
-
 Consumers SHOULD use the entire object when comparing two `TripKey`s to see if they're equal, not just the `tripId` field. Otherwise, updates could be applied to the wrong trip, for example, updating the vehicle assignment for yesterday's trip instead of today's.
 
-The `revenue` and `scheduled` fields use string enums instead of booleans so that other states could be added in the future. Clients MUST tolerate values for these strings that they don't recognize. A safe way to handle this would be to treat the TripKey like an unrecognized trip, or to treat it like it's `null` i.e. the trip doesn't exist and a vehicle assigned to it is treated like it's unassigned from any trips.
+The `scheduled` field uses string enums instead of booleans so that other states could be added in the future. Clients MUST tolerate strings that they don't recognize. A safe way to handle this would be to treat the TripKey like an unrecognized trip, or to treat it like it's `null` i.e. the trip doesn't exist and a vehicle assigned to it is treated like it's unassigned from any trips.
 
 ## Updating Assignments
 

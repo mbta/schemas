@@ -21,8 +21,7 @@
       "tripKey": {
         "serviceDate": "2024-11-14",
         "tripId": "11111111",
-        "scheduled": "scheduled",
-        "revenue": "revenue"
+        "scheduled": "scheduled"
       }
     }
   },
@@ -37,8 +36,7 @@
       "tripKey": {
         "serviceDate": "2024-11-14",
         "tripId": "22222222",
-        "scheduled": "scheduled",
-        "revenue": "revenue"
+        "scheduled": "scheduled"
       }
     }
   },

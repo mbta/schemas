@@ -35,12 +35,9 @@
         "tripId": { "type": "string", "minLength": 1 },
         "scheduled": {
           "oneOf": [{ "const": "scheduled" }, { "const": "added" }]
-        },
-        "revenue": {
-          "oneOf": [{ "const": "revenue" }, { "const": "nonrevenue" }]
         }
       },
-      "required": ["serviceDate", "tripId", "scheduled", "revenue"]
+      "required": ["serviceDate", "tripId", "scheduled"]
     }
   }
 }
