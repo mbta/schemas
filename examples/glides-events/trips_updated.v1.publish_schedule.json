@@ -1,0 +1,52 @@
+{
+  "type": "com.mbta.ctd.glides.trips_updated.v1",
+  "specversion": "1.0",
+  "source": "glides.mbta.com",
+  "id": "19fdb184-7dd6-4664-8472-04bd6177ec44",
+  "time": "2024-11-21T17:00:00-05:00",
+  "data": {
+    "metadata": {
+      "inputType": "publish-schedule"
+    },
+    "tripUpdates": [
+      {
+        "type": "updated",
+        "tripKey": {
+          "serviceDate": "2024-11-21",
+          "tripId": "64085858",
+          "startLocation": { "gtfsId": "place-matt" },
+          "endLocation": { "gtfsId": "place-ashmt" },
+          "startTime": "10:00:00",
+          "endTime": "10:10:00"
+        },
+        "scheduled": {
+          "scheduledCars": [
+            {
+              "run": "500",
+              "operator": { "badgeNumber": "1234" }
+            }
+          ]
+        }
+      },
+      {
+        "type": "updated",
+        "tripKey": {
+          "serviceDate": "2024-11-21",
+          "tripId": "64085858",
+          "startLocation": { "gtfsId": "place-ashmt" },
+          "endLocation": { "gtfsId": "place-matt" },
+          "startTime": "10:11:00",
+          "endTime": "10:21:00"
+        },
+        "scheduled": {
+          "scheduledCars": [
+            {
+              "run": "500",
+              "operator": { "badgeNumber": "1234" }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

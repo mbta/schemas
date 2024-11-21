@@ -7,6 +7,7 @@ import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
 import Examples from "@site/src/components/Examples.tsx";
 import exampleDelay from "@site/examples/glides-events/trips_updated.v1.delay.json";
 import exampleDroppedAndHeadway from "@site/examples/glides-events/trips_updated.v1.dropped_and_headway.json";
+import examplePublishSchedule from "@site/examples/glides-events/trips_updated.v1.publish_schedule.json";
 import exampleSplit from "@site/examples/glides-events/trips_updated.v1.split.json";
 
 # trips_updated
@@ -270,6 +271,42 @@ _Notes:_
         </>
       ),
       json: exampleSplit,
+    },
+    {
+      label: "Publishing a Schedule",
+      description: (
+        <>
+          <h3>Publishing a Schedule</h3>
+          <p>
+            Glides may be using a different schedule than consumers, so
+            consumers only know about a scheduled trip when it's referenced in
+            this feed. If Glides wants consumers to have data about a scheduled
+            trip, the spec allows for Glides to send an event that references
+            the trip, even if it wasn't edited.
+          </p>
+          <p>
+            Note how this event does not update any trips, and the `metadata`
+            field does not say this was in response to inspector input.
+          </p>
+          <p>
+            A consumer who receives and handles this event would now be able to
+            look up data about this trip. This could be useful if a consumer
+            wants to make predictions for trips that inspectors haven't edited
+            yet, or if a
+            [vehicle_trip_assignment](com.mbta.ctd.glides.vehicle_trip_assignment.v1.mdx)
+            assigns a vehicle to a trip that hasn't been edited.
+          </p>
+          <p>
+            Glides could send an event like this at the beginning of the day
+            containing the whole day's schedule, or it could send events with
+            only a couple of trips at a time, as they're needed. This example
+            doesn't prescribe how or whether Glides will do this or even what
+            `inputType` would be used, it's just to show that this approach is
+            possible.
+          </p>
+        </>
+      ),
+      json: examplePublishSchedule,
     },
   ]}
 />
