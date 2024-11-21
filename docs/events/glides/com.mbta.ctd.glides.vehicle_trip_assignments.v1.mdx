@@ -23,15 +23,12 @@ See the the [Updating Assignments](#updating-assignments) section for how vehicl
 
 Fields in the event's `data`:
 
-- `vehicle` ([Vehicle](#vehicle) | null):
+- `vehicleId` (string): The vehicle ID that Glides gets from RTR via GTFS-RT. E.g. `"G-10223"`
 - `tripKey` ([TripKey](#tripkey) | null):
 
-`null` means "unassigned":
+If a `tripKey` is `null`, that means the vehicle is not assigned to a trip.
 
-- An assignment that includes both a `tripKey` and a `vehicle` means that the given vehicle is operating the given trip at this point in time.
-- An assignment that includes a `tripKey` but a `null` `vehicle` means that no known vehicle is operating that trip right now.
-- An assignment that includes a `vehicle` but a `null` `tripKey` means that the vehicle is not currently operating a trip.
-- Assignments SHOULD NOT have both fields `null`, but if they do, they can be ignored.
+This event contains IDs only. For more information about the trip (such as the destination), see the [`trips_updated` feed](com.mbta.ctd.glides.trips_updated.v1.mdx). For car numbers / consist see GTFS-RT.
 
 Note there is no [Metadata](index.mdx#metadata) field like in other events, because these events are more likely to be caused by updates from the realtime data than by data inputted into the Glides app by Green Line staff.
 
@@ -64,28 +61,17 @@ Consumers SHOULD use the entire object when comparing two `TripKey`s to see if t
 
 The `revenue` and `scheduled` fields use string enums instead of booleans so that other states could be added in the future. Clients MUST tolerate values for these strings that they don't recognize. A safe way to handle this would be to treat the TripKey like an unrecognized trip, or to treat it like it's `null` i.e. the trip doesn't exist and a vehicle assigned to it is treated like it's unassigned from any trips.
 
-### Vehicle
-
-Fields:
-
-- `vehicleId` (string): The vehicle ID that Glides gets from RTR via GTFS-RT. E.g. `"G-10223"`
-- `carNumbers` (array of strings | null): The list of human-readable car numbers of the train, in order from front to back. In GTFS-RT, this corresponds to the "label". E.g. `["3698", "3866"]`.
-
-The `vehicleId` should be used for checking for equality and tracking updates. The `carNumbers` MAY change (for example reversing the order, or updating bad data from a bad AVI read) while referring to the same train. Car numbers are included for context and to help match to other systems, but are not guaranteed to exactly match any other data source. `carNumbers` MAY be `null` if the vehicle has been removed from realtime tracking and there are no car numbers associated with it anymore.
-
-Glides SHOULD NOT publish a sequence of events that imply the same car number is associated with two different `vehicleId`s at the same time.
-
 ## Updating Assignments
 
 Consumers SHOULD maintain state about which vehicle-trip assignments are active, and update that state when they receive a new assignment.
 
-Vehicles can only be assigned to one trip at a time, and trips can only be assigned to one vehicle at a time. If `VEHICLE 1` was previously assigned to `TRIP A`, and then a new event assigns `VEHICLE 1` to a different trip or to `null`, then `TRIP A` is also implicitly unassigned at the same time. Similarly if a new event assigns `TRIP A` to a different vehicle or to `null`, then `VEHICLE 1` is implicitly unassigned at the same time.
+Vehicles can only be assigned to one trip at a time, and trips can only have one vehicle assigned to them at a time. If `VEHICLE 1` was previously assigned to `TRIP A`, and then a new event assigns `VEHICLE 1` to a different trip or to `null`, then `TRIP A` is also implicitly unassigned at the same time. Similarly if a new event assigns `TRIP A` to a different vehicle, then `VEHICLE 1` is implicitly unassigned at the same time.
 
 Put another way, you can calculate the trip that a vehicle is assigned to by looking at the latest event that mentions the vehicle. If the event assigns the vehicle to a non-null trip and this is also the latest event that mentions that trip, then the vehicle is currently assigned to that trip. If that event's trip is `null`, or if that event's trip was mentioned in a more recent event, then the vehicle is currently unassigned.
 
 Notes:
 
-Glides MAY publish an event that assigns a vehicle to a trip that it was already assigned to in a previous event, assign a vehicle to `null` when it was already unassigned, or assign a trip to `null` when it was already unassigned, i.e. assignments that don't cause any changes to the state of assignments. Consumers MUST tolerate these redundant assignments. Glides might do this in order to update the `carNumbers` associated with a `vehicleId`, or for any other reason, or it may appear to consumers like Glides did this if they didn't see a past event. According to the docs on [Short-term storage](index.mdx#short-term-storage): "Clients MUST tolerate receiving updates for events that reference unseen past events".
+Assignments are idempotent. Glides MAY publish an event that assigns a vehicle to a trip that it was already assigned to in a previous event, or assign a vehicle to `null` when it was already unassigned, i.e. assignments that don't cause any changes to the state of assignments. Consumers MUST tolerate these redundant assignments. Glides may do this for any reason, or it may appear to consumers like Glides did this if they didn't see a past event. According to the docs on [Short-term storage](index.mdx#short-term-storage): "Clients MUST tolerate receiving updates for events that reference unseen past events".
 
 [`VehicleTripAssignment`](#vehicletripassignment) does not contain information about which vehicle or trip a trip or vehicle was previously assigned to. If consumers care about that, then they would determine that by maintaining their own state.
 
@@ -124,7 +110,7 @@ Glides may publish different trip assignments in the Glides app and in this even
     {
       description: (
         <>
-          <p>This example contains 5 events:</p>
+          <p>This example contains 4 events:</p>
           <ol>
             <li>
               At the start of the day, a train is turned on, and Glides
@@ -140,15 +126,6 @@ Glides may publish different trip assignments in the Glides app and in this even
               trip is complete and no longer has any vehicles assigned to it.
               There won't be a separate event to indicate when the return trip
               starts.
-            </li>
-            <li>
-              At 11:02, shortly after the train begins the 11:00 trip, Glides
-              learns that the cars are in the other order, so publishes a new
-              event so that `carNumbers` is correct. This is common as trains
-              leave stub-end terminals and pass the first AVI in the new
-              direction. Because this is the same vehicle (i.e. it has the same
-              `vehicleId`), Glides doesn't need to publish an update that
-              unassigns "3901-3902" from any trip.
             </li>
             <li>
               At the end of the return trip, the train is turned off, and the

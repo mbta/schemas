@@ -11,16 +11,17 @@
     "time": { "$ref": "glides-events.json#/$defs/timestamp" },
     "data": {
       "type": "object",
-      "$comment": "SHOULD NOT have both properties null (but if they are, the assignment can be ignored)",
       "properties": {
-        "vehicle": {
-          "oneOf": [{ "$ref": "#/$defs/vehicle" }, { "const": null }]
+        "vehicleId": {
+          "type": "string",
+          "minLength": 1,
+          "examples": ["G-10223"]
         },
         "tripKey": {
           "oneOf": [{ "$ref": "#/$defs/trip_key" }, { "const": null }]
         }
       },
-      "required": ["vehicle", "tripKey"]
+      "required": ["vehicleId", "tripKey"]
     }
   },
   "required": ["type", "specversion", "source", "id", "time", "data"],
@@ -40,22 +41,6 @@
         }
       },
       "required": ["serviceDate", "tripId", "scheduled", "revenue"]
-    },
-    "vehicle": {
-      "type": "object",
-      "properties": {
-        "vehicleId": {
-          "type": "string",
-          "minLength": 1,
-          "examples": ["G-10223"]
-        },
-        "carNumbers": {
-          "type": ["array", "null"],
-          "items": { "type": "string", "minLength": 1 },
-          "examples": [["3900", "3901"]]
-        }
-      },
-      "required": ["vehicleId", "carNumbers"]
     }
   }
 }
