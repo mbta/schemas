@@ -1,6 +1,6 @@
 [
   {
-    "type": "com.mbta.ctd.glides.vehicle_trip_assignments.v1",
+    "type": "com.mbta.ctd.glides.vehicle_trip_assignment.v1",
     "specversion": "1.0",
     "source": "glides.mbta.com",
     "id": "3442e845-ec46-4c39-a817-6444c7ce93d8",
@@ -11,7 +11,7 @@
     }
   },
   {
-    "type": "com.mbta.ctd.glides.vehicle_trip_assignments.v1",
+    "type": "com.mbta.ctd.glides.vehicle_trip_assignment.v1",
     "specversion": "1.0",
     "source": "glides.mbta.com",
     "id": "af639735-b8f1-416a-baa7-812d06a8fbcf",
@@ -26,7 +26,7 @@
     }
   },
   {
-    "type": "com.mbta.ctd.glides.vehicle_trip_assignments.v1",
+    "type": "com.mbta.ctd.glides.vehicle_trip_assignment.v1",
     "specversion": "1.0",
     "source": "glides.mbta.com",
     "id": "9a708c96-3fdd-4a53-a2d7-a3f68bc9b7f5",
@@ -41,7 +41,7 @@
     }
   },
   {
-    "type": "com.mbta.ctd.glides.vehicle_trip_assignments.v1",
+    "type": "com.mbta.ctd.glides.vehicle_trip_assignment.v1",
     "specversion": "1.0",
     "source": "glides.mbta.com",
     "id": "16e65124-5b85-4522-bd93-9cacd6e57794",

@@ -1,15 +1,15 @@
 ---
-sidebar_label: glides.vehicle_trip_assignments
+sidebar_label: glides.vehicle_trip_assignment
 sidebar_position: 2
 ---
 
 import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
 import Examples from "@site/src/components/Examples.tsx";
-import example from "@site/examples/glides-events/vehicle_trip_assignments.v1.json";
+import example from "@site/examples/glides-events/vehicle_trip_assignment.v1.json";
 
-# vehicle_trip_assignments
+# vehicle_trip_assignment
 
-event type: `com.mbta.ctd.glides.vehicle_trip_assignments.v1`
+event type: `com.mbta.ctd.glides.vehicle_trip_assignment.v1`
 
 Describes which vehicle is operating on which trip at the current moment. An event is sent whenever a vehicle is assigned or unassigned from a trip.
 
@@ -46,7 +46,7 @@ This is a different structure than the [`TripKey` used in `trips_updated`](com.m
 - If `scheduled` is `"added"`, then this TripKey's `tripId` will equal the `trips_updated` TripKey's `glidesId`.
 - (In both cases, the `serviceDate` must also match in order to know the two TripKeys refer to the same trip.)
 
-The difference with the TripKey in `trips_updated` is because `trips_updated` has to give enough information about a trip that a consumer can understand it even without recognizing the trip ID, while `vehicle_trip_assignments` assumes that you can look up information in `trips_updated` or in `GTFS`, so doesn't give as much information as possible about the trip.
+The difference with the TripKey in `trips_updated` is because `trips_updated` has to give enough information about a trip that a consumer can understand it even without recognizing the trip ID, while `vehicle_trip_assignment` assumes that you can look up information in `trips_updated` or in `GTFS`, so doesn't give as much information as possible about the trip.
 
 If a `vehicle_trip_assignment` event and a `trips_updated` event are triggered at the same time, Glides SHOULD send the `trips_updated` event first, so that a consumer of a `vehicle_trip_assignment` event is more likely to be able to find data about the trip in the `trips_updated` feed. Though consumers should keep in mind that order of events between two event streams is not guaranteed, and a trip that's referenced in this feed may not have appeared in `trips_updated`. If a vehicle is assigned to a trip that has never been edited, the trip might never appear in the `trips_updated` feed.
 
@@ -70,7 +70,7 @@ Put another way, you can calculate the trip that a vehicle is assigned to by loo
 
 Notes:
 
-Assignments are idempotent. Glides MAY publish an event that assigns a vehicle to a trip that it was already assigned to in a previous event, or assign a vehicle to `null` when it was already unassigned, i.e. assignments that don't cause any changes to the state of assignments. Consumers MUST tolerate these redundant assignments. Glides may do this for any reason, or it may appear to consumers like Glides did this if they didn't see a past event. According to the docs on [Short-term storage](index.mdx#short-term-storage): "Clients MUST tolerate receiving updates for events that reference unseen past events".
+Assignments are idempotent. Glides MAY publish an event that assigns a vehicle to a trip that it was already assigned to in a previous event, or assign a vehicle to `null` when it was already unassigned, i.e. events that don't cause any changes to the state of assignments. Consumers MUST tolerate these redundant assignments. Glides may do this for any reason, or it may appear to consumers like Glides did this if they didn't see a past event. According to the docs on [Short-term storage](index.mdx#short-term-storage): "Clients MUST tolerate receiving updates for events that reference unseen past events".
 
 [`VehicleTripAssignment`](#vehicletripassignment) does not contain information about which vehicle or trip a trip or vehicle was previously assigned to. If consumers care about that, then they would determine that by maintaining their own state.
 
@@ -140,4 +140,4 @@ Glides may publish different trip assignments in the Glides app and in this even
 
 ## Schema
 
-<EventSchemaPath event="com.mbta.ctd.glides.vehicle_trip_assignments.v1" />
+<EventSchemaPath event="com.mbta.ctd.glides.vehicle_trip_assignment.v1" />

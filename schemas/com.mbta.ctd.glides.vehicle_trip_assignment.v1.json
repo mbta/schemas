@@ -1,10 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.ctd.glides.vehicle_trip_assignments.v1.json",
-  "description": "Vehicle Trip Assignments",
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.ctd.glides.vehicle_trip_assignment.v1.json",
+  "description": "Vehicle Trip Assignment",
   "type": "object",
   "properties": {
-    "type": { "const": "com.mbta.ctd.glides.vehicle_trip_assignments.v1" },
+    "type": { "const": "com.mbta.ctd.glides.vehicle_trip_assignment.v1" },
     "specversion": { "const": "1.0" },
     "source": { "$ref": "glides-events.json#/properties/source" },
     "id": { "$ref": "glides-events.json#/properties/id" },

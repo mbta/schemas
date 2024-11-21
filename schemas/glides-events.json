@@ -49,9 +49,9 @@
     },
     {
       "properties": {
-        "type": { "const": "com.mbta.ctd.glides.vehicle_trip_assignments.v1" }
+        "type": { "const": "com.mbta.ctd.glides.vehicle_trip_assignment.v1" }
       },
-      "$ref": "com.mbta.ctd.glides.vehicle_trip_assignments.v1.json#/"
+      "$ref": "com.mbta.ctd.glides.vehicle_trip_assignment.v1.json#/"
     }
   ],
   "$defs": {
