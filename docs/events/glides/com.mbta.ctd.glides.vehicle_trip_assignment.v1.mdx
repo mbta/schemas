@@ -1,0 +1,143 @@
+---
+sidebar_label: glides.vehicle_trip_assignment
+sidebar_position: 2
+---
+
+import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
+import Examples from "@site/src/components/Examples.tsx";
+import example from "@site/examples/glides-events/vehicle_trip_assignment.v1.json";
+
+# vehicle_trip_assignment
+
+event type: `com.mbta.ctd.glides.vehicle_trip_assignment.v1`
+
+Describes which vehicle is operating on which trip at the current moment. An event is sent whenever a vehicle is assigned or unassigned from a trip.
+
+One event contains one assignment. If multiple assignments happen simultaneously, they will be sent as separate events.
+
+Does not provide predictions for which vehicles will be assigned to future trips.
+
+See the the [Updating Assignments](#updating-assignments) section for how vehicles and trips are assigned and unassigned.
+
+## Data
+
+Fields in the event's `data`:
+
+- `vehicleId` (string): The vehicle ID that Glides gets from RTR via GTFS-RT. E.g. `"G-10223"`
+- `tripKey` ([TripKey](#tripkey) | null):
+
+If a `tripKey` is `null`, that means the vehicle is not assigned to a trip.
+
+This event contains IDs only. For more information about the trip (such as the destination), see the [`trips_updated` feed](com.mbta.ctd.glides.trips_updated.v1.mdx). For car numbers / consist see GTFS-RT.
+
+Note there is no [Metadata](index.mdx#metadata) field like in other events, because these events are more likely to be caused by updates from the realtime data than by data inputted into the Glides app by Green Line staff.
+
+### TripKey
+
+Fields:
+
+- `serviceDate` (RFC3999 date): the service date for the trip.
+- `tripId` (string): ID, unique within the service date. Trip IDs for scheduled trips are intended to match GTFS trip IDs, but may not.
+- `scheduled` (`"scheduled"` | `"added"`): Whether this is a trip that Glides has in its schedule or that Glides added.
+
+This is a different structure than the [`TripKey` used in `trips_updated`](com.mbta.ctd.glides.trips_updated.v1.mdx#tripkey). Added and scheduled trips use the same format, and are differentiated by the `scheduled` field instead of by using different formats.
+
+- If `scheduled` is `"scheduled"`, then this TripKey's `tripId` will equal the `trips_updated` TripKey's `tripId`.
+- If `scheduled` is `"added"`, then this TripKey's `tripId` will equal the `trips_updated` TripKey's `glidesId`.
+- (In both cases, the `serviceDate` must also match in order to know the two TripKeys refer to the same trip.)
+
+The difference with the TripKey in `trips_updated` is because `trips_updated` has to give enough information about a trip that a consumer can understand it even without recognizing the trip ID, while `vehicle_trip_assignment` assumes that you can look up information in `trips_updated` or in `GTFS`, so doesn't give as much information as possible about the trip.
+
+If a `vehicle_trip_assignment` event and a `trips_updated` event are triggered at the same time, Glides SHOULD send the `trips_updated` event first, so that a consumer of a `vehicle_trip_assignment` event is more likely to be able to find data about the trip in the `trips_updated` feed. Though consumers should keep in mind that order of events between two event streams is not guaranteed, and a trip that's referenced in this feed may not have appeared in `trips_updated`. If a vehicle is assigned to a trip that has never been edited, the trip might never appear in the `trips_updated` feed.
+
+For scheduled trips, the `tripId` is intended to line up to the trip IDs in GTFS most of the time, because they're derived from the same source (HASTUS's `trp_int_number`). However, Glides may be using a slightly different schedule than any consumer (due to disruptions, for example), so matching GTFS is not guaranteed. If a consumer sees a `tripId` in this feed that also appears in GTFS on a trip on the same service date, then it refers to the same trip.
+
+For added trips, Glides makes up a new ID, which is kept consistent for any subsequent updates to the same added trip. Glides tends to prefix trip IDs for added trips with the string `"ADDED-"` but consumers MUST NOT assume any particular format, or assume that they can tell an ID for an added trip apart from a scheduled trip ID by the string alone. That's what the `scheduled` field is for.
+
+The added/scheduled distinction is according to the schedule in Glides. If Glides has a different schedule than RTR or GTFS, then a trip that Glides thinks is scheduled may not match up with scheduled trip in GTFS, and RTR (or other consumers) may decide that a trip that was added in Glides lines up close enough to correspond to a scheduled trip in GTFS.
+
+Consumers SHOULD use the entire object when comparing two `TripKey`s to see if they're equal, not just the `tripId` field. Otherwise, updates could be applied to the wrong trip, for example, updating the vehicle assignment for yesterday's trip instead of today's.
+
+The `scheduled` field uses string enums instead of booleans so that other states could be added in the future. Clients MUST tolerate strings that they don't recognize. A safe way to handle this would be to treat the TripKey like an unrecognized trip, or to treat it like it's `null` i.e. the trip doesn't exist and a vehicle assigned to it is treated like it's unassigned from any trips.
+
+## Updating Assignments
+
+Consumers SHOULD maintain state about which vehicle-trip assignments are active, and update that state when they receive a new assignment.
+
+Vehicles can only be assigned to one trip at a time, and trips can only have one vehicle assigned to them at a time. If `VEHICLE 1` was previously assigned to `TRIP A`, and then a new event assigns `VEHICLE 1` to a different trip or to `null`, then `TRIP A` is also implicitly unassigned at the same time. Similarly if a new event assigns `TRIP A` to a different vehicle, then `VEHICLE 1` is implicitly unassigned at the same time.
+
+Put another way, you can calculate the trip that a vehicle is assigned to by looking at the latest event that mentions the vehicle. If the event assigns the vehicle to a non-null trip and this is also the latest event that mentions that trip, then the vehicle is currently assigned to that trip. If that event's trip is `null`, or if that event's trip was mentioned in a more recent event, then the vehicle is currently unassigned.
+
+Notes:
+
+Assignments are idempotent. Glides MAY publish an event that assigns a vehicle to a trip that it was already assigned to in a previous event, or assign a vehicle to `null` when it was already unassigned, i.e. events that don't cause any changes to the state of assignments. Consumers MUST tolerate these redundant assignments. Glides may do this for any reason, or it may appear to consumers like Glides did this if they didn't see a past event. According to the docs on [Short-term storage](index.mdx#short-term-storage): "Clients MUST tolerate receiving updates for events that reference unseen past events".
+
+[`VehicleTripAssignment`](#vehicletripassignment) does not contain information about which vehicle or trip a trip or vehicle was previously assigned to. If consumers care about that, then they would determine that by maintaining their own state.
+
+## Rules for Assignments
+
+This document provides a method for saying which trains are assigned to which trips, but does not describe rules for when Glides will say a train is assigned to a trip. However, since understanding when, how, and why assignments are made is likely to be useful for consumers, a rough description of Glides' logic is given here. This section non-normative description Glides' intent. Glides may decide to change these rules and that would not be a breaking change to this schema, even if it has semantic consequences for consumers. This section may not be kept up to date as Glides' logic is updated.
+
+### Inputs
+
+Glides will consider as input to its trip matching process:
+
+- The schedule it gets from HASTUS
+- Data entered on trainsheets in Glides
+- Realtime train location data from RTR, including the direction and AVI code
+
+Getting direction from RTR may lead to a circular dependency if RTR gets its direction from Glides' trip assignments. RTR should therefore ignore this feed's trip assignments if they conflict with the direction RTR would otherwise assign to a train.
+
+Glides will do its best to make trip assignments even for trains that inspectors have not entered into the trainsheet, though the accuracy may decrease in that situation.
+
+### Outputs
+
+At the start of a trip, Glides may assign a vehicle to a trip while waiting at the starting station before it departs on its trip, or while the train is on its way to the starting station if the vehicle is traveling in the same direction as the upcoming trip.
+
+When the vehicle reaches the end of a trip, Glides may immediately unassign it from the trip, or Glides may leave the vehicle assigned to the trip until the train turns around, depending on how certain Glides is that the train will not extend the trip.
+
+Glides may unassign or reassign vehicles to trips in the middle of a trip. For example, if a train unexpectedly takes a different branch, or if a train turns around in an unexpected place, or an inspector enters new information into Glides.
+
+Glides may not be able to make an assignment for every train. If it doesn't recognize the trip a train is doing, it will leave the train unassigned to any trip. It will not create a new added trip just to have a trip ID to reference. Trains will only be assigned to added trips if an official has written an added trip into the trainsheet in Glides.
+
+Glides may publish different trip assignments in the Glides app and in this event feed, if it decides the needs of operations staff (who use the Glides app) and riders (who use data powered by this feed) are different. We expect to follow slightly different rules around layovers for in-app trip assignments.
+
+## Examples
+
+<Examples
+  examples={[
+    {
+      description: (
+        <>
+          <p>This example contains 4 events:</p>
+          <ol>
+            <li>
+              At the start of the day, a train is turned on, and Glides
+              publishes an event to say that this train is not doing a trip
+              right now.
+            </li>
+            <li>At 10:00 the train begins its first trip of the day.</li>
+            <li>
+              At 10:55, the train finishes its first trip. As it lays over
+              Glides reassigns it to its return trip. The 11:00 return trip
+              hasn't started yet, but the train is sitting at the terminal, and
+              Glides may assign trains during a layover like this. The first
+              trip is complete and no longer has any vehicles assigned to it.
+              There won't be a separate event to indicate when the return trip
+              starts.
+            </li>
+            <li>
+              At the end of the return trip, the train is turned off, and the
+              vehicle is unassigned (which also means the trip is unassigned).
+            </li>
+          </ol>
+        </>
+      ),
+      json: example,
+    },
+  ]}
+/>
+
+## Schema
+
+<EventSchemaPath event="com.mbta.ctd.glides.vehicle_trip_assignment.v1" />

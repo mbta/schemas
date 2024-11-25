@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.ctd.glides.vehicle_trip_assignment.v1.json",
+  "description": "Vehicle Trip Assignment",
+  "type": "object",
+  "properties": {
+    "type": { "const": "com.mbta.ctd.glides.vehicle_trip_assignment.v1" },
+    "specversion": { "const": "1.0" },
+    "source": { "$ref": "glides-events.json#/properties/source" },
+    "id": { "$ref": "glides-events.json#/properties/id" },
+    "time": { "$ref": "glides-events.json#/$defs/timestamp" },
+    "data": {
+      "type": "object",
+      "properties": {
+        "vehicleId": {
+          "type": "string",
+          "minLength": 1,
+          "examples": ["G-10223"]
+        },
+        "tripKey": {
+          "oneOf": [{ "$ref": "#/$defs/trip_key" }, { "const": null }]
+        }
+      },
+      "required": ["vehicleId", "tripKey"]
+    }
+  },
+  "required": ["type", "specversion", "source", "id", "time", "data"],
+  "$defs": {
+    "trip_key": {
+      "type": "object",
+      "properties": {
+        "serviceDate": {
+          "$ref": "glides-events.json#/$defs/service_date"
+        },
+        "tripId": { "type": "string", "minLength": 1 },
+        "scheduled": {
+          "oneOf": [{ "const": "scheduled" }, { "const": "added" }]
+        }
+      },
+      "required": ["serviceDate", "tripId", "scheduled"]
+    }
+  }
+}

@@ -1,0 +1,54 @@
+[
+  {
+    "type": "com.mbta.ctd.glides.vehicle_trip_assignment.v1",
+    "specversion": "1.0",
+    "source": "glides.mbta.com",
+    "id": "3442e845-ec46-4c39-a817-6444c7ce93d8",
+    "time": "2024-11-14T09:50:00-05:00",
+    "data": {
+      "vehicleId": "G-12345",
+      "tripKey": null
+    }
+  },
+  {
+    "type": "com.mbta.ctd.glides.vehicle_trip_assignment.v1",
+    "specversion": "1.0",
+    "source": "glides.mbta.com",
+    "id": "af639735-b8f1-416a-baa7-812d06a8fbcf",
+    "time": "2024-11-14T10:00:00-05:00",
+    "data": {
+      "vehicleId": "G-12345",
+      "tripKey": {
+        "serviceDate": "2024-11-14",
+        "tripId": "11111111",
+        "scheduled": "scheduled"
+      }
+    }
+  },
+  {
+    "type": "com.mbta.ctd.glides.vehicle_trip_assignment.v1",
+    "specversion": "1.0",
+    "source": "glides.mbta.com",
+    "id": "9a708c96-3fdd-4a53-a2d7-a3f68bc9b7f5",
+    "time": "2024-11-14T10:55:00-05:00",
+    "data": {
+      "vehicleId": "G-12345",
+      "tripKey": {
+        "serviceDate": "2024-11-14",
+        "tripId": "22222222",
+        "scheduled": "scheduled"
+      }
+    }
+  },
+  {
+    "type": "com.mbta.ctd.glides.vehicle_trip_assignment.v1",
+    "specversion": "1.0",
+    "source": "glides.mbta.com",
+    "id": "16e65124-5b85-4522-bd93-9cacd6e57794",
+    "time": "2024-11-14T11:55:00-05:00",
+    "data": {
+      "vehicleId": "G-12345",
+      "tripKey": null
+    }
+  }
+]

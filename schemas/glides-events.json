@@ -24,11 +24,7 @@
     "time": { "$ref": "#/$defs/timestamp" },
     "data": {
       "type": "object",
-      "properties": {
-        "metadata": { "$ref": "#/$defs/metadata" }
-      },
-      "required": ["metadata"],
-      "$comment": "other fields validated by the oneOf, below"
+      "$comment": "data object is validated by each event's schema in the oneOf below"
     }
   },
   "required": ["type", "specversion", "source", "id", "time", "data"],
@@ -50,6 +46,12 @@
         "type": { "const": "com.mbta.ctd.glides.trips_updated.v1" }
       },
       "$ref": "com.mbta.ctd.glides.trips_updated.v1.json#/"
+    },
+    {
+      "properties": {
+        "type": { "const": "com.mbta.ctd.glides.vehicle_trip_assignment.v1" }
+      },
+      "$ref": "com.mbta.ctd.glides.vehicle_trip_assignment.v1.json#/"
     }
   ],
   "$defs": {
@@ -106,6 +108,14 @@
         "badgeNumber": { "$ref": "#/$defs/badge_number" }
       },
       "required": ["badgeNumber"]
+    },
+    "service_date": {
+      "type": "string",
+      "minLength": 1,
+      "$comment": "The date of service, which may not match the calendar date after midnight. RFC3339",
+      "format": "date",
+      "pattern": "^[0-9]{4}-[01][0-9]-[0-3][0-9]$",
+      "examples": ["2023-12-31"]
     },
     "timestamp": {
       "type": "string",

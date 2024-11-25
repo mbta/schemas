@@ -69,14 +69,6 @@
         "operator": { "$ref": "glides-events.json#/$defs/operator" }
       }
     },
-    "service_date": {
-      "type": "string",
-      "minLength": 1,
-      "$comment": "The date of service, which may not match the calendar date after midnight. RFC3339",
-      "format": "date",
-      "pattern": "^[0-9]{4}-[01][0-9]-[0-3][0-9]$",
-      "examples": ["2023-12-31"]
-    },
     "time": {
       "type": "string",
       "pattern": "^[012][0-9]:[0-5][0-9]:[0-6][0-9]$",
@@ -134,7 +126,7 @@
     "trip_key": {
       "type": "object",
       "properties": {
-        "serviceDate": { "$ref": "#/$defs/service_date" }
+        "serviceDate": { "$ref": "glides-events.json#/$defs/service_date" }
       },
       "required": ["serviceDate"],
       "oneOf": [
