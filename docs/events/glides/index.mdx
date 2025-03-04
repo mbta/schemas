@@ -126,6 +126,8 @@ It is represented as an object to provide future extensibility if needed.
 
 All timestamps MUST have a timezone offset, as required by RFC3339. The timestamp SHOULD be in UTC with an offset of "Z".
 
+> _Example: `"2025-01-01T17:00:00Z"` for noon eastern time._
+
 ## Details
 
 Events are in the [CloudEvents](https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md) format, and published via AWS Kinesis. See [RFC 19 Event Driven Architecture](https://github.com/mbta/technology-docs/blob/main/rfcs/accepted/0019-event-driven-architecture.md) for more about CTD's approach to publishing events.
