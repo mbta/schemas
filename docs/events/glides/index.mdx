@@ -94,7 +94,7 @@ All fields are optional and Glides MAY choose not to include any of them on any 
 Fields:
 
 - `author` ([GlidesUser](#glidesuser), optional): The logged-in user whose action triggered the event.
-- `inputTimestamp` (RFC3999 timestamp, optional): The timestamp that the user entered the data into Glides, as reported by their device. You probably want to use the event time instead. See [more explanation](#a-note-about-inputtimestamp) below.
+- `inputTimestamp` (RFC3339 timestamp, optional): The timestamp that the user entered the data into Glides, as reported by their device. You probably want to use the event time instead. See [more explanation](#a-note-about-inputtimestamp) below.
 - `inputType` (string, optional): the action that the user did in Glides. This field exists because the event data on its own may not specify how the data was entered, for example all trainsheet updates are normalized into a generic format in `tripUpdates`. Example values for this field are `"add-trip"` or `"manage-headways"`, but no guarantees are given about what strings will be used or which actions the field will be populated for.
 - `location` ([Location](#location), optional): the location the logged-in user is managing.
 
@@ -121,6 +121,10 @@ Fields:
 MAY refer to other non-operator Area 132 employees in some cases, for example if an inspector signs in as fit for duty in Glides (they aren't required to).
 
 It is represented as an object to provide future extensibility if needed.
+
+### RFC3339 Timestamp
+
+All timestamps MUST have a timezone offset, as required by RFC3339. The timestamp SHOULD be in UTC with an offset of "Z".
 
 ## Details
 

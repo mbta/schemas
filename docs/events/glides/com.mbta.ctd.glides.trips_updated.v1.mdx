@@ -80,7 +80,7 @@ If fields are missing from ScheduledCar, it is not known who is scheduled to ope
 
 ### Time
 
-Time in the `HH:MM:SS` format. The time is measured from "noon minus 12h" of the service day (effectively midnight except for days on which daylight savings time changes occur). For times occurring after midnight, enter the time as a value greater than 24:00:00 in `HH:MM:SS` local time for the day on which the trip schedule begins. Effectively, a [GTFS Time](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#field-types) but without support for `H:MM:SS` times.
+Time in the `HH:MM:SS` format. The time is in eastern time, measured from "noon minus 12h" of the service day (effectively midnight except for days on which daylight savings time changes occur). For times occurring after midnight, enter the time as a value greater than 24:00:00 in `HH:MM:SS` local time for the day on which the trip schedule begins. Effectively, a [GTFS Time](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#field-types) but without support for `H:MM:SS` times.
 
 > _Example: `04:30:00` for 4:30AM or `25:35:00` for 1:35AM on the next day._
 
@@ -128,7 +128,7 @@ Consumers MAY check `tripId` to help match trips in this feed to GTFS. If a cons
 
 #### Added Trip
 
-- `serviceDate` (RFC3999 date): the service date for the trip.
+- `serviceDate` (RFC3339 date): the service date for the trip.
 - `glidesId` (string): unique value representing this trip for the given `serviceDate`.
 
 Example:
@@ -139,7 +139,7 @@ Example:
 
 #### Scheduled Trip
 
-- `serviceDate` (RFC3999 date): the service date for the trip.
+- `serviceDate` (RFC3339 date): the service date for the trip.
 - `tripId` (string, optional): ID, unique within the service date. Intended to match GTFS trip IDs, but may not.
 - `startLocation` ([Location](.#location)): where the trip is scheduled to start.
 - `endLocation` ([Location](.#location)): where the trip is scheduled to end.

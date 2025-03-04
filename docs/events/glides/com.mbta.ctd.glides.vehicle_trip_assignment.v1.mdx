@@ -36,7 +36,7 @@ Note there is no [Metadata](index.mdx#metadata) field like in other events, beca
 
 Fields:
 
-- `serviceDate` (RFC3999 date): the service date for the trip.
+- `serviceDate` (RFC3339 date): the service date for the trip.
 - `tripId` (string): ID, unique within the service date. Trip IDs for scheduled trips are intended to match GTFS trip IDs, but may not.
 - `scheduled` (`"scheduled"` | `"added"`): Whether this is a trip that Glides has in its schedule or that Glides added.
 
