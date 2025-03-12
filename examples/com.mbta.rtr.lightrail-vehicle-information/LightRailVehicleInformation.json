@@ -2,7 +2,7 @@
   "data": {
       "directionId": 1,
       "lastAvi": "875",
-      "vehicleId": "G-10023"
+      "vehicleId": "G-10023",
       "routeId": "Green-D",
       "consist": ["3644", "3862"],
       "orientation": "AB",
