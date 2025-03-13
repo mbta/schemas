@@ -5,9 +5,26 @@ import LightRailVehicleInformation from "@site/examples/com.mbta.rtr.lightrail-v
 import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
 import Examples from "@site/src/components/Examples.tsx";
 
+# com.mbta.rtr.lightrail-vehicle-information
+
 Message from RTR indicating information about the location and status of light rail vehicles provided by RTR. RTR sources this information from the OCS and/or the vehicle AVLs.
 
 Related to [RFC-25](https://github.com/mbta/technology-docs/blob/main/rfcs/accepted/0025-light-rail-trip-model.md)
+
+## Data
+
+Fields in the event's `data`:
+
+- `directionId` (integer): Direction in which the vehicle is headed. Derived from the direction in trips.txt: https://gtfs.org/documentation/schedule/reference/#tripstxt
+- `lastAvi` (string): The last AVI code that was emitted from the vehicle. If you are internal to the MBTA, see the documentation on AVI codes here https://github.com/mbta/rtr/blob/f734e361cb7361ec0cde461add8e1e1bfc938b74/docs/avi_codes.pdf
+- `vehicleId` (string): Unique identifier of the vehicle from OCS
+- `routeId` (string): Route that RTR thinks the vehicle is serving. Value is from GTFS trips.txt: https://gtfs.org/documentation/schedule/reference/#tripstxt
+- `consist` (array[string]): Array containing car numbers of the train in order
+- `orientation` (enum, values: ["AB", "BA"]): Whether the 'rear' or 'front' of each train is facing forward for each train in the consist. B means backward, a means forward
+- `nextStopId` (string): Identifier for the next stop that the vehicle is at / approaching. From GTFS stops.txt: https://gtfs.org/documentation/schedule/reference/#stopstxt
+- `stopStatus` (enum, values: ["STOPPED_AT", "INCOMING_AT", "IN_TRANSIT_TO"]): What the train is doing in relation to the next stop
+- `lat` (string): The latitude of the train, provided by the AVLThe latitude of the train, provided by the AVLThe latitude of the train, provided by the AVL
+- `lon` (string): The longitude of the train, provided by the AVL
 
 ## Examples
 

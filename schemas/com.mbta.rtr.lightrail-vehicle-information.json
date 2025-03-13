@@ -1,7 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.rtr.lightrail-vehicle-information.json",
-  "description": "Light Rail Vehicle Information",
   "type": "object",
   "properties": {
     "id": {
@@ -24,7 +23,6 @@
       "$ref": "cloudevents.json#/properties/time"
     },
     "data": {
-      "description": "The event payload.",
       "$ref": "#/$defs/datadef"
     }
   },
@@ -46,51 +44,45 @@
       ],
       "properties": {
         "directionId": {
-          "description": "Direction in which the vehicle is headed. Derived from the direction in trips.txt: https://gtfs.org/documentation/schedule/reference/#tripstxt",
-          "type": "integer"
+          "type": "integer",
+          "enum": [0, 1]
         },
         "lastAvi": {
-          "description": "The last AVI code that was emitted from the vehicle. If you are internal to the MBTA, see the documentation on AVI codes here https://github.com/mbta/rtr/blob/f734e361cb7361ec0cde461add8e1e1bfc938b74/docs/avi_codes.pdf",
           "type": "string",
           "examples": ["875"]
         },
         "vehicleId": {
-          "description": "Unique identifier of the vehicle from OCS",
           "type": "string",
           "examples": ["G-10023"]
         },
         "routeId": {
-          "description": "Route that RTR thinks the vehicle is serving. Value is from GTFS trips.txt: https://gtfs.org/documentation/schedule/reference/#tripstxt",
           "type": "string",
-          "examples": ["Green-D", "Green-C", "Mattapan"]
+          "enum": ["Green-B", "Green-C", "Green-D", "Green-D", "Mattapan"]
         },
         "consist": {
-          "description": "Array containing car numbers of the train in order",
-          "type": "string",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "examples": [["3644", "3862"]]
         },
         "orientation": {
-          "description": "Whether the 'rear' or 'front' of each train is facing forward for each train in the consist. B means backward, a means forward",
           "type": "string",
-          "examples": ["AB", "BA", "BB"]
+          "enum": ["AB", "BA"]
         },
         "nextStopId": {
-          "description": "Identifier for the next stop that the vehicle is at / approaching. From GTFS stops.txt: https://gtfs.org/documentation/schedule/reference/#stopstxt",
           "type": "string",
-          "examples": ["AB", "BA", "BB"]
+          "examples": ["place-gover", "place-clmnl", "place-pktrm"]
         },
         "stopStatus": {
-          "description": "What the train is doing in relation to the next stop",
           "type": "string",
-          "examples": ["IN_TRANSIT_TO", "INCOMING_AT", "STOPPED_AT"]
+          "enum": ["IN_TRANSIT_TO", "INCOMING_AT", "STOPPED_AT"]
         },
         "lat": {
-          "description": "The latitude of the train, provided by the AVL",
           "type": "string",
           "examples": ["42.21469"]
         },
         "lon": {
-          "description": "The longitude of the train, provided by the AVL",
           "type": "string",
           "examples": ["-71.03305"]
         }
