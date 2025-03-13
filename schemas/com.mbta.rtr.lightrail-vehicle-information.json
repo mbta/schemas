@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.rtr.light-rail-vehicle-information.json",
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.rtr.lightrail-vehicle-information.json",
   "description": "Light Rail Vehicle Information",
   "type": "object",
   "properties": {
@@ -17,7 +17,7 @@
       "$ref": "cloudevents.json#/properties/specversion"
     },
     "type": {
-      "const": "com.mbta.rtr.light-rail-vehicle-information",
+      "const": "com.mbta.rtr.lightrail-vehicle-information",
       "$ref": "cloudevents.json#/properties/type"
     },
     "time": {
