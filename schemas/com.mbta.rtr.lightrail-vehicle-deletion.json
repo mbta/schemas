@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.rtr.lightrail-vehicle-deletion.json",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "cloudevents.json#/properties/id",
+      "examples": ["123abc"]
+    },
+    "source": {
+      "$ref": "cloudevents.json#/properties/source",
+      "examples": ["mbta.com/rtr-1"]
+    },
+    "specversion": {
+      "const": "1.0",
+      "$ref": "cloudevents.json#/properties/specversion"
+    },
+    "type": {
+      "const": "com.mbta.rtr.lightrail-vehicle-deletion",
+      "$ref": "cloudevents.json#/properties/type"
+    },
+    "time": {
+      "$ref": "cloudevents.json#/properties/time"
+    },
+    "data": {
+      "$ref": "#/$defs/datadef"
+    }
+  },
+  "required": ["type", "specversion", "source", "id", "time", "data"],
+  "$defs": {
+    "datadef": {
+      "type": "object",
+      "required": [
+        "vehicleId"
+      ],
+      "properties": {
+        "vehicleId": {
+          "type": "string",
+          "examples": ["G-10023"]
+        }
+      }
+    }
+  }
+}

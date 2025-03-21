@@ -1,0 +1,31 @@
+---
+---
+
+import LightRailVehicleDeletion from "@site/examples/rtr-events/LightRailVehicleDeletion.json";
+import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
+import Examples from "@site/src/components/Examples.tsx";
+
+# com.mbta.rtr.lightrail-vehicle-deletion
+Message from RTR indicating that a light rail vehicle has been deleted. Deleted vehicles will no longer appear in GTFS-RT feeds, and RTR will no longer publish other events for deleted vehicles.
+
+RTR deletes a light rail vehicle when 30 minutes have elapsed without any messages pertaining to said vehicle.
+
+Related to [RFC-25](https://github.com/mbta/technology-docs/blob/main/rfcs/accepted/0025-light-rail-trip-model.md).
+
+## Data
+
+Fields in the event's `data`:
+
+- `vehicleId` (string): Unique identifier of the vehicle from OCS. Same `vehicleId` as [com.mbta.rtr.lightrail-vehicle-information](com.mbta.rtr.lightrail-vehicle-information#Data).
+
+## Examples
+
+<Examples
+  examples={[
+    { label: "LightRailVehicleDeletion", json: LightRailVehicleDeletion },
+  ]}
+/>
+
+## Schema
+
+<EventSchemaPath event="com.mbta.rtr.lightrail-vehicle-deletion" />
