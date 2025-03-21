@@ -30,9 +30,7 @@
   "$defs": {
     "datadef": {
       "type": "object",
-      "required": [
-        "vehicleId"
-      ],
+      "required": ["vehicleId"],
       "properties": {
         "vehicleId": {
           "type": "string",

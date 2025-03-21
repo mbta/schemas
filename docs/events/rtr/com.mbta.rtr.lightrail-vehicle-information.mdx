@@ -1,11 +1,14 @@
 ---
+sidebar_label: rtr.lightrail-vehicle-information
 ---
 
 import LightRailVehicleInformation from "@site/examples/rtr-events/LightRailVehicleInformation.json";
 import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
 import Examples from "@site/src/components/Examples.tsx";
 
-# com.mbta.rtr.lightrail-vehicle-information
+# lightrail-vehicle-information
+
+event type: `com.mbta.rtr.lightrail-vehicle-information`.
 
 Message from RTR indicating information about the location and status of light rail vehicles provided by RTR. RTR sources this information from the OCS and/or the vehicle AVLs.
 
@@ -21,7 +24,7 @@ Fields in the event's `data`:
 - `routeId` (string): Route that RTR thinks the vehicle is serving. See [GTFS's trips.txt](https://gtfs.org/documentation/schedule/reference/#tripstxt).
 - `consist` (array[string]): Array containing car numbers of the train in order
 - `orientation` (enum, values: ["AB", "BA"]): Whether the 'rear' or 'front' of each train is facing forward for each train in the consist. B means backward, A means forward
-- `nextStopId` (string): Identifier for the next stop that the vehicle is at / approaching. This will be a stop in GTFS parlance (`location_type = 0`), as opposed to a station (`location_type = 1`). See [GTFS's stops.txt documentation.](https://gtfs.org/documentation/schedule/reference/#stopstxt) 
+- `nextStopId` (string): Identifier for the next stop that the vehicle is at / approaching. This will be a stop in GTFS parlance (`location_type = 0`), as opposed to a station (`location_type = 1`). See [GTFS's stops.txt documentation.](https://gtfs.org/documentation/schedule/reference/#stopstxt)
 - `stopStatus` (enum, values: ["STOPPED_AT", "INCOMING_AT", "IN_TRANSIT_TO"]): What the train is doing in relation to the next stop
 - `lat` (string): Most recent latitude of the vehicle
 - `lon` (string): Most recent longitude of the vehicle
