@@ -20,11 +20,11 @@ Fields in the event's `data`:
 - `vehicleId` (string): Unique identifier of the vehicle from OCS
 - `routeId` (string): Route that RTR thinks the vehicle is serving. Value is from GTFS trips.txt: https://gtfs.org/documentation/schedule/reference/#tripstxt
 - `consist` (array[string]): Array containing car numbers of the train in order
-- `orientation` (enum, values: ["AB", "BA"]): Whether the 'rear' or 'front' of each train is facing forward for each train in the consist. B means backward, a means forward
+- `orientation` (enum, values: ["AB", "BA"]): Whether the 'rear' or 'front' of each train is facing forward for each train in the consist. B means backward, A means forward
 - `nextStopId` (string): Identifier for the next stop that the vehicle is at / approaching. From GTFS stops.txt: https://gtfs.org/documentation/schedule/reference/#stopstxt
 - `stopStatus` (enum, values: ["STOPPED_AT", "INCOMING_AT", "IN_TRANSIT_TO"]): What the train is doing in relation to the next stop
-- `lat` (string): The latitude of the train, provided by the AVLThe latitude of the train, provided by the AVLThe latitude of the train, provided by the AVL
-- `lon` (string): The longitude of the train, provided by the AVL
+- `lat` (string): The latitude of the train as provided by the Automatic Vehicle Location (AVL) system
+- `lon` (string): The longitude of the train as provided by the Automatic Vehicle Location (AVL) system
 
 ## Examples
 
