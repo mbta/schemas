@@ -72,7 +72,7 @@
         },
         "nextStopId": {
           "type": "string",
-          "examples": ["place-gover", "place-clmnl", "place-pktrm"]
+          "examples": ["70160", "70161", "place-pktrm"]
         },
         "stopStatus": {
           "type": "string",
