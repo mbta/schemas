@@ -15,5 +15,5 @@
   "source": "ctd.mbta.com/rtr-1234",
   "specversion": "1.0",
   "time": "2025-03-12T00:01:00.110000Z",
-  "type": "com.mbta.rtr.lightrail-vehicle-information"
+  "type": "com.mbta.rtr.lightrail-vehicle-updated"
 }

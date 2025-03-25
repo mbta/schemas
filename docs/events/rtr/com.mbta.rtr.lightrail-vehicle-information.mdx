@@ -1,14 +1,14 @@
 ---
-sidebar_label: rtr.lightrail-vehicle-information
+sidebar_label: rtr.lightrail-vehicle-updated
 ---
 
 import LightRailVehicleInformation from "@site/examples/rtr-events/LightRailVehicleInformation.json";
 import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
 import Examples from "@site/src/components/Examples.tsx";
 
-# lightrail-vehicle-information
+# lightrail-vehicle-updated
 
-event type: `com.mbta.rtr.lightrail-vehicle-information`.
+event type: `com.mbta.rtr.lightrail-vehicle-updated`.
 
 Message from RTR indicating information about the location and status of light rail vehicles provided by RTR. RTR sources this information from the OCS and/or the vehicle AVLs.
 
@@ -39,4 +39,4 @@ Fields in the event's `data`:
 
 ## Schema
 
-<EventSchemaPath event="com.mbta.rtr.lightrail-vehicle-information" />
+<EventSchemaPath event="com.mbta.rtr.lightrail-vehicle-updated" />
