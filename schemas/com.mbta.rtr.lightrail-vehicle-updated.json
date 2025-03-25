@@ -16,7 +16,7 @@
       "$ref": "cloudevents.json#/properties/specversion"
     },
     "type": {
-      "const": "com.mbta.rtr.lightrail-vehicle-update",
+      "const": "com.mbta.rtr.lightrail-vehicle-updated",
       "$ref": "cloudevents.json#/properties/type"
     },
     "time": {
