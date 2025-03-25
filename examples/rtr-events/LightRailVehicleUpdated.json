@@ -1,0 +1,20 @@
+{
+  "data": {
+      "directionId": 1,
+      "lastAvi": "875",
+      "vehicleId": "G-10023",
+      "routeId": "Green-D",
+      "consist": ["3644", "3862"],
+      "orientation": "AB",
+      "nextStopId": "70203",
+      "stopStatus": "IN_TRANSIT_TO",
+      "lat": 42.21469,
+      "lon": -71.03305,
+      "heading": 26.69
+  },
+  "id": "1",
+  "source": "ctd.mbta.com/rtr-1234",
+  "specversion": "1.0",
+  "time": "2025-03-12T00:01:00.110000Z",
+  "type": "com.mbta.rtr.lightrail-vehicle-updated"
+}

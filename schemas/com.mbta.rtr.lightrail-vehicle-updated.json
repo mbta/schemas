@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.rtr.lightrail-vehicle-updated.json",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "cloudevents.json#/properties/id",
+      "examples": ["123abc"]
+    },
+    "source": {
+      "$ref": "cloudevents.json#/properties/source",
+      "examples": ["mbta.com/rtr-1"]
+    },
+    "specversion": {
+      "const": "1.0",
+      "$ref": "cloudevents.json#/properties/specversion"
+    },
+    "type": {
+      "const": "com.mbta.rtr.lightrail-vehicle-updated",
+      "$ref": "cloudevents.json#/properties/type"
+    },
+    "time": {
+      "$ref": "cloudevents.json#/properties/time"
+    },
+    "data": {
+      "$ref": "#/$defs/datadef"
+    }
+  },
+  "required": ["type", "specversion", "source", "id", "time", "data"],
+  "$defs": {
+    "datadef": {
+      "type": "object",
+      "required": [
+        "directionId",
+        "lastAvi",
+        "vehicleId",
+        "routeId",
+        "consist",
+        "orientation",
+        "nextStopId",
+        "stopStatus",
+        "lat",
+        "lon",
+        "heading"
+      ],
+      "properties": {
+        "directionId": {
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "lastAvi": {
+          "type": "string",
+          "examples": ["875"]
+        },
+        "vehicleId": {
+          "type": "string",
+          "examples": ["G-10023"]
+        },
+        "routeId": {
+          "type": "string",
+          "enum": ["Green-B", "Green-C", "Green-D", "Green-D", "Mattapan"]
+        },
+        "consist": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "examples": [["3644", "3862"]]
+        },
+        "orientation": {
+          "type": "string",
+          "enum": ["AB", "BA"]
+        },
+        "nextStopId": {
+          "type": "string",
+          "examples": ["70160", "70161", "70238"]
+        },
+        "stopStatus": {
+          "type": "string",
+          "enum": ["IN_TRANSIT_TO", "INCOMING_AT", "STOPPED_AT"]
+        },
+        "lat": {
+          "type": "number",
+          "examples": [42.21469]
+        },
+        "lon": {
+          "type": "number",
+          "examples": [-71.03305]
+        },
+        "heading": {
+          "type": "number",
+          "examples": [26.69]
+        }
+      }
+    }
+  }
+}
