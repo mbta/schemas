@@ -40,7 +40,8 @@
         "nextStopId",
         "stopStatus",
         "lat",
-        "lon"
+        "lon",
+        "heading"
       ],
       "properties": {
         "directionId": {
@@ -79,12 +80,16 @@
           "enum": ["IN_TRANSIT_TO", "INCOMING_AT", "STOPPED_AT"]
         },
         "lat": {
-          "type": "string",
-          "examples": ["42.21469"]
+          "type": "number",
+          "examples": [42.21469]
         },
         "lon": {
-          "type": "string",
-          "examples": ["-71.03305"]
+          "type": "number",
+          "examples": [-71.03305]
+        },
+        "heading": {
+          "type": "number",
+          "examples": [26.69]
         }
       }
     }
