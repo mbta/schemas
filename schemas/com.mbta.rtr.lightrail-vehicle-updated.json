@@ -41,7 +41,8 @@
         "stopStatus",
         "lat",
         "lon",
-        "heading"
+        "heading",
+        "updatedAt"
       ],
       "properties": {
         "directionId": {
@@ -90,6 +91,10 @@
         "heading": {
           "type": "number",
           "examples": [26.69]
+        },
+        "updatedAt": {
+          "type": "string",
+          "examples": "2025-04-25T11:15:52-04:00"
         }
       }
     }
