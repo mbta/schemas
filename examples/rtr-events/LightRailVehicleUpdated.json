@@ -6,7 +6,7 @@
       "routeId": "Green-D",
       "consist": ["3644", "3862"],
       "orientation": "AB",
-      "nextStopId": "70203",
+      "stopId": "70203",
       "stopStatus": "IN_TRANSIT_TO",
       "lat": 42.21469,
       "lon": -71.03305,
