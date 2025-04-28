@@ -37,7 +37,7 @@
         "routeId",
         "consist",
         "orientation",
-        "nextStopId",
+        "stopId",
         "stopStatus",
         "lat",
         "lon",
@@ -71,7 +71,7 @@
           "type": "string",
           "enum": ["AB", "BA"]
         },
-        "nextStopId": {
+        "stopId": {
           "type": "string",
           "examples": ["70160", "70161", "70238"]
         },
