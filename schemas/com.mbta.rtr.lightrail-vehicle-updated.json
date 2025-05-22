@@ -62,10 +62,15 @@
           "enum": ["Green-B", "Green-C", "Green-D", "Green-D", "Mattapan"]
         },
         "consist": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            { "const": null }
+          ],
           "examples": [["3644", "3862"]]
         },
         "orientation": {
