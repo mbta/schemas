@@ -1,0 +1,32 @@
+---
+sidebar_label: ocs.tmov_light_rail
+sidebar_position: 1
+---
+
+import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
+import Examples from "@site/src/components/Examples.tsx";
+import greenLineAVI from "@site/examples/com.mbta.ocs.tmov_light_rail.v1/green-line-avi-example.json";
+import greenLineGPS from "@site/examples/com.mbta.ocs.tmov_light_rail.v1/green-line-gps-example.json";
+import greenLineNVL from "@site/examples/com.mbta.ocs.tmov_light_rail.v1/green-line-nvl-example.json";
+
+# tmov_light_rail
+
+event type: `com.mbta.ocs.tmov_light_rail.v1`
+
+Parsed from OCS TMOV events for light rail trains.
+
+The contents of some fields, such as `speed` and `heading`, rely on the communication method (GPS, AVI, or NVL) by which OCS obtained information about this train, as indicated in the `dataSource` field.
+
+## Examples
+
+<Examples
+  examples={[
+    { label: "Green Line (AVI)", json: greenLineAVI },
+    { label: "Green Line (GPS)", json: greenLineGPS },
+    { label: "Green Line (NVL)", json: greenLineNVL },
+  ]}
+/>
+
+## Schema
+
+<EventSchemaPath event="com.mbta.ocs.tmov_light_rail.v1" />

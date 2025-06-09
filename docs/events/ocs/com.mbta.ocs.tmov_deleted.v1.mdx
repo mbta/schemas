@@ -1,0 +1,22 @@
+---
+sidebar_label: ocs.tmov_deleted
+sidebar_position: 1
+---
+
+import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
+import Examples from "@site/src/components/Examples.tsx";
+import example from "@site/examples/com.mbta.ocs.tmov_deleted.v1/example.json";
+
+# tmov_deleted
+
+event type: `com.mbta.ocs.tmov_deleted.v1`
+
+Parsed from OCS TMOV events that specifically delete a train. (OCS indicates this by having a latitude and longitude of zero)
+
+## Examples
+
+<Examples examples={[{ json: example }]} />
+
+## Schema
+
+<EventSchemaPath event="com.mbta.ocs.tmov_deleted.v1" />

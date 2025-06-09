@@ -1,0 +1,30 @@
+---
+sidebar_label: ocs.tsch_lnk
+sidebar_position: 1
+---
+
+import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
+import Examples from "@site/src/components/Examples.tsx";
+import next from "@site/examples/com.mbta.ocs.tsch_lnk.v1/update-next-trip-example.json";
+import previous from "@site/examples/com.mbta.ocs.tsch_lnk.v1/update-previous-trip-example.json";
+import nextAndPrevious from "@site/examples/com.mbta.ocs.tsch_lnk.v1/update-next-and-previous-trip-example.json";
+
+# tsch_lnk
+
+event type: `com.mbta.ocs.tsch_lnk.v1`
+
+Parsed from OCS TSCH LNK events.
+
+## Examples
+
+<Examples
+  examples={[
+    { label: "Update next trip only", json: next },
+    { label: "Update previous trip only", json: previous },
+    { label: "Update next and previous trips", json: nextAndPrevious },
+  ]}
+/>
+
+## Schema
+
+<EventSchemaPath event="com.mbta.ocs.tsch_lnk.v1" />
