@@ -1,0 +1,67 @@
+{
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.ocs.tsch_del.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "OCS TSCH message to delete/undelete a trip",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "cloudevents.json#/properties/id",
+      "examples": ["prLSlfYXlQ8Nmsa8gyVi6PPZUmA="]
+    },
+    "source": {
+      "$ref": "cloudevents.json#/properties/source",
+      "examples": ["mbta.com/trike-12345"]
+    },
+    "specversion": {
+      "const": "1.0",
+      "$ref": "cloudevents.json#/properties/specversion"
+    },
+    "type": {
+      "const": "com.mbta.ocs.tsch_del.v1",
+      "$ref": "cloudevents.json#/properties/type"
+    },
+    "time": {
+      "$ref": "cloudevents.json#/properties/time"
+    },
+    "partitionkey": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Key used to balance messages across multiple shards"
+    },
+    "data": {
+      "description": "The event payload.",
+      "$ref": "#/$defs/datadef"
+    }
+  },
+  "required": [
+    "id",
+    "source",
+    "specversion",
+    "type",
+    "data",
+    "time",
+    "partitionkey"
+  ],
+  "$defs": {
+    "datadef": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "ocs-events-common.json#/$defs/tschCommonBase" },
+        {
+          "required": ["tripUid", "deleteStatus"],
+          "properties": {
+            "tripUid": {
+              "description": "Trip UID - only unique within a transit line.",
+              "type": "string"
+            },
+            "deleteStatus": {
+              "description": "Whether the trip is deleted - can toggle back and forth.",
+              "type": "string",
+              "enum": ["deleted", "undeleted"]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

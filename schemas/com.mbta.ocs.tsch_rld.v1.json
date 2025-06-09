@@ -1,0 +1,63 @@
+{
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.ocs.tsch_rld.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "OCS TSCH message to reload the schedule - dump existing schedule information and start fresh.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "cloudevents.json#/properties/id",
+      "examples": ["prLSlfYXlQ8Nmsa8gyVi6PPZUmA="]
+    },
+    "source": {
+      "$ref": "cloudevents.json#/properties/source",
+      "examples": ["mbta.com/trike-12345"]
+    },
+    "specversion": {
+      "const": "1.0",
+      "$ref": "cloudevents.json#/properties/specversion"
+    },
+    "type": {
+      "const": "com.mbta.ocs.tsch_rld.v1",
+      "$ref": "cloudevents.json#/properties/type"
+    },
+    "time": {
+      "$ref": "cloudevents.json#/properties/time"
+    },
+    "partitionkey": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Key used to balance messages across multiple shards"
+    },
+    "data": {
+      "description": "The event payload.",
+      "$ref": "#/$defs/datadef"
+    }
+  },
+  "required": [
+    "id",
+    "source",
+    "specversion",
+    "type",
+    "data",
+    "time",
+    "partitionkey"
+  ],
+  "$defs": {
+    "datadef": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "ocs-events-common.json#/$defs/tschCommonBase" },
+        {
+          "required": ["scheduleType"],
+          "properties": {
+            "scheduleType": {
+              "description": "Schedule type. Expected values: W = Weekday, S = Saturday, U = Sunday, E = Event",
+              "$comment": "TODO: RTR ignores this. Maybe it's not worth passing along? If we keep it, should we enumify?",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
