@@ -1,0 +1,25 @@
+{
+  "id": "prLSlfYXlQ8Nmsa8gyVi6PPZUmA=",
+  "partitionkey": "{10.0.0.28:8081 -> 10.0.0.2:65473}",
+  "source": "ctd.mbta.com/trike-1234",
+  "specversion": "1.0",
+  "time": "2023-01-29T13:51:54.990000Z",
+  "type": "com.mbta.ocs.tmov_light_rail.v1",
+  "data": {
+    "counter": 70877,
+    "timestamp": "2025-06-06T13:17:37.632951-04:00",
+    "transitLine": "G",
+    "trainUid": "10001",
+    "latitude": 42.39788390892353,
+    "longitude": -71.10940113113155,
+    "trainTag": "normal",
+    "leadCar": "3820",
+    "dispatchTags": [ "restricted", "isolated" ],
+    "routeNumber": "855",
+    "lastAvi": "6",
+    "dataSource": "avi",
+    "consist": [ "3820", "3827" ],
+    "speed": "unreported",
+    "heading": ["BA", "AB"]
+  }
+}

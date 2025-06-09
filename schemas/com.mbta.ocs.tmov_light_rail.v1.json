@@ -1,0 +1,122 @@
+{
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.ocs.tmov_light_rail.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "OCS message about movement of light rail vehicles",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "cloudevents.json#/properties/id",
+      "examples": ["prLSlfYXlQ8Nmsa8gyVi6PPZUmA="]
+    },
+    "source": {
+      "$ref": "cloudevents.json#/properties/source",
+      "examples": ["mbta.com/trike-12345"]
+    },
+    "specversion": {
+      "const": "1.0",
+      "$ref": "cloudevents.json#/properties/specversion"
+    },
+    "type": {
+      "const": "com.mbta.ocs.tmov_light_rail.v1",
+      "$ref": "cloudevents.json#/properties/type"
+    },
+    "time": {
+      "$ref": "cloudevents.json#/properties/time"
+    },
+    "partitionkey": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Key used to balance messages across multiple shards"
+    },
+    "data": {
+      "description": "The event payload.",
+      "$ref": "#/$defs/datadef"
+    }
+  },
+  "required": [
+    "id",
+    "source",
+    "specversion",
+    "type",
+    "data",
+    "time",
+    "partitionkey"
+  ],
+  "$defs": {
+    "datadef": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "ocs-events-common.json#/$defs/tmovCommonBase" },
+        { "$ref": "ocs-events-common.json#/$defs/tmovCommonAdditional" },
+        {
+          "required": [
+            "routeNumber",
+            "lastAvi",
+            "dataSource",
+            "consist",
+            "speed",
+            "heading"
+          ],
+          "properties": {
+            "routeNumber": {
+              "description": "",
+              "type": "string"
+            },
+            "lastAvi": {
+              "description": "",
+              "type": "string"
+            },
+            "dataSource": {
+              "description": "The comm type from which positional data was obtained. `avi` indicates information was obtained from an AVI read via a wayside device. `nvl` (\"non-vital logic\") indicates information was obtained from a track circuit. `gps` indicates information was obtained from a GPS",
+              "$comment": "TODO: (1) Is it safe for this to be an enum? (2) Is it best to drop the `ci` suffix as RTR does?",
+              "type": "string",
+              "enum": ["avi", "nvl", "gps"]
+            },
+            "consist": {
+              "description": "Full consist, ie car numbers of this vehicle",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "speed": {
+              "description": "Speed of vehicle, if dataSource is gps",
+              "$comment": "TODO: RTR uses an explicit 'unreported' value here. Should we just be optional / nullable?",
+              "oneOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "const": "unreported"
+                }
+              ]
+            },
+            "heading": {
+              "description": "Directional information. Dependent on dataSource.",
+              "$comment": "TODO: Should we break this up into separate fields instead of a union type?",
+              "oneOf": [
+                {
+                  "description": "Direction",
+                  "$comment": "TODO: What are the units here? Degrees offset from North?",
+                  "type": "number"
+                },
+                {
+                  "description": "Sequence of orientations (AB or BA) of cars in consist",
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": ["AB", "BA"]
+                  }
+                },
+                {
+                  "$comment": "TODO: RTR uses an explicit 'unreported' value here. Should we just be optional / nullable?",
+                  "const": "unreported"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}
