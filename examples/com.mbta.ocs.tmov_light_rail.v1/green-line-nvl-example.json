@@ -20,6 +20,7 @@
     "dataSource": "nvl",
     "consist": [ "3820", "3827" ],
     "speed": 35.79,
-    "heading": "unreported"
+    "heading": null,
+    "orientations": null
   }
 }

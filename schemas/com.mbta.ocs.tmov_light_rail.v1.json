@@ -92,27 +92,17 @@
               ]
             },
             "heading": {
-              "description": "Directional information. Dependent on dataSource.",
-              "$comment": "TODO: Should we break this up into separate fields instead of a union type?",
-              "oneOf": [
-                {
-                  "description": "Direction",
-                  "$comment": "TODO: What are the units here? Degrees offset from North?",
-                  "type": "number"
-                },
-                {
-                  "description": "Sequence of orientations (AB or BA) of cars in consist",
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "enum": ["AB", "BA"]
-                  }
-                },
-                {
-                  "$comment": "TODO: RTR uses an explicit 'unreported' value here. Should we just be optional / nullable?",
-                  "const": "unreported"
-                }
-              ]
+              "description": "Direction the vehicle is pointing, measured in degrees from Magnetic North. Only provided with GPS data source.",
+              "$comment": "TODO: RTR uses an explicit 'unreported' value here. Should we just be optional / nullable?",
+              "type": ["number", "null"]
+            },
+            "orientations": {
+              "description": "Whether the 'rear' or 'front' of each train is facing forward for each train in the consist. AB means forward, BA means backward. Only provided with AVI data source.",
+              "type": ["array", "null"],
+              "items": {
+                "type": "string",
+                "enum": ["AB", "BA"]
+              }
             }
           }
         }

@@ -20,6 +20,7 @@
     "dataSource": "avi",
     "consist": [ "3820", "3827" ],
     "speed": "unreported",
-    "heading": ["BA", "AB"]
+    "heading": null,
+    "orientations": ["BA", "AB"]
   }
 }

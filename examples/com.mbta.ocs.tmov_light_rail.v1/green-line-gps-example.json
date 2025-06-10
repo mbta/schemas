@@ -20,6 +20,7 @@
     "dataSource": "gps",
     "consist": [ "3820", "3827" ],
     "speed": 35.79,
-    "heading": 318.6
+    "heading": 318.6,
+    "orientations": null
   }
 }
