@@ -96,13 +96,9 @@
               "$comment": "TODO: RTR uses an explicit 'unreported' value here. Should we just be optional / nullable?",
               "type": ["number", "null"]
             },
-            "orientations": {
-              "description": "Whether the 'rear' or 'front' of each train is facing forward for each train in the consist. AB means forward, BA means backward. Only provided with AVI data source.",
-              "type": ["array", "null"],
-              "items": {
-                "type": "string",
-                "enum": ["AB", "BA"]
-              }
+            "orientation": {
+              "description": "Whether the 'rear' or 'front' of each train is facing forward for each train in the consist. B means backward, A means forward. Only provided with AVI data source.",
+              "type": ["string", "null"]
             }
           }
         }

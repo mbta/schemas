@@ -21,6 +21,6 @@
     "consist": [ "3820", "3827" ],
     "speed": "unreported",
     "heading": null,
-    "orientations": ["BA", "AB"]
+    "orientation": "BA"
   }
 }
