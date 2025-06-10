@@ -8,15 +8,16 @@
   "data": {
     "counter": 70877,
     "timestamp": "2025-06-06T13:17:37.632951-04:00",
-    "transitLine": "B",
-    "trainUid": "548386EB",
+    "transitLine": "R",
+    "trainUid": "54838C33",
     "latitude": 42.374346,
     "longitude": -71.030170,
     "trainTag": "normal",
-    "leadCar": "0760",
+    "leadCar": "2507",
+    "leadCarDisplay": "1507", 
     "dispatchTags": [ "restricted", "isolated" ],
     "ashmont": false,
-    "tripUid": "98BB4163",
+    "tripUid": "981498C2",
     "expressLocation": ""
   }
 }

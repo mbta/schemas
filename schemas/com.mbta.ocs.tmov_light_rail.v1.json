@@ -54,6 +54,7 @@
             "lastAvi",
             "dataSource",
             "consist",
+            "consistDisplay",
             "speed",
             "heading"
           ],
@@ -73,7 +74,14 @@
               "enum": ["avi", "nvl", "gps"]
             },
             "consist": {
-              "description": "Full consist, ie car numbers of this vehicle",
+              "description": "Full consist, ie car numbers of this vehicle, as represented internally in OCS",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "consistDisplay": {
+              "description": "Full consist, ie car numbers of this vehicle, as displayed physically",
               "type": "array",
               "items": {
                 "type": "string"

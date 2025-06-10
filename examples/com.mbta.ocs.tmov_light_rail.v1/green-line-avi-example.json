@@ -14,11 +14,13 @@
     "longitude": -71.10940113113155,
     "trainTag": "normal",
     "leadCar": "3820",
+    "leadCarDisplay": "3820",
     "dispatchTags": [ "restricted", "isolated" ],
     "routeNumber": "855",
     "lastAvi": "6",
     "dataSource": "avi",
     "consist": [ "3820", "3827" ],
+        "consistDisplay": [ "3820", "3827" ],
     "speed": "unreported",
     "heading": null,
     "orientation": "BA"

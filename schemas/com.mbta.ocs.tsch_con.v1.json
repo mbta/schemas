@@ -48,14 +48,21 @@
       "allOf": [
         { "$ref": "ocs-events-common.json#/$defs/tschCommonBase" },
         {
-          "required": ["tripUid", "consist", "trainUid"],
+          "required": ["tripUid", "consist", "consistDisplay", "trainUid"],
           "properties": {
             "tripUid": {
               "description": "Trip UID - only unique within a transit line.",
               "type": "string"
             },
             "consist": {
-              "description": "Train consist (No train tags)",
+              "description": "Train car numbers in consist (No train tags), as stored internally by OCS (e.g. red line 25xx).",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "consistDisplay": {
+              "description": "Train car numbers in consist (No train tags), as physically displayed on cars (e.g. red line 15xx).",
               "type": "array",
               "items": {
                 "type": "string"
