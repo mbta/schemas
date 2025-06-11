@@ -65,7 +65,6 @@
         },
         "dispatchTags": {
           "description": "A set of tags that dispatchers can assign to trains.",
-          "$comment": "TODO: Send raw characters or map to human-readble names? Is there a known finite set? If so, enumify?",
           "type": "array",
           "items": {
             "type": "string"

@@ -15,7 +15,7 @@
     "trainTag": "normal",
     "leadCar": "3820",
     "leadCarDisplay": "3820",
-    "dispatchTags": [ "restricted", "isolated" ],
+    "dispatchTags": [ "K", "D" ],
     "routeNumber": "886",
     "lastAvi": "11",
     "dataSource": "nvl",

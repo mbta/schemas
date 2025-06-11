@@ -15,7 +15,7 @@
     "trainTag": "normal",
     "leadCar": "2507",
     "leadCarDisplay": "1507", 
-    "dispatchTags": [ "restricted", "isolated" ],
+    "dispatchTags": [ "K", "D" ],
     "ashmont": false,
     "tripUid": "981498C2",
     "expressLocation": ""
