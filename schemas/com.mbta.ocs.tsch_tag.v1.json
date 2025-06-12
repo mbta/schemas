@@ -1,0 +1,95 @@
+{
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.ocs.tsch_tag.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "OCS TSCH message to update dispatch tags for a train's consist",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "cloudevents.json#/properties/id",
+      "examples": ["prLSlfYXlQ8Nmsa8gyVi6PPZUmA="]
+    },
+    "source": {
+      "$ref": "cloudevents.json#/properties/source",
+      "examples": ["mbta.com/trike-12345"]
+    },
+    "specversion": {
+      "const": "1.0",
+      "$ref": "cloudevents.json#/properties/specversion"
+    },
+    "type": {
+      "const": "com.mbta.ocs.tsch_tag.v1",
+      "$ref": "cloudevents.json#/properties/type"
+    },
+    "time": {
+      "$ref": "cloudevents.json#/properties/time"
+    },
+    "partitionkey": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Key used to balance messages across multiple shards"
+    },
+    "data": {
+      "description": "The event payload.",
+      "$ref": "#/$defs/datadef"
+    }
+  },
+  "required": [
+    "id",
+    "source",
+    "specversion",
+    "type",
+    "data",
+    "time",
+    "partitionkey"
+  ],
+  "$defs": {
+    "datadef": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "ocs-events-common.json#/$defs/tschCommonBase" },
+        {
+          "required": ["tripUid", "trainUid", "consistTags", "carTags"],
+          "properties": {
+            "tripUid": {
+              "description": "Trip UID - only unique within a transit line.",
+              "type": "string"
+            },
+            "trainUid": {
+              "description": "Unique ID for the occupancy moving around the system. Only unique within a Transit Line.",
+              "type": "string"
+            },
+            "consistTags": {
+              "description": "All Consist & Vehicle Tags for the full Consist (so beyond the 2 characters you will see with the TID moves) ",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "carTags": {
+              "description": "Tags associated with each car in the consist. Each car can potentially have a single tag. Cars without tags will be absent from the array.",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["carNumber", "tag"],
+                "properties": {
+                  "carNumber": {
+                    "description": "Car number, as it physically appears",
+                    "type": "string"
+                  },
+                  "carNumberInternal": {
+                    "description": "Car number, as internally represented in OCS (e.g. 25xx red line car). Only provided if different from `carNumber` field.",
+                    "type": "string"
+                  },
+                  "tag": {
+                    "description": "Tag associated with this car",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

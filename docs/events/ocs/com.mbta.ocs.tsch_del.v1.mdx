@@ -1,0 +1,28 @@
+---
+sidebar_label: ocs.tsch_del
+sidebar_position: 1
+---
+
+import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
+import Examples from "@site/src/components/Examples.tsx";
+import deleted from "@site/examples/com.mbta.ocs.tsch_del.v1/deleted-example.json";
+import undeleted from "@site/examples/com.mbta.ocs.tsch_del.v1/undeleted-example.json";
+
+# tsch_del
+
+event type: `com.mbta.ocs.tsch_del.v1`
+
+OCS TSCH DEL events.
+
+## Examples
+
+<Examples
+  examples={[
+    { label: "Deletion", json: deleted },
+    { label: "Undeletion", json: undeleted },
+  ]}
+/>
+
+## Schema
+
+<EventSchemaPath event="com.mbta.ocs.tsch_del.v1" />

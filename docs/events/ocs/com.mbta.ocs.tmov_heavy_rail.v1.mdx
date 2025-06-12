@@ -1,0 +1,22 @@
+---
+sidebar_label: ocs.tmov_heavy_rail
+sidebar_position: 1
+---
+
+import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
+import Examples from "@site/src/components/Examples.tsx";
+import redLine from "@site/examples/com.mbta.ocs.tmov_heavy_rail.v1/red-line-example.json";
+
+# tmov_heavy_rail
+
+event type: `com.mbta.ocs.tmov_heavy_rail.v1`
+
+OCS TMOV events for trains on the red, orange, and blue line systems.
+
+## Examples
+
+<Examples examples={[{ label: "Red Line", json: redLine }]} />
+
+## Schema
+
+<EventSchemaPath event="com.mbta.ocs.tmov_heavy_rail.v1" />

@@ -1,0 +1,81 @@
+{
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.ocs.tsch_dst.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "OCS TSCH message to update a train's destination, route, scheduled arrival",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "cloudevents.json#/properties/id",
+      "examples": ["prLSlfYXlQ8Nmsa8gyVi6PPZUmA="]
+    },
+    "source": {
+      "$ref": "cloudevents.json#/properties/source",
+      "examples": ["mbta.com/trike-12345"]
+    },
+    "specversion": {
+      "const": "1.0",
+      "$ref": "cloudevents.json#/properties/specversion"
+    },
+    "type": {
+      "const": "com.mbta.ocs.tsch_dst.v1",
+      "$ref": "cloudevents.json#/properties/type"
+    },
+    "time": {
+      "$ref": "cloudevents.json#/properties/time"
+    },
+    "partitionkey": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Key used to balance messages across multiple shards"
+    },
+    "data": {
+      "description": "The event payload.",
+      "$ref": "#/$defs/datadef"
+    }
+  },
+  "required": [
+    "id",
+    "source",
+    "specversion",
+    "type",
+    "data",
+    "time",
+    "partitionkey"
+  ],
+  "$defs": {
+    "datadef": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "ocs-events-common.json#/$defs/tschCommonBase" },
+        {
+          "required": [
+            "tripUid",
+            "destinationStation",
+            "ocsRouteId",
+            "scheduledArrivalTime"
+          ],
+          "properties": {
+            "tripUid": {
+              "description": "Trip UID - only unique within a transit line.",
+              "type": "string"
+            },
+            "destinationStation": {
+              "description": "Destination station name",
+              "type": "string"
+            },
+            "ocsRouteId": {
+              "description": "5 characters representing the route",
+              "$comment": "TODO: This is sometimes empty string. Should we make it nullable?",
+              "type": "string"
+            },
+            "scheduledArrivalTime": {
+              "description": "Scheduled arrival time - HH:MM, but may be empty",
+              "$comment": "TODO: (1) We should probably map this to a full timestamp, but RTR does not so maybe there's a reason. (2) Sometimes this is empty string. Should we make it nullable?",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,28 @@
+---
+sidebar_label: ocs.tsch_dst
+sidebar_position: 1
+---
+
+import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
+import Examples from "@site/src/components/Examples.tsx";
+import blueLine from "@site/examples/com.mbta.ocs.tsch_dst.v1/blue-line-example.json";
+import redLine from "@site/examples/com.mbta.ocs.tsch_dst.v1/red-line-example.json";
+
+# tsch_dst
+
+event type: `com.mbta.ocs.tsch_dst.v1`
+
+OCS TSCH DST events.
+
+## Examples
+
+<Examples
+  examples={[
+    { label: "Blue Line", json: blueLine },
+    { label: "Red Line", json: redLine },
+  ]}
+/>
+
+## Schema
+
+<EventSchemaPath event="com.mbta.ocs.tsch_dst.v1" />

@@ -1,0 +1,67 @@
+{
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.ocs.tsch_off.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "OCS TSCH message to offset scheduled departure time",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "cloudevents.json#/properties/id",
+      "examples": ["prLSlfYXlQ8Nmsa8gyVi6PPZUmA="]
+    },
+    "source": {
+      "$ref": "cloudevents.json#/properties/source",
+      "examples": ["mbta.com/trike-12345"]
+    },
+    "specversion": {
+      "const": "1.0",
+      "$ref": "cloudevents.json#/properties/specversion"
+    },
+    "type": {
+      "const": "com.mbta.ocs.tsch_off.v1",
+      "$ref": "cloudevents.json#/properties/type"
+    },
+    "time": {
+      "$ref": "cloudevents.json#/properties/time"
+    },
+    "partitionkey": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Key used to balance messages across multiple shards"
+    },
+    "data": {
+      "description": "The event payload.",
+      "$ref": "#/$defs/datadef"
+    }
+  },
+  "required": [
+    "id",
+    "source",
+    "specversion",
+    "type",
+    "data",
+    "time",
+    "partitionkey"
+  ],
+  "$defs": {
+    "datadef": {
+      "type": "object",
+      "allOf": [
+        { "$ref": "ocs-events-common.json#/$defs/tschCommonBase" },
+        {
+          "required": ["tripUid", "offset"],
+          "properties": {
+            "tripUid": {
+              "description": "Trip UID - only unique within a transit line.",
+              "type": "string"
+            },
+            "offset": {
+              "description": "Offset the schedule this many minutes (positive or negative). Range from -59 to 59",
+              "$comment": "TODO: RTR represents this as a string. Is there a reason why it cannot be converted to a numerical value? Also, is it guaranteed to be an integer?",
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

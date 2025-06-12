@@ -1,0 +1,15 @@
+{
+  "id": "prLSlfYXlQ8Nmsa8gyVi6PPZUmA=",
+  "partitionkey": "{10.0.0.28:8081 -> 10.0.0.2:65473}",
+  "source": "ctd.mbta.com/trike-1234",
+  "specversion": "1.0",
+  "time": "2023-01-29T13:51:54.990000Z",
+  "type": "com.mbta.ocs.tsch_off.v1",
+  "data": {
+    "counter": 70877,
+    "timestamp": "2025-06-02T18:45:43.958582-04:00",
+    "transitLine": "R",
+    "tripUid": "981494B5",
+    "offset": -3
+  }
+}

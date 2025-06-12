@@ -1,0 +1,28 @@
+---
+sidebar_label: ocs.tsch_new
+sidebar_position: 1
+---
+
+import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
+import Examples from "@site/src/components/Examples.tsx";
+import scheduled from "@site/examples/com.mbta.ocs.tsch_new.v1/scheduled-trip-example.json";
+import added from "@site/examples/com.mbta.ocs.tsch_new.v1/added-trip-example.json";
+
+# tsch_new
+
+event type: `com.mbta.ocs.tsch_new.v1`
+
+OCS TSCH NEW events.
+
+## Examples
+
+<Examples
+  examples={[
+    { label: "Scheduled Trip", json: scheduled },
+    { label: "Added Trip", json: added },
+  ]}
+/>
+
+## Schema
+
+<EventSchemaPath event="com.mbta.ocs.tsch_new.v1" />

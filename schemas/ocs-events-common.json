@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/ocs-events-common.json",
+  "description": "Common definitions shared across parsed OCS TMOV messages",
+  "$defs": {
+    "tmovCommonBase": {
+      "type": "object",
+      "$comment": "Shared fields for all TMOV messages",
+      "required": ["counter", "timestamp", "transitLine", "trainUid"],
+      "properties": {
+        "counter": {
+          "description": "Message sequence counter, which is unique for a given thread/client connection. This number can be used to detect if a command has been missed. This number is reset after midnight each night.",
+          "$comment": "TODO: Document counter behavior within transitline/message types.",
+          "type": "integer"
+        },
+        "timestamp": {
+          "description": "RFC3339 timestamp when this event occurred",
+          "$ref": "#/$defs/timestamp"
+        },
+        "transitLine": {
+          "description": "Single character describing transit line. (R = Red, O = Orange, B = Blue, G = Green)",
+          "type": "string"
+        },
+        "trainUid": {
+          "description": "Unique ID for the occupancy moving around the system. Only unique within a Transit Line.",
+          "type": "string"
+        }
+      }
+    },
+    "tmovCommonAdditional": {
+      "type": "object",
+      "$comment": "Additional fields for TMOV heavy and light rail messages",
+      "required": [
+        "latitude",
+        "longitude",
+        "trainTag",
+        "leadCar",
+        "dispatchTags"
+      ],
+      "properties": {
+        "latitude": {
+          "description": "Current latitude of train position",
+          "type": "number"
+        },
+        "longitude": {
+          "description": "Current longitude of train position",
+          "type": "number"
+        },
+        "trainTag": {
+          "description": "Train tag: Non-revenue, Revenue, Express (revenue) or Big Red (revenue)",
+          "type": "string",
+          "enum": ["non_revenue", "normal", "express", "big_red"]
+        },
+        "leadCar": {
+          "description": "Lead car number, as displayed on the physical vehicle. Example: For a red line car physically numbered 15xx, internally numbered 25xx, this field would contain 15xx.",
+          "type": "string"
+        },
+        "leadCarInternal": {
+          "description": "Optional: Lead car number, as represented internally in OCS, which differs from the number displayed on a physical train car. Only provided if it differs from the `leadCar` field. Example: For a red line car physically numbered 15xx, internally numbered 25xx, this field would contain 25xx.",
+          "type": "string"
+        },
+        "dispatchTags": {
+          "description": "A set of tags that dispatchers can assign to trains.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "tschCommonBase": {
+      "type": "object",
+      "$comment": "Shared fields for all TSCH messages",
+      "required": ["counter", "timestamp", "transitLine"],
+      "properties": {
+        "counter": {
+          "description": "Message sequence counter, which is unique for a given thread/client connection. This number can be used to detect if a command has been missed. This number is reset after midnight each night.",
+          "$comment": "TODO: Document counter behavior within transitline/message types.",
+          "type": "integer"
+        },
+        "timestamp": {
+          "description": "RFC3339 timestamp when this event occurred",
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-(0\\d|1[012])-([012]\\d|3[01])T([01]\\d|2[0-3]):([0-5]\\d):([0-5]\\d)([.]\\d{1,6})?(Z|[+-]\\d{1,2}:[0-5]\\d)$"
+        },
+        "transitLine": {
+          "description": "Single character describing transit line. (R = Red, O = Orange, B = Blue)",
+          "type": "string"
+        }
+      }
+    },
+    "timestamp": {
+      "type": "string",
+      "minLength": 20,
+      "$comment": "RFC3339 timestamp",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[01][0-9]-[0-3][0-9]T[012][0-9]:[0-5][0-9]:[0-6][0-9](.[0-9]*)?(Z|[+-][012][0-9]:[0-5][0-9])$",
+      "examples": ["2023-01-20T09:30:00-05:00"]
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "prLSlfYXlQ8Nmsa8gyVi6PPZUmA=",
+  "partitionkey": "{10.0.0.28:8081 -> 10.0.0.2:65473}",
+  "source": "ctd.mbta.com/trike-1234",
+  "specversion": "1.0",
+  "time": "2023-01-29T13:51:54.990000Z",
+  "type": "com.mbta.ocs.tsch_new.v1",
+  "data": {
+    "counter": 70877,
+    "timestamp": "2025-06-02T18:45:43.958582-04:00",
+    "transitLine": "R",
+    "tripUid": "981494FC",
+    "addType": "S",
+    "tripType": "R",
+    "scheduledDepartureTime": "2025-06-08T19:45:00-04:00",
+    "scheduledArrivalTime": "2025-06-08T20:33:00-04:00",
+    "ocsRouteId": "N933_",
+    "originStation": "BRAINTREE",
+    "destinationStation": "ALEWIFE",
+    "previousTripUid": "981494FB",
+    "nextTripUid": "981494FD"
+  }
+}
