@@ -14,13 +14,11 @@
     "longitude": -71.10940113113155,
     "trainTag": "normal",
     "leadCar": "3820",
-    "leadCarDisplay": "3820",
     "dispatchTags": [ "K", "D" ],
     "routeNumber": "886",
     "lastAvi": "11",
     "dataSource": "nvl",
     "consist": [ "3820", "3827" ],
-    "consistDisplay": [ "3820", "3827" ],
     "speed": 35.79,
     "heading": null,
     "orientation": null

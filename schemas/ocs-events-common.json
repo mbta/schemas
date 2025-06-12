@@ -35,7 +35,6 @@
         "longitude",
         "trainTag",
         "leadCar",
-        "leadCarDisplay",
         "dispatchTags"
       ],
       "properties": {
@@ -53,13 +52,11 @@
           "enum": ["non_revenue", "normal", "express", "big_red"]
         },
         "leadCar": {
-          "description": "Lead car number, as represented internally in OCS, which may differ from the number displayed on a physical train car. Example: For a red line car physically numbered 15xx, internally numbered 25xx, this field would contain 25xx.",
-          "$comment": "TODO: Should this just be an integer.",
+          "description": "Lead car number, as displayed on the physical vehicle. Example: For a red line car physically numbered 15xx, internally numbered 25xx, this field would contain 15xx.",
           "type": "string"
         },
-        "leadCarDisplay": {
-          "description": "Lead car number, as displayed on the physical vehicle. Example: For a red line car physically numbered 15xx, internally numbered 25xx, this field would contain 15xx.",
-          "$comment": "TODO: Should this just be an integer.",
+        "leadCarInternal": {
+          "description": "Optional: Lead car number, as represented internally in OCS, which differs from the number displayed on a physical train car. Only provided if it differs from the `leadCar` field. Example: For a red line car physically numbered 15xx, internally numbered 25xx, this field would contain 25xx.",
           "type": "string"
         },
         "dispatchTags": {

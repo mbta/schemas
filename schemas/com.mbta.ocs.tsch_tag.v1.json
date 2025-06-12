@@ -70,14 +70,14 @@
               "type": "array",
               "items": {
                 "type": "object",
-                "required": ["carNumber", "carNumberDisplay", "tag"],
+                "required": ["carNumber", "tag"],
                 "properties": {
                   "carNumber": {
-                    "description": "Car number, as internally represented in OCS (e.g. 25xx red line car)",
+                    "description": "Car number, as it physically appears",
                     "type": "string"
                   },
-                  "carNumberDisplay": {
-                    "description": "Car number, as it physically appears",
+                  "carNumberInternal": {
+                    "description": "Car number, as internally represented in OCS (e.g. 25xx red line car). Only provided if different from `carNumber` field.",
                     "type": "string"
                   },
                   "tag": {

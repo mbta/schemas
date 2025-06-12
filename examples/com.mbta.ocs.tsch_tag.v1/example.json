@@ -8,18 +8,17 @@
   "data": {
     "counter": 70877,
     "timestamp": "2025-06-06T13:17:37.632951-04:00",
-    "transitLine": "B",
+    "transitLine": "R",
     "trainUid": "548386C2",
     "tripUid": "98BB3FCE",
     "consistTags": ["U", "D", "K"],
     "carTags": [
       {
-        "carNumber": "1841",
-        "carNumberDisplay": "1841",
+        "carNumber": "1541",
+        "carNumberInternal": "2541",
         "tag": "D"
       }, {
         "carNumber": "1824",
-        "carNumberDisplay": "1824",
         "tag": "K"
       }
     ]
