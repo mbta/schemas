@@ -41,7 +41,6 @@
       "properties": {
         "latitude": {
           "description": "Current latitude of train position",
-          "$comment": "TODO: Confirm that we want to send raw lat/long. RTR uses this to match against a CSV of known locations, converting to location ID. We probably don't want Trike to know about all locations though?",
           "type": "number"
         },
         "longitude": {
