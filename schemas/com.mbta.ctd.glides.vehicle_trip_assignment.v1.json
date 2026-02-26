@@ -19,7 +19,10 @@
         },
         "tripKey": {
           "oneOf": [{ "$ref": "#/$defs/trip_key" }, { "const": null }]
-        }
+        },
+        "revenue": {
+          "oneOf": [{ "const": "revenue" }, { "const": "nonrevenue" }]
+        },
       },
       "required": ["vehicleId", "tripKey"]
     }
