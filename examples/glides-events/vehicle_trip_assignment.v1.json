@@ -7,7 +7,8 @@
     "time": "2024-11-14T09:50:00-05:00",
     "data": {
       "vehicleId": "G-12345",
-      "tripKey": null
+      "tripKey": null,
+      "revenue": null
     }
   },
   {
@@ -22,7 +23,8 @@
         "serviceDate": "2024-11-14",
         "tripId": "11111111",
         "scheduled": "scheduled"
-      }
+      },
+      "revenue": "revenue"
     }
   },
   {
@@ -37,7 +39,8 @@
         "serviceDate": "2024-11-14",
         "tripId": "22222222",
         "scheduled": "scheduled"
-      }
+      },
+      "revenue": "nonrevenue"
     }
   },
   {
@@ -48,7 +51,8 @@
     "time": "2024-11-14T11:55:00-05:00",
     "data": {
       "vehicleId": "G-12345",
-      "tripKey": null
+      "tripKey": null,
+      "revenue": null
     }
   }
 ]

@@ -25,6 +25,7 @@ Fields in the event's `data`:
 
 - `vehicleId` (string): The vehicle ID that Glides gets from RTR via GTFS-RT. E.g. `"G-10223"`
 - `tripKey` ([TripKey](#tripkey) | null):
+- `revenue` (`"revenue"` | `"nonrevenue"`, optional): Whether the trip is scheduled to be in revenue service. This field will only be missing if Glides is unassigning the vehicle from a trip, e.g. if `VehicleTripAssignment.tripKey` is `null`.
 
 If a `tripKey` is `null`, that means the vehicle is not assigned to a trip.
 
