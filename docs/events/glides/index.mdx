@@ -97,6 +97,7 @@ Fields:
 - `inputTimestamp` (RFC3339 timestamp, optional): The timestamp that the user entered the data into Glides, as reported by their device. You probably want to use the event time instead. See [more explanation](#a-note-about-inputtimestamp) below.
 - `inputType` (string, optional): the action that the user did in Glides. This field exists because the event data on its own may not specify how the data was entered, for example all trainsheet updates are normalized into a generic format in `tripUpdates`. Example values for this field are `"add-trip"` or `"manage-headways"`, but no guarantees are given about what strings will be used or which actions the field will be populated for.
 - `location` ([Location](#location), optional): the location the logged-in user is managing.
+- `uiVersion` (string, optional): The version of the Glides UI that the editing inspector was using. A canonical version list will be maintained by the Glides application team.
 
 #### A note about `inputTimestamp`
 

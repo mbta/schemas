@@ -99,7 +99,8 @@
         "author": { "$ref": "#/$defs/glides_user" },
         "inputTimestamp": { "$ref": "#/$defs/timestamp" },
         "inputType": { "type": "string", "minLength": 1 },
-        "location": { "$ref": "#/$defs/location" }
+        "location": { "$ref": "#/$defs/location" },
+        "uiVersion": { "type": "string", "minLength": 1 }
       }
     },
     "operator": {
