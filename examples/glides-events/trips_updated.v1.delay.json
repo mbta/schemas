@@ -6,7 +6,8 @@
   "time": "2023-01-23T01:25:00-05:00",
   "data": {
     "metadata": {
-      "inputType": "edit-trip"
+      "inputType": "edit-trip",
+      "uiVersion": "1"
     },
     "tripUpdates": [
       {
