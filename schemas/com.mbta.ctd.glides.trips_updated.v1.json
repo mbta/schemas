@@ -180,6 +180,12 @@
         "endTime": {
           "oneOf": [{ "$ref": "#/$defs/time" }, { "const": "unset" }]
         },
+        "automaticStartTime": {
+          "oneOf": [{ "$ref": "#/$defs/time" }, { "const": "unset" }]
+        },
+        "automaticEndTime": {
+          "oneOf": [{ "$ref": "#/$defs/time" }, { "const": "unset" }]
+        },
         "cars": {
           "type": "array",
           "minItems": 1,

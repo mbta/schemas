@@ -173,6 +173,8 @@ Fields in the object:
 - `endLocation` ([Location](.#location) | "unset", optional): the new destination of the train.
 - `startTime` ([Time](#time) | "unset", optional): if present, the new time that the train is expected to depart `startLocation` (or the existing `startLocation` of the trip).
 - `endTime` ([Time](#time) | "unset", optional): if present, the new time that the train is expected to arrive at `endLocation` (or the existing `endLocation` of the trip).
+- `automaticStartTime` ([Time](#time) | "unset", optional): if present, the new time that the train's departure from `startLocation` (or the existing `startLocation` of the trip) was detected.
+- `automaticEndTime` ([Time](#time) | "unset", optional): if present, the new time that the train's arrival at `endLocation` (or the existing `endLocation` of the trip) was detected.
 - `cars` (array of [Car](#car), optional): array of length 1 or 2, containing the car numbers and operators for each car in the train assigned to the trip. If absent, there are no changes to any cars. If present, the length of the array is the length of the train. In a two car train, the front car is listed first.
 - `revenue` (`"revenue"` | `"nonrevenue"`, optional): Whether the trip is in revenue service.
 - `dropped` ([DroppedReason](#droppedreason) | false, optional): If present the trip was dropped for the provided reason. If set to `false`, the trip is not dropped (and restored if previously dropped).
