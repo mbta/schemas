@@ -200,7 +200,8 @@
         },
         "scheduled": {
           "oneOf": [{ "$ref": "#/$defs/scheduled" }, { "const": null }]
-        }
+        },
+        "nextTripKey": { "$ref": "#/$defs/trip_key" }
       },
       "required": ["type", "tripKey", "scheduled"]
     }

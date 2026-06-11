@@ -1,0 +1,42 @@
+{
+  "type": "com.mbta.ctd.glides.trips_updated.v1",
+  "specversion": "1.0",
+  "source": "glides.mbta.com",
+  "id": "19fdb184-7dd6-4664-8472-04bd6177ec44",
+  "time": "2023-01-20T10:30:00-05:00",
+  "data": {
+    "metadata": {
+      "inputType": "edit-trip",
+      "uiVersion": "1"
+    },
+    "tripUpdates": [
+      {
+        "type": "updated",
+        "tripKey": {
+          "serviceDate": "2022-01-20",
+          "tripId": "64101244",
+          "startLocation": { "gtfsId": "place-lake" },
+          "endLocation": { "gtfsId": "place-gover" },
+          "startTime": "10:00:00",
+          "endTime": "10:47:00"
+        },
+        "nextTripKey": {
+          "serviceDate": "2022-01-20",
+          "tripId": "64101245",
+          "startLocation": { "gtfsId": "place-gover" },
+          "endLocation": { "gtfsId": "place-lake" },
+          "startTime": "11:13:00",
+          "endTime": "12:00:00"
+        },
+        "scheduled": {
+          "scheduledCars": [
+            {
+              "run": "500",
+              "operator": { "badgeNumber": "1234" }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

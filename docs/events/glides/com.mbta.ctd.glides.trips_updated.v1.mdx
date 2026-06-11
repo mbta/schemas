@@ -108,6 +108,7 @@ New restrictions on existing fields:
 - At least one of `startTime`, `endTime`, and `previousTripKey` is required.
 - `revenue` (`"revenue"` | `"nonrevenue"`, optional): If this field is missing when adding a trip, the default is that the trip is in revenue service.
 - `dropped` SHOULD NOT be set.
+- `nextTripKey` SHOULD NOT be set.
 - All data SHOULD NOT be `"none"` or `"unset"`. (Instead, the fields would not be included).
 
 Glides SHOULD include the `cars` field to indicate the length of the train, even if no information is known about each car.
@@ -179,6 +180,7 @@ Fields in the object:
 - `revenue` (`"revenue"` | `"nonrevenue"`, optional): Whether the trip is in revenue service.
 - `dropped` ([DroppedReason](#droppedreason) | false, optional): If present the trip was dropped for the provided reason. If set to `false`, the trip is not dropped (and restored if previously dropped).
 - `scheduled` ([Scheduled](#scheduled) | null): For trips in Glides' schedule, this represents the scheduled data for the trip. It will always be present and won't change between subsequent updates to the same trip. For added trips, this will always be `null`.
+- `nextTripKey` ([TripKey](#tripkey), optional): If present, this specifies the key of another trip that will happen immediately after this trip. This field MAY refer to a trip that has not been already seen in the event stream. This field is intended to communicate a change in the expected sequence of trips, such as the sequence implied by blocks in the schedule from HASTUS. Note that a single change indicating a sequential link between two trips may imply additional changes to other links. For example, consider an initial schedule containing sequences between trips A1 --> A2, and B1 --> B2. If Glides emits an update to A1 with `nextTripKey` referencing B2, this implies a break to the two initial links. Clients are expected to maintain a consistent schedule such that no two trips may link to the same "next" trip. Note also that this field does not support an "unset" value. If Glides wishes to restore the initial schedule after changing some links, it must explicitly emit the links to be restored.
 
 Some values might be the special string `"unset"`. This means to treat the field as if it had never been modified. This is semantically slightly different than setting the value to the scheduled value. For example, setting `startTime` to `"unset"` implies we don't know when the trip will leave, and the scheduled time might be a good guess, but setting `startTime` to equal the scheduled start time implies that an inspector has confirmed the trip will leave at that time.
 
