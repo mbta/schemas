@@ -108,7 +108,7 @@ New restrictions on existing fields:
 - At least one of `startTime`, `endTime`, and `previousTripKey` is required.
 - `revenue` (`"revenue"` | `"nonrevenue"`, optional): If this field is missing when adding a trip, the default is that the trip is in revenue service.
 - `dropped` SHOULD NOT be set.
-- `nextTripKey` SHOULD NOT be set.
+- `nextTripKey` SHOULD NOT be set. By convention, the `previousTripKey` field should be used instead to indicate any sequence between added trips.
 - All data SHOULD NOT be `"none"` or `"unset"`. (Instead, the fields would not be included).
 
 Glides SHOULD include the `cars` field to indicate the length of the train, even if no information is known about each car.
@@ -180,7 +180,7 @@ Fields in the object:
 - `revenue` (`"revenue"` | `"nonrevenue"`, optional): Whether the trip is in revenue service.
 - `dropped` ([DroppedReason](#droppedreason) | false, optional): If present the trip was dropped for the provided reason. If set to `false`, the trip is not dropped (and restored if previously dropped).
 - `scheduled` ([Scheduled](#scheduled) | null): For trips in Glides' schedule, this represents the scheduled data for the trip. It will always be present and won't change between subsequent updates to the same trip. For added trips, this will always be `null`.
-- `nextTripKey` ([TripKey](#tripkey), optional): If present, this specifies the key of another trip that will happen immediately after this trip. This field MAY refer to a trip that has not been already seen in the event stream. This field is intended to communicate a change in the expected sequence of trips, such as the sequence implied by blocks in the schedule from HASTUS. Note that a single change indicating a sequential link between two trips may imply additional changes to other links. For example, consider an initial schedule containing sequences between trips A1 --> A2, and B1 --> B2. If Glides emits an update to A1 with `nextTripKey` referencing B2, this implies a break to the two initial links. Clients are expected to maintain a consistent schedule such that no two trips may link to the same "next" trip. Note also that this field does not support an "unset" value. If Glides wishes to restore the initial schedule after changing some links, it must explicitly emit the links to be restored.
+- `nextTripKey` ([TripKey](#tripkey), optional): If present, this specifies the key of another trip that the vehicle performing this trip will perform immediately after. This field MAY refer to a trip that has not been already seen in the event stream. A single change establishing a link between two trips may implicitly impact other pre-existing links, and clients are expected to maintain a consistent schedule. See the [Block Changes via nextTripKey](#block-changes-via-nexttripkey) section for a more detailed example.
 
 Some values might be the special string `"unset"`. This means to treat the field as if it had never been modified. This is semantically slightly different than setting the value to the scheduled value. For example, setting `startTime` to `"unset"` implies we don't know when the trip will leave, and the scheduled time might be a good guess, but setting `startTime` to equal the scheduled start time implies that an inspector has confirmed the trip will leave at that time.
 
@@ -189,6 +189,27 @@ _Notes:_
 - setting a new location or time does not modify the [TripKey](#tripkey) for a scheduled trip.
 - If `cars` is updated from a 1-element list to a 2-element list, then Glides SHOULD include data for the 2nd car. This is relevant if a two-car train has a car removed and then re-added. If a field was set before the car was dropped, then when the car is restored, clients MUST assume that the field is `"none"` as opposed to retaining its previous value, but Glides SHOULD include the data to avoid the ambiguity.
 - Some fields, such as `startTime` or `cars`, are not relevant to dropped trips. Those fields SHOULD NOT be set in an update that drops a trip or any following updates, until the trip is undropped by setting `dropped` to `false`. However, if a trip is undropped, clients MUST assume all fields retain their values from before the field was undropped. Clients MUST NOT ignore updates to fields when a trip is dropped, even if they aren't relevant for dropped trips. For example, if a trip is dropped, and then the `startTime` is updated, and then it's undropped, the trip's `startTime` is the value set while the trip was dropped. Glides MAY include extra fields in an update that undrops a trip, if they are changed as part of the same event that undropped the trip, or just to remind clients about them now that they're relevant.
+
+#### Block Changes via nextTripKey
+
+The `nextTripKey` field is intended to communicate a change in the expected sequence of trips, such as the sequence implied by blocks in the schedule from HASTUS. When Glides communicates a new link between two trips, clients may need to update or break other links in order to maintain a consistent schedule, such that no two trips link to the same "next" trip.
+
+For example, consider a schedule with trips A1, A2, B1, B2, and two existing "next trip" links:
+
+```
+A1 --> A2
+B1 --> B2
+```
+
+Suppose that while managing service, a pullout inspector decides that the vehicle completing trip A1 needs to break its block and serve B2 next. Glides would then send an update for trip A1, with `nextTripKey` referring to trip B2. This implies the following:
+
+- The link A1 --> B2 should be established.
+- The link A1 --> A2 should be broken. Trip A2 is no longer considered the "next" trip for any known trip.
+- The link B1 --> B2 should be broken. Trip B1 no longer has a known "next" trip.
+
+Note that the `nextTripKey` field does not support an `"unset"` value. If Glides wishes to restore the initial schedule after changing some links, it must explicitly emit the links to be restored. For example, in the above scenario, if the pullout inspector then changes their mind, Glides may decide to re-establish the original blocks. To do so, it MUST emit two updates explicitly linking A1 --> A2 and B1 --> B2. (The link A1 --> B2 would be implicitly broken by these new events.)
+
+Note also that this field does not currently support a `"none"` value. This means that Glides cannot explicitly "break" a link, and instead may alter the schedule only by establishing new links.
 
 ## Examples
 
