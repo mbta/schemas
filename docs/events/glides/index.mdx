@@ -138,6 +138,7 @@ Events are in the [CloudEvents](https://github.com/cloudevents/spec/blob/v1.0.2/
 Events will be written as records to a Kinesis stream. Each Glides environment (`dev`, `dev-green`, and `prod`) will have a separate stream, named `ctd-glides-<environment>`.
 
 The partition key will be either:
+
 - a hash of the station at which the inspector is working and the inspector's identity, which ensures that multiple events from a single inspector are ordered correctly if the records are distributed across multiple shards.
 - a hash of a string constant if the automatic time was recorded by the `AutomaticTripTimeRecorder` process in Glides.
 
