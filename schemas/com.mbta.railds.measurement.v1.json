@@ -41,9 +41,7 @@
                     "value_type": {
                       "type": "string",
                       "description": "Type of the value",
-                      "enum": [
-                        "boolean"
-                      ]
+                      "enum": ["boolean"]
                     },
                     "index": {
                       "type": "integer",
@@ -51,19 +49,13 @@
                       "minimum": 1
                     },
                     "old": {
-                      "type": [
-                        "integer",
-                        "null"
-                      ],
+                      "type": ["integer", "null"],
                       "description": "Previous value before change"
                     },
                     "operation": {
                       "type": "string",
                       "description": "Operation performed on the value",
-                      "enum": [
-                        "clear",
-                        "set"
-                      ]
+                      "enum": ["clear", "set"]
                     },
                     "change_id": {
                       "type": "string",
@@ -88,20 +80,12 @@
                 }
               }
             },
-            "required": [
-              "mlk_timestamp_utc",
-              "values"
-            ]
+            "required": ["mlk_timestamp_utc", "values"]
           }
         }
       },
-      "required": [
-        "events"
-      ]
+      "required": ["events"]
     }
   },
-  "required": [
-    "asset_id",
-    "payload"
-  ]
+  "required": ["asset_id", "payload"]
 }

@@ -12,44 +12,32 @@
     "event_class": {
       "type": "string",
       "description": "Classification of the event",
-      "examples": [
-        "Current Sensor"
-      ]
+      "examples": ["Current Sensor"]
     },
     "event_type": {
       "type": "string",
       "description": "Type of event detection",
-      "enum": [
-        "analog_threshold"
-      ]
+      "enum": ["analog_threshold"]
     },
     "detector_mode": {
       "type": "string",
       "description": "Detection mode for the event",
-      "enum": [
-        "momentary"
-      ]
+      "enum": ["momentary"]
     },
     "sample_mode": {
       "type": "string",
       "description": "Sampling mode for the event",
-      "enum": [
-        "all"
-      ]
+      "enum": ["all"]
     },
     "status": {
       "type": "string",
       "description": "Current status of the event",
-      "enum": [
-        "completed"
-      ]
+      "enum": ["completed"]
     },
     "severity": {
       "type": "string",
       "description": "Severity level of the event",
-      "enum": [
-        "event"
-      ]
+      "enum": ["event"]
     },
     "start": {
       "type": "object",
@@ -73,12 +61,7 @@
           "description": "Raw sensor value at event start"
         }
       },
-      "required": [
-        "timestamp",
-        "iso",
-        "value",
-        "raw_value"
-      ]
+      "required": ["timestamp", "iso", "value", "raw_value"]
     },
     "end": {
       "type": "object",
@@ -104,18 +87,10 @@
         "reason": {
           "type": "string",
           "description": "Reason the event ended",
-          "enum": [
-            "normal_end"
-          ]
+          "enum": ["normal_end"]
         }
       },
-      "required": [
-        "timestamp",
-        "iso",
-        "value",
-        "raw_value",
-        "reason"
-      ]
+      "required": ["timestamp", "iso", "value", "raw_value", "reason"]
     },
     "duration_sec": {
       "type": "number",
@@ -166,9 +141,7 @@
         "unit": {
           "type": "string",
           "description": "Unit of measurement",
-          "examples": [
-            "Amps"
-          ]
+          "examples": ["Amps"]
         },
         "units_seen": {
           "type": "array",
@@ -178,21 +151,14 @@
           }
         }
       },
-      "required": [
-        "slot_key",
-        "port",
-        "point_key"
-      ]
+      "required": ["slot_key", "port", "point_key"]
     },
     "rule": {
       "type": "object",
       "description": "Rule configuration that triggered the event",
       "properties": {
         "rule_id": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": ["string", "null"],
           "description": "Unique identifier for the rule"
         },
         "rule_name": {
@@ -236,19 +202,13 @@
               "minimum": 0
             },
             "event_change_deadband": {
-              "type": [
-                "number",
-                "null"
-              ],
+              "type": ["number", "null"],
               "description": "Minimum change required to record a new sample"
             }
           }
         }
       },
-      "required": [
-        "rule_name",
-        "enabled"
-      ]
+      "required": ["rule_name", "enabled"]
     },
     "metrics": {
       "type": "object",
@@ -289,9 +249,7 @@
           "minimum": 0
         }
       },
-      "required": [
-        "sample_count"
-      ]
+      "required": ["sample_count"]
     },
     "sample_storage": {
       "type": "object",
@@ -304,20 +262,14 @@
         "mode": {
           "type": "string",
           "description": "Storage mode for samples",
-          "enum": [
-            "inline_arrays"
-          ]
+          "enum": ["inline_arrays"]
         },
         "compressed": {
           "type": "boolean",
           "description": "Whether samples are compressed"
         }
       },
-      "required": [
-        "included",
-        "mode",
-        "compressed"
-      ]
+      "required": ["included", "mode", "compressed"]
     },
     "samples": {
       "type": "object",
@@ -345,11 +297,7 @@
           }
         }
       },
-      "required": [
-        "timestamps",
-        "values",
-        "raw_values"
-      ]
+      "required": ["timestamps", "values", "raw_values"]
     },
     "metadata": {
       "type": "object",
@@ -363,15 +311,10 @@
         "app": {
           "type": "string",
           "description": "Application that generated the event",
-          "examples": [
-            "moxa_event_detector"
-          ]
+          "examples": ["moxa_event_detector"]
         }
       },
-      "required": [
-        "created_utc",
-        "app"
-      ]
+      "required": ["created_utc", "app"]
     }
   },
   "required": [

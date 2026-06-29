@@ -17,9 +17,7 @@
     "source": {
       "$ref": "cloudevents.json#/properties/source",
       "description": "The Id of the device that emitted the event.",
-      "examples": [
-        "/edge-collector/MOXA-101"
-      ]
+      "examples": ["/edge-collector/MOXA-101"]
     },
     "id": {
       "type": "string",
@@ -53,14 +51,7 @@
       ]
     }
   },
-  "required": [
-    "type",
-    "specversion",
-    "source",
-    "id",
-    "time",
-    "data"
-  ],
+  "required": ["type", "specversion", "source", "id", "time", "data"],
   "$defs": {
     "timestamp": {
       "type": "string",
@@ -68,9 +59,7 @@
       "$comment": "RFC3339 timestamp",
       "format": "date-time",
       "pattern": "^[0-9]{4}-[01][0-9]-[0-3][0-9]T[012][0-9]:[0-5][0-9]:[0-6][0-9](.[0-9]*)?(Z|[+-][012][0-9]:[0-5][0-9])$",
-      "examples": [
-        "2023-01-20T09:30:00-05:00"
-      ]
+      "examples": ["2023-01-20T09:30:00-05:00"]
     }
   }
 }
