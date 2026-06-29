@@ -1,0 +1,395 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.railds.switch-throw.v1.json",
+  "title": "Switch Throw Event Data",
+  "description": "Raw event data structure from Moxa event detector before CloudEvents wrapping",
+  "type": "object",
+  "properties": {
+    "event_label": {
+      "type": "string",
+      "description": "Human-readable label for the event"
+    },
+    "event_class": {
+      "type": "string",
+      "description": "Classification of the event",
+      "examples": [
+        "Current Sensor"
+      ]
+    },
+    "event_type": {
+      "type": "string",
+      "description": "Type of event detection",
+      "enum": [
+        "analog_threshold"
+      ]
+    },
+    "detector_mode": {
+      "type": "string",
+      "description": "Detection mode for the event",
+      "enum": [
+        "momentary"
+      ]
+    },
+    "sample_mode": {
+      "type": "string",
+      "description": "Sampling mode for the event",
+      "enum": [
+        "all"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "description": "Current status of the event",
+      "enum": [
+        "completed"
+      ]
+    },
+    "severity": {
+      "type": "string",
+      "description": "Severity level of the event",
+      "enum": [
+        "event"
+      ]
+    },
+    "start": {
+      "type": "object",
+      "description": "Event start information",
+      "properties": {
+        "timestamp": {
+          "type": "number",
+          "description": "Unix timestamp (seconds since epoch) when event started"
+        },
+        "iso": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 formatted timestamp"
+        },
+        "value": {
+          "type": "number",
+          "description": "Measured value at event start"
+        },
+        "raw_value": {
+          "type": "number",
+          "description": "Raw sensor value at event start"
+        }
+      },
+      "required": [
+        "timestamp",
+        "iso",
+        "value",
+        "raw_value"
+      ]
+    },
+    "end": {
+      "type": "object",
+      "description": "Event end information",
+      "properties": {
+        "timestamp": {
+          "type": "number",
+          "description": "Unix timestamp (seconds since epoch) when event ended"
+        },
+        "iso": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 formatted timestamp"
+        },
+        "value": {
+          "type": "number",
+          "description": "Measured value at event end"
+        },
+        "raw_value": {
+          "type": "number",
+          "description": "Raw sensor value at event end"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Reason the event ended",
+          "enum": [
+            "normal_end"
+          ]
+        }
+      },
+      "required": [
+        "timestamp",
+        "iso",
+        "value",
+        "raw_value",
+        "reason"
+      ]
+    },
+    "duration_sec": {
+      "type": "number",
+      "description": "Duration of the event in seconds",
+      "minimum": 0
+    },
+    "source": {
+      "type": "object",
+      "description": "Information about the event source",
+      "properties": {
+        "slot_key": {
+          "type": "string",
+          "description": "Identifier for the device slot",
+          "pattern": "^slot_[0-9]+$"
+        },
+        "port": {
+          "type": "integer",
+          "description": "Port number on the device",
+          "minimum": 0
+        },
+        "point_key": {
+          "type": "string",
+          "description": "Unique identifier combining slot and port"
+        },
+        "model_names": {
+          "type": "array",
+          "description": "Device model names",
+          "items": {
+            "type": "string"
+          }
+        },
+        "custom_target": {
+          "type": "string",
+          "description": "Custom monitoring target name"
+        },
+        "monitoring_target": {
+          "type": "string",
+          "description": "Type of monitoring target"
+        },
+        "equipment_type": {
+          "type": "string",
+          "description": "Type of equipment being monitored"
+        },
+        "sensor": {
+          "type": "string",
+          "description": "Sensor type or model"
+        },
+        "unit": {
+          "type": "string",
+          "description": "Unit of measurement",
+          "examples": [
+            "Amps"
+          ]
+        },
+        "units_seen": {
+          "type": "array",
+          "description": "All units of measurement seen for this source",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "slot_key",
+        "port",
+        "point_key"
+      ]
+    },
+    "rule": {
+      "type": "object",
+      "description": "Rule configuration that triggered the event",
+      "properties": {
+        "rule_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Unique identifier for the rule"
+        },
+        "rule_name": {
+          "type": "string",
+          "description": "Name of the rule"
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether the rule is currently enabled"
+        },
+        "condition": {
+          "type": "object",
+          "description": "Threshold conditions for the rule",
+          "properties": {
+            "start_threshold": {
+              "type": "number",
+              "description": "Value above which event starts"
+            },
+            "stop_threshold": {
+              "type": "number",
+              "description": "Value below which event ends"
+            },
+            "pre_capture_sec": {
+              "type": "number",
+              "description": "Seconds of data to capture before event start",
+              "minimum": 0
+            },
+            "event_end_delay_sec": {
+              "type": "number",
+              "description": "Delay in seconds before ending event after threshold crossed",
+              "minimum": 0
+            },
+            "max_event_time_sec": {
+              "type": "number",
+              "description": "Maximum duration of event in seconds",
+              "minimum": 0
+            },
+            "event_sample_interval_sec": {
+              "type": "number",
+              "description": "Interval between samples during event in seconds",
+              "minimum": 0
+            },
+            "event_change_deadband": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "description": "Minimum change required to record a new sample"
+            }
+          }
+        }
+      },
+      "required": [
+        "rule_name",
+        "enabled"
+      ]
+    },
+    "metrics": {
+      "type": "object",
+      "description": "Statistical metrics for the event",
+      "properties": {
+        "sample_count": {
+          "type": "integer",
+          "description": "Number of samples collected during event",
+          "minimum": 0
+        },
+        "peak_value": {
+          "type": "number",
+          "description": "Maximum measured value during event"
+        },
+        "peak_raw_value": {
+          "type": "number",
+          "description": "Maximum raw sensor value during event"
+        },
+        "min_value": {
+          "type": "number",
+          "description": "Minimum measured value during event"
+        },
+        "min_raw_value": {
+          "type": "number",
+          "description": "Minimum raw sensor value during event"
+        },
+        "avg_value": {
+          "type": "number",
+          "description": "Average measured value during event"
+        },
+        "avg_raw_value": {
+          "type": "number",
+          "description": "Average raw sensor value during event"
+        },
+        "time_in_event_sec": {
+          "type": "number",
+          "description": "Total time in event state in seconds",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "sample_count"
+      ]
+    },
+    "sample_storage": {
+      "type": "object",
+      "description": "Configuration for how samples are stored",
+      "properties": {
+        "included": {
+          "type": "boolean",
+          "description": "Whether samples are included in this event"
+        },
+        "mode": {
+          "type": "string",
+          "description": "Storage mode for samples",
+          "enum": [
+            "inline_arrays"
+          ]
+        },
+        "compressed": {
+          "type": "boolean",
+          "description": "Whether samples are compressed"
+        }
+      },
+      "required": [
+        "included",
+        "mode",
+        "compressed"
+      ]
+    },
+    "samples": {
+      "type": "object",
+      "description": "Sample data collected during the event",
+      "properties": {
+        "timestamps": {
+          "type": "array",
+          "description": "Array of Unix timestamps for each sample",
+          "items": {
+            "type": "number"
+          }
+        },
+        "values": {
+          "type": "array",
+          "description": "Array of measured values for each sample",
+          "items": {
+            "type": "number"
+          }
+        },
+        "raw_values": {
+          "type": "array",
+          "description": "Array of raw sensor values for each sample",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "required": [
+        "timestamps",
+        "values",
+        "raw_values"
+      ]
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Event metadata",
+      "properties": {
+        "created_utc": {
+          "type": "string",
+          "format": "date-time",
+          "description": "UTC timestamp when event was created"
+        },
+        "app": {
+          "type": "string",
+          "description": "Application that generated the event",
+          "examples": [
+            "moxa_event_detector"
+          ]
+        }
+      },
+      "required": [
+        "created_utc",
+        "app"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "event_id",
+    "event_label",
+    "event_class",
+    "event_type",
+    "detector_mode",
+    "sample_mode",
+    "status",
+    "severity",
+    "start",
+    "duration_sec",
+    "source",
+    "rule",
+    "metrics",
+    "sample_storage",
+    "metadata"
+  ]
+}

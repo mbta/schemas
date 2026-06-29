@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.railds.measurement.v1.json",
+  "title": "Mikrolok Measurement Data",
+  "description": "Raw measurement data structure from Mikrolok devices before CloudEvents wrapping",
+  "type": "object",
+  "properties": {
+    "asset_id": {
+      "type": "string",
+      "description": "Identifier for the monitored asset"
+    },
+    "payload": {
+      "type": "object",
+      "description": "Payload containing events",
+      "properties": {
+        "events": {
+          "type": "array",
+          "description": "Array of measurement events",
+          "items": {
+            "type": "object",
+            "properties": {
+              "mlk_timestamp_utc": {
+                "type": "string",
+                "format": "date-time",
+                "description": "UTC timestamp from the MicroLok device"
+              },
+              "values": {
+                "type": "array",
+                "description": "Array of measurement values",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the measurement point"
+                    },
+                    "value": {
+                      "type": "integer",
+                      "description": "Measured value"
+                    },
+                    "value_type": {
+                      "type": "string",
+                      "description": "Type of the value",
+                      "enum": [
+                        "boolean"
+                      ]
+                    },
+                    "index": {
+                      "type": "integer",
+                      "description": "Index of the measurement point",
+                      "minimum": 1
+                    },
+                    "old": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "description": "Previous value before change"
+                    },
+                    "operation": {
+                      "type": "string",
+                      "description": "Operation performed on the value",
+                      "enum": [
+                        "clear",
+                        "set"
+                      ]
+                    },
+                    "change_id": {
+                      "type": "string",
+                      "description": "Unique identifier for this change"
+                    },
+                    "updated_utc": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "UTC timestamp when value was updated"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "value",
+                    "value_type",
+                    "index",
+                    "old",
+                    "operation",
+                    "change_id",
+                    "updated_utc"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "mlk_timestamp_utc",
+              "values"
+            ]
+          }
+        }
+      },
+      "required": [
+        "events"
+      ]
+    }
+  },
+  "required": [
+    "asset_id",
+    "payload"
+  ]
+}
