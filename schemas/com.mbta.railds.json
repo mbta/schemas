@@ -38,7 +38,7 @@
               "const": "com.mbta.railds.switch-throw"
             }
           },
-          "$ref": "com.mbta.railds.switch-throw.json#/"
+          "$ref": "com.mbta.railds.switch-throw.v1.json#/"
         },
         {
           "properties": {
@@ -46,7 +46,7 @@
               "const": "com.mbta.railds.measurement"
             }
           },
-          "$ref": "com.mbta.railds.measurement.json#/"
+          "$ref": "com.mbta.railds.measurement.v1.json#/"
         }
       ]
     }

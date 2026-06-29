@@ -298,28 +298,9 @@
         }
       },
       "required": ["timestamps", "values", "raw_values"]
-    },
-    "metadata": {
-      "type": "object",
-      "description": "Event metadata",
-      "properties": {
-        "created_utc": {
-          "type": "string",
-          "format": "date-time",
-          "description": "UTC timestamp when event was created"
-        },
-        "app": {
-          "type": "string",
-          "description": "Application that generated the event",
-          "examples": ["moxa_event_detector"]
-        }
-      },
-      "required": ["created_utc", "app"]
     }
   },
   "required": [
-    "schema_version",
-    "event_id",
     "event_label",
     "event_class",
     "event_type",
@@ -332,7 +313,6 @@
     "source",
     "rule",
     "metrics",
-    "sample_storage",
-    "metadata"
+    "sample_storage"
   ]
 }
