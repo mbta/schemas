@@ -135,7 +135,12 @@
           "description": "Variable name reported or resolved by the collector."
         },
         "value": {
-          "type": ["number", "string", "boolean", "null"],
+          "anyOf": [
+            { "type": "number" },
+            { "type": "string" },
+            { "type": "boolean" },
+            { "type": "null" }
+          ],
           "description": "Current variable value."
         },
         "data_type": {
@@ -163,11 +168,21 @@
           "description": "Variable name reported or resolved by the collector."
         },
         "old_value": {
-          "type": ["number", "string", "boolean", "null"],
+          "anyOf": [
+            { "type": "number" },
+            { "type": "string" },
+            { "type": "boolean" },
+            { "type": "null" }
+          ],
           "description": "Value immediately before this transition, or null when the previous value is unavailable."
         },
         "value": {
-          "type": ["number", "string", "boolean", "null"],
+          "anyOf": [
+            { "type": "number" },
+            { "type": "string" },
+            { "type": "boolean" },
+            { "type": "null" }
+          ],
           "description": "Value immediately after this transition."
         },
         "data_type": {

@@ -69,7 +69,10 @@
               "description": "Whether the module read completed successfully."
             },
             "error": {
-              "type": ["string", "null"],
+              "anyOf": [
+                { "type": "string" },
+                { "type": "null" }
+              ],
               "description": "Read error message, or null when no error occurred."
             },
             "read_elapsed_ms": {
@@ -107,19 +110,35 @@
           "description": "Whether this channel is configured with scaling and/or monitored asset metadata."
         },
         "raw_value": {
-          "type": ["number", "string", "boolean", "null"],
+          "anyOf": [
+            { "type": "number" },
+            { "type": "string" },
+            { "type": "boolean" },
+            { "type": "null" }
+          ],
           "description": "Raw value reported by the I/O device."
         },
         "raw_format": {
-          "type": ["string", "null"],
+          "anyOf": [
+            { "type": "string" },
+            { "type": "null" }
+          ],
           "description": "Raw value format reported or assigned by the collector."
         },
         "scaled_value": {
-          "type": ["number", "string", "boolean", "null"],
+          "anyOf": [
+            { "type": "number" },
+            { "type": "string" },
+            { "type": "boolean" },
+            { "type": "null" }
+          ],
           "description": "Scaled engineering value, when this channel is configured for scaling."
         },
         "scaled_format": {
-          "type": ["string", "null"],
+          "anyOf": [
+            { "type": "string" },
+            { "type": "null" }
+          ],
           "description": "Scaled value format, when this channel is configured for scaling."
         },
         "monitoring_target_type": {
