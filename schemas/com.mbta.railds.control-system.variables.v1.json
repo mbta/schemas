@@ -91,31 +91,40 @@
       "properties": {
         "data_scope": {
           "const": "full_state"
+        },
+        "current_state": {
+          "type": "array",
+          "description": "Complete current variable state available from the control-system source when data_scope is full_state.",
+          "items": {
+            "$ref": "#/$defs/current_state_entry"
+          },
+          "minItems": 1
         }
       },
-      "required": ["current_state"],
-      "not": {
-        "anyOf": [
-          {
-            "required": ["changes"]
-          },
-          {
-            "required": ["control_system_event_time"]
-          }
-        ]
-      }
+      "required": ["current_state"]
     },
     {
       "title": "Changes only",
       "properties": {
         "data_scope": {
           "const": "changes_only"
+        },
+        "control_system_event_time": {
+          "type": "string",
+          "description": "Timestamp associated with a changes_only event by the control system. When no UTC offset is present, it is controller-local time and must not be interpreted as UTC.",
+          "pattern": "^[0-9]{4}-[01][0-9]-[0-3][0-9]T[012][0-9]:[0-5][0-9]:[0-6][0-9](\\.[0-9]+)?(Z|[+-][012][0-9]:[0-5][0-9])?$",
+          "examples": ["2026-07-21T13:50:08.500"]
+        },
+        "changes": {
+          "type": "array",
+          "description": "Ordered variable transitions when data_scope is changes_only. Order is significant, and the same variable may appear more than once when the control system reports multiple transitions in one event.",
+          "items": {
+            "$ref": "#/$defs/variable_change"
+          },
+          "minItems": 1
         }
       },
-      "required": ["control_system_event_time", "changes"],
-      "not": {
-        "required": ["current_state"]
-      }
+      "required": ["control_system_event_time", "changes"]
     }
   ],
   "additionalProperties": false,
