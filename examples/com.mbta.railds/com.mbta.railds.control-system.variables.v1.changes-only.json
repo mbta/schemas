@@ -1,0 +1,46 @@
+{
+  "specversion": "1.0",
+  "type": "com.mbta.railds.control-system.variables.v1",
+  "source": "/edge-collector/EDGE-001",
+  "id": "bd29a997-89d8-44a5-b927-7456e457a006",
+  "subject": "control-system/CONTROL-SYSTEM-001/variables/changes-only",
+  "time": "2026-07-24T15:00:00.125Z",
+  "datacontenttype": "application/json",
+  "data": {
+    "asset_id": "ASSET-001",
+    "data_scope": "changes_only",
+    "control_system": {
+      "type": "microlok",
+      "name": "CONTROL-SYSTEM-001",
+      "connection": {
+        "type": "serial",
+        "id": "serial-port-1"
+      },
+      "mode": "Active"
+    },
+    "control_system_event_time": "2026-07-24T11:00:00.500",
+    "changes": [
+      {
+        "index": 1001,
+        "name": "CLOCK.SECOND",
+        "old_value": 58,
+        "value": 59,
+        "data_type": "number"
+      },
+      {
+        "index": 1001,
+        "name": "CLOCK.SECOND",
+        "old_value": 59,
+        "value": 0,
+        "data_type": "number"
+      },
+      {
+        "index": 201,
+        "name": "EXAMPLE.SWITCH.NORMAL.INDICATION",
+        "old_value": 0,
+        "value": 1,
+        "data_type": "boolean"
+      }
+    ]
+  }
+}
