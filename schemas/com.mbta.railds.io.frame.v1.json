@@ -69,10 +69,7 @@
               "description": "Whether the module read completed successfully."
             },
             "error": {
-              "anyOf": [
-                { "type": "string" },
-                { "type": "null" }
-              ],
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
               "description": "Read error message, or null when no error occurred."
             },
             "read_elapsed_ms": {
@@ -119,10 +116,7 @@
           "description": "Raw value reported by the I/O device."
         },
         "raw_format": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "null" }
-          ],
+          "anyOf": [{ "type": "string" }, { "type": "null" }],
           "description": "Raw value format reported or assigned by the collector."
         },
         "scaled_value": {
@@ -135,10 +129,7 @@
           "description": "Scaled engineering value, when this channel is configured for scaling."
         },
         "scaled_format": {
-          "anyOf": [
-            { "type": "string" },
-            { "type": "null" }
-          ],
+          "anyOf": [{ "type": "string" }, { "type": "null" }],
           "description": "Scaled value format, when this channel is configured for scaling."
         },
         "monitoring_target_type": {
