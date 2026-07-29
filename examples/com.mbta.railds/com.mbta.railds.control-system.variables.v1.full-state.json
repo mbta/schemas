@@ -18,7 +18,7 @@
       },
       "mode": "Active"
     },
-    "current_state": [
+    "variable_states": [
       {
         "index": 1,
         "name": "SYSTEM.READY",

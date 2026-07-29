@@ -67,104 +67,21 @@
       "pattern": "^[0-9]{4}-[01][0-9]-[0-3][0-9]T[012][0-9]:[0-5][0-9]:[0-6][0-9](\\.[0-9]+)?(Z|[+-][012][0-9]:[0-5][0-9])?$",
       "examples": ["2026-07-21T13:50:08.500"]
     },
-    "current_state": {
+    "variable_states": {
       "type": "array",
       "description": "Complete current variable state available from the control-system source when data_scope is full_state.",
-      "items": {
-        "$ref": "#/$defs/current_state_entry"
-      },
-      "minItems": 1
-    },
-    "changes": {
-      "type": "array",
-      "description": "Ordered variable transitions when data_scope is changes_only. Order is significant, and the same variable may appear more than once when the control system reports multiple transitions in one event.",
       "items": {
         "$ref": "#/$defs/variable_change"
       },
       "minItems": 1
     }
   },
-  "required": ["data_scope", "control_system"],
-  "oneOf": [
-    {
-      "title": "Full current state",
-      "properties": {
-        "data_scope": {
-          "const": "full_state"
-        },
-        "current_state": {
-          "type": "array",
-          "description": "Complete current variable state available from the control-system source when data_scope is full_state.",
-          "items": {
-            "$ref": "#/$defs/current_state_entry"
-          },
-          "minItems": 1
-        }
-      },
-      "required": ["current_state"]
-    },
-    {
-      "title": "Changes only",
-      "properties": {
-        "data_scope": {
-          "const": "changes_only"
-        },
-        "control_system_event_time": {
-          "type": "string",
-          "description": "Timestamp associated with a changes_only event by the control system. When no UTC offset is present, it is controller-local time and must not be interpreted as UTC.",
-          "pattern": "^[0-9]{4}-[01][0-9]-[0-3][0-9]T[012][0-9]:[0-5][0-9]:[0-6][0-9](\\.[0-9]+)?(Z|[+-][012][0-9]:[0-5][0-9])?$",
-          "examples": ["2026-07-21T13:50:08.500"]
-        },
-        "changes": {
-          "type": "array",
-          "description": "Ordered variable transitions when data_scope is changes_only. Order is significant, and the same variable may appear more than once when the control system reports multiple transitions in one event.",
-          "items": {
-            "$ref": "#/$defs/variable_change"
-          },
-          "minItems": 1
-        }
-      },
-      "required": ["control_system_event_time", "changes"]
-    }
-  ],
+  "required": ["data_scope", "control_system", "variable_states"],
   "additionalProperties": false,
   "$defs": {
-    "current_state_entry": {
-      "type": "object",
-      "description": "One variable's current value in a full-state snapshot.",
-      "properties": {
-        "index": {
-          "type": "integer",
-          "minimum": 0,
-          "description": "Numeric variable index or address assigned by the control system."
-        },
-        "name": {
-          "type": "string",
-          "minLength": 1,
-          "description": "Variable name reported or resolved by the collector."
-        },
-        "value": {
-          "anyOf": [
-            { "type": "number" },
-            { "type": "string" },
-            { "type": "boolean" },
-            { "type": "null" }
-          ],
-          "description": "Current variable value."
-        },
-        "data_type": {
-          "type": "string",
-          "minLength": 1,
-          "description": "Collector classification of the variable value type.",
-          "examples": ["boolean", "number"]
-        }
-      },
-      "required": ["index", "name", "value", "data_type"],
-      "additionalProperties": false
-    },
     "variable_change": {
       "type": "object",
-      "description": "One variable transition in the order reported by the control system.",
+      "description": "One variable transition. If data_scope is full_state, this represents the current state of the variable and old_value is null. If data_scope is changes_only, these changes must be interpreted in order and the same variable may show up more than once.",
       "properties": {
         "index": {
           "type": "integer",
@@ -201,7 +118,7 @@
           "examples": ["boolean", "number"]
         }
       },
-      "required": ["index", "name", "old_value", "value", "data_type"],
+      "required": ["index", "name", "value", "data_type"],
       "additionalProperties": false
     }
   }

@@ -19,7 +19,7 @@
       "mode": "Active"
     },
     "control_system_event_time": "2026-07-24T11:00:00.500",
-    "changes": [
+    "variable_states": [
       {
         "index": 1001,
         "name": "CLOCK.SECOND",
