@@ -18,6 +18,7 @@
       },
       "mode": "Active"
     },
+    "state_scope": "full",
     "variable_states": [
       {
         "index": 1,

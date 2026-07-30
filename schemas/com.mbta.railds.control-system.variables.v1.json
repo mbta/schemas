@@ -10,10 +10,10 @@
       "minLength": 1,
       "description": "Optional configured identifier for the monitored asset, site, or collection context associated with this control-system source."
     },
-    "data_scope": {
+    "state_scope": {
       "type": "string",
-      "enum": ["full_state", "changes_only"],
-      "description": "Scope of the variable data in this payload. full_state contains the complete current variable state available from the source. changes_only contains only variables reported as changing in the control-system event."
+      "enum": ["full", "partial"],
+      "description": "Scope of the variable data in this payload. full contains the complete current variable state available from the source. partial contains only variables reported as changing in the control-system event."
     },
     "control_system": {
       "type": "object",
@@ -81,7 +81,7 @@
   "$defs": {
     "variable_change": {
       "type": "object",
-      "description": "One variable transition. If data_scope is full_state, this represents the current state of the variable and old_value is null. If data_scope is changes_only, these changes must be interpreted in order and the same variable may show up more than once.",
+      "description": "One variable transition. If state_scope is full, this represents the current state of the variable and old_value is null. If state_scope is partial, these changes must be interpreted in order and the same variable may show up more than once.",
       "properties": {
         "index": {
           "type": "integer",
