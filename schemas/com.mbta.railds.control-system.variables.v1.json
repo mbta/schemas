@@ -81,7 +81,7 @@
   "$defs": {
     "variable_change": {
       "type": "object",
-      "description": "One variable transition. If state_scope is full, this represents the current state of the variable and old_value is null. If state_scope is partial, these changes must be interpreted in order and the same variable may show up more than once.",
+      "description": "One variable transition. If state_scope is full, this represents the current state of the variable and old_value is null or omitted. If state_scope is partial, these changes must be interpreted in order and the same variable may show up more than once.",
       "properties": {
         "index": {
           "type": "integer",
