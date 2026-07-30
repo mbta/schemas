@@ -8,7 +8,7 @@
   "datacontenttype": "application/json",
   "data": {
     "asset_id": "ASSET-001",
-    "data_scope": "changes_only",
+    "state_scope": "partial",
     "control_system": {
       "type": "microlok",
       "name": "CONTROL-SYSTEM-001",
@@ -19,7 +19,6 @@
       "mode": "Active"
     },
     "control_system_event_time": "2026-07-24T11:00:00.500",
-    "state_scope": "partial",
     "variable_states": [
       {
         "index": 1001,

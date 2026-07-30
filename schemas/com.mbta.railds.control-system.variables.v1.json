@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.railds.control-system.variables.v1.json",
   "title": "Control-System Variable Data",
-  "description": "Control-system variable data observed by a RailDS edge collector. data_scope identifies whether the payload contains a complete current state or only variables reported as changing in one control-system event.",
+  "description": "Control-system variable data observed by a RailDS edge collector. state_scope identifies whether the payload contains a complete current state or only variables reported as changing in one control-system event.",
   "type": "object",
   "properties": {
     "asset_id": {
@@ -69,14 +69,14 @@
     },
     "variable_states": {
       "type": "array",
-      "description": "Complete current variable state available from the control-system source when data_scope is full_state.",
+      "description": "Complete current variable state available from the control-system source when state_scope is full.",
       "items": {
         "$ref": "#/$defs/variable_change"
       },
       "minItems": 1
     }
   },
-  "required": ["data_scope", "control_system", "variable_states"],
+  "required": ["state_scope", "control_system", "variable_states"],
   "additionalProperties": false,
   "$defs": {
     "variable_change": {
