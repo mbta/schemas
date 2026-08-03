@@ -1,0 +1,112 @@
+{
+  "specversion": "1.0",
+  "type": "com.mbta.railds.io.frame.v1",
+  "source": "/edge-collector/EDGE-001",
+  "id": "5bc95463-86fe-4e63-8aa8-385d90d38e10",
+  "time": "2026-07-24T15:00:02.375Z",
+  "datacontenttype": "application/json",
+  "data": {
+    "asset_id": "SITE-001",
+    "acquired_utc": "2026-07-24T15:00:02.375Z",
+    "sample_interval_sec": 0.08,
+    "io_device": {
+      "device_id": "IO-DEVICE-001",
+      "device_type": "moxa"
+    },
+    "modules": [
+      {
+        "slot": 1,
+        "module": {
+          "model": "45MR-3810",
+          "read_ok": true,
+          "error": null,
+          "read_elapsed_ms": 0.42
+        },
+        "channels": [
+          {
+            "channel": 0,
+            "configured": true,
+            "raw_value": 12.0,
+            "raw_format": "mA",
+            "scaled_value": 75.0,
+            "scaled_format": "Volts",
+            "monitoring_target_type": "switch",
+            "monitoring_target_name": "SWITCH-001",
+            "monitoring_target_circuit": "NORMAL",
+            "monitoring_target_description": "Normal line voltage"
+          },
+          {
+            "channel": 1,
+            "configured": true,
+            "raw_value": 4.0,
+            "raw_format": "mA",
+            "scaled_value": 0.0,
+            "scaled_format": "Volts",
+            "monitoring_target_type": "switch",
+            "monitoring_target_name": "SWITCH-001",
+            "monitoring_target_circuit": "REVERSE",
+            "monitoring_target_description": "Reverse line voltage"
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "module": {
+          "model": "45MR-3800",
+          "read_ok": true,
+          "error": null,
+          "read_elapsed_ms": 0.35
+        },
+        "channels": [
+          {
+            "channel": 0,
+            "configured": true,
+            "raw_value": 8.8,
+            "raw_format": "mA",
+            "scaled_value": 9.0,
+            "scaled_format": "Amps",
+            "monitoring_target_type": "switch",
+            "monitoring_target_name": "SWITCH-001",
+            "monitoring_target_circuit": "NORMAL",
+            "monitoring_target_description": "Normal motor current"
+          },
+          {
+            "channel": 1,
+            "configured": false,
+            "raw_value": 4.0,
+            "raw_format": "mA"
+          }
+        ]
+      },
+      {
+        "slot": 3,
+        "module": {
+          "model": "45MR-1600",
+          "read_ok": true,
+          "error": null,
+          "read_elapsed_ms": 0.31
+        },
+        "channels": [
+          {
+            "channel": 0,
+            "configured": true,
+            "raw_value": 0,
+            "raw_format": "Boolean",
+            "monitoring_target_type": "alarm",
+            "monitoring_target_name": "POWER-SUPPLY-001",
+            "monitoring_target_description": "Power supply alarm"
+          },
+          {
+            "channel": 1,
+            "configured": true,
+            "raw_value": 1,
+            "raw_format": "Boolean",
+            "monitoring_target_type": "indication",
+            "monitoring_target_name": "ENCLOSURE-DOOR-001",
+            "monitoring_target_description": "Door closed indication"
+          }
+        ]
+      }
+    ]
+  }
+}

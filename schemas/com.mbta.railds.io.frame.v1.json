@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.railds.io.frame.v1.json",
+  "title": "I/O Frame Data",
+  "description": "Raw I/O acquisition frame data from a RailDS edge device before CloudEvents wrapping.",
+  "type": "object",
+  "properties": {
+    "asset_id": {
+      "type": "string",
+      "description": "Identifier for the monitored asset, site, or collection context."
+    },
+    "acquired_utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[01][0-9]-[0-3][0-9]T[012][0-9]:[0-5][0-9]:[0-6][0-9](\\.[0-9]+)?(Z|\\+00:00)$",
+      "description": "UTC timestamp when the frame was acquired by the edge device."
+    },
+    "sample_interval_sec": {
+      "type": "number",
+      "description": "Expected interval, in seconds, between I/O acquisition frames.",
+      "exclusiveMinimum": 0
+    },
+    "io_device": {
+      "type": "object",
+      "description": "I/O device that produced the frame.",
+      "properties": {
+        "device_id": {
+          "type": "string",
+          "description": "Identifier for the I/O device."
+        },
+        "device_type": {
+          "type": "string",
+          "description": "Type of I/O device."
+        }
+      },
+      "required": ["device_id", "device_type"],
+      "additionalProperties": false
+    },
+    "modules": {
+      "type": "array",
+      "description": "I/O modules or slots included in this acquisition frame.",
+      "items": {
+        "$ref": "#/$defs/module"
+      },
+      "minItems": 1
+    }
+  },
+  "required": ["asset_id", "acquired_utc", "io_device", "modules"],
+  "additionalProperties": false,
+  "$defs": {
+    "module": {
+      "type": "object",
+      "description": "A MOXA I/O module or slot included in the acquisition frame.",
+      "properties": {
+        "slot": {
+          "type": "integer",
+          "description": "Numeric slot index.",
+          "minimum": 0
+        },
+        "module": {
+          "type": "object",
+          "description": "Module metadata and read status for this slot.",
+          "properties": {
+            "model": {
+              "type": "string",
+              "description": "Module model."
+            },
+            "read_ok": {
+              "type": "boolean",
+              "description": "Whether the module read completed successfully."
+            },
+            "error": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "description": "Read error message, or null when no error occurred."
+            },
+            "read_elapsed_ms": {
+              "type": "number",
+              "description": "Elapsed time, in milliseconds, for the module read.",
+              "minimum": 0
+            }
+          },
+          "required": ["model", "read_ok", "error", "read_elapsed_ms"],
+          "additionalProperties": false
+        },
+        "channels": {
+          "type": "array",
+          "description": "I/O channel values captured from this module during the frame.",
+          "items": {
+            "$ref": "#/$defs/channel"
+          },
+          "minItems": 1
+        }
+      },
+      "required": ["slot", "module", "channels"],
+      "additionalProperties": false
+    },
+    "channel": {
+      "type": "object",
+      "description": "A single I/O channel value captured during this acquisition frame.",
+      "properties": {
+        "channel": {
+          "type": "integer",
+          "description": "Channel number on the I/O module.",
+          "minimum": 0
+        },
+        "configured": {
+          "type": "boolean",
+          "description": "Whether this channel is configured with scaling and/or monitored asset metadata."
+        },
+        "raw_value": {
+          "anyOf": [
+            { "type": "number" },
+            { "type": "string" },
+            { "type": "boolean" },
+            { "type": "null" }
+          ],
+          "description": "Raw value reported by the I/O device."
+        },
+        "raw_format": {
+          "anyOf": [{ "type": "string" }, { "type": "null" }],
+          "description": "Raw value format reported or assigned by the collector."
+        },
+        "scaled_value": {
+          "anyOf": [
+            { "type": "number" },
+            { "type": "string" },
+            { "type": "boolean" },
+            { "type": "null" }
+          ],
+          "description": "Scaled engineering value, when this channel is configured for scaling."
+        },
+        "scaled_format": {
+          "anyOf": [{ "type": "string" }, { "type": "null" }],
+          "description": "Scaled value format, when this channel is configured for scaling."
+        },
+        "monitoring_target_type": {
+          "type": "string",
+          "description": "Broad class of asset or subsystem monitored by this channel, such as switch or signal."
+        },
+        "monitoring_target_name": {
+          "type": "string",
+          "description": "Human-readable name of the specific asset or subsystem monitored by this channel."
+        },
+        "monitoring_target_circuit": {
+          "type": "string",
+          "description": "Configured circuit, wire, relay, point, or local field designation associated with this channel, when known."
+        },
+        "monitoring_target_description": {
+          "type": "string",
+          "description": "Human-readable description of the specific circuit, component, indication, or measurement represented by this channel. This is configured metadata and does not imply that RailDS has calculated the complete signal aspect or asset state."
+        }
+      },
+      "required": ["channel", "configured", "raw_value", "raw_format"],
+      "additionalProperties": false
+    }
+  }
+}

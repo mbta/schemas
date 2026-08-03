@@ -1,0 +1,72 @@
+{
+  "specversion": "1.0",
+  "type": "com.mbta.railds.control-system.variables.v1",
+  "source": "/edge-collector/EDGE-001",
+  "id": "6db157f8-87de-4df8-bc45-428be2c8d88d",
+  "subject": "control-system/CONTROL-SYSTEM-001/variables/full-state",
+  "time": "2026-07-24T15:00:01.250Z",
+  "datacontenttype": "application/json",
+  "data": {
+    "asset_id": "ASSET-001",
+    "state_scope": "full",
+    "control_system": {
+      "type": "microlok",
+      "name": "CONTROL-SYSTEM-001",
+      "connection": {
+        "type": "serial",
+        "id": "serial-port-1"
+      },
+      "mode": "Active"
+    },
+    "variable_states": [
+      {
+        "index": 1,
+        "name": "SYSTEM.READY",
+        "value": 1,
+        "data_type": "boolean"
+      },
+      {
+        "index": 201,
+        "name": "EXAMPLE.SWITCH.NORMAL.INDICATION",
+        "value": 1,
+        "data_type": "boolean"
+      },
+      {
+        "index": 202,
+        "name": "EXAMPLE.SWITCH.REVERSE.INDICATION",
+        "value": 0,
+        "data_type": "boolean"
+      },
+      {
+        "index": 203,
+        "name": "EXAMPLE.SWITCH.NORMAL.COMMAND",
+        "value": 1,
+        "data_type": "boolean"
+      },
+      {
+        "index": 204,
+        "name": "EXAMPLE.SWITCH.REVERSE.COMMAND",
+        "value": 0,
+        "data_type": "boolean"
+      },
+      {
+        "index": 1001,
+        "name": "CLOCK.SECOND",
+        "value": 0,
+        "data_type": "number"
+      },
+      {
+        "index": 1002,
+        "name": "SYSTEM.LOAD",
+        "value": 37,
+        "data_type": "number"
+      },
+      {
+        "index": 1003,
+        "name": "APPLICATION.VERSION",
+        "value": 1,
+        "data_type": "number"
+      }
+    ]
+  }
+}

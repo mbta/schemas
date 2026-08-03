@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.railds.json",
+  "title": "RailDS Events",
+  "description": "RailDS events emitted by Moxa devices.",
+  "$ref": "cloudevents.json",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "name of the event",
+      "$comment": "enforced to be a valid event name by the oneOf, below"
+    },
+    "specversion": {
+      "const": "1.0"
+    },
+    "source": {
+      "$ref": "cloudevents.json#/properties/source",
+      "description": "The Id of the device that emitted the event. For edge-originated events, this should identify the edge application/device that produced the CloudEvent, not the asset or measurement being observed. Final MBTA hierarchy and naming conventions are to be confirmed.",
+      "examples": [
+        "/railds/mbta/red-bridge/edge/RB-RDS-MOXA-001",
+        "/railds/mbta/green-line/red-bridge/edge/RB-RDS-MOXA-001",
+        "/railds/mbta/green-line/interlocking/red-bridge/edge/RB-RDS-MOXA-001",
+        "/railds/{agency}/{site}/edge/{edge_id}",
+        "/railds/{agency}/{line}/{location-type}/{site}/edge/{edge_id}"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "minLength": 1,
+      "description": "A unique identifier for the event."
+    },
+    "time": {
+      "$ref": "#/$defs/timestamp",
+      "description": "UTC timestamp when the event data was acquired or observed by the RailDS edge collector."
+    },
+    "data": {
+      "type": "object",
+      "$comment": "data object is validated by each event's schema in the oneOf below"
+    }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "type": {
+          "const": "com.mbta.railds.io.frame.v1"
+        },
+        "data": {
+          "$ref": "com.mbta.railds.io.frame.v1.json#/"
+        }
+      }
+    },
+    {
+      "properties": {
+        "type": {
+          "const": "com.mbta.railds.control-system.variables.v1"
+        },
+        "data": {
+          "$ref": "com.mbta.railds.control-system.variables.v1.json#/"
+        }
+      }
+    }
+  ],
+  "required": ["type", "specversion", "source", "id", "time", "data"],
+  "$defs": {
+    "timestamp": {
+      "type": "string",
+      "minLength": 20,
+      "$comment": "RFC3339 timestamp",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[01][0-9]-[0-3][0-9]T[012][0-9]:[0-5][0-9]:[0-6][0-9](\\.[0-9]+)?(Z|[+-][012][0-9]:[0-5][0-9])$",
+      "examples": ["2023-01-20T09:30:00-05:00"]
+    }
+  }
+}
