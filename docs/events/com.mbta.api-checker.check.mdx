@@ -1,0 +1,38 @@
+---
+---
+
+import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
+import Examples from "@site/src/components/Examples.tsx";
+import example from "@site/examples/com.mbta.api-checker.check/check.v1.json";
+
+# check
+
+event type: `com.mbta.api-checker.check.v1`
+
+Describes an instance of an [API Checker](https://github.com/mbta/api_checker/) check running and its result.
+
+## Data
+
+Fields in the event's `data`:
+
+- `checkName` (string): The name of the check from the API Checker's configuration. E.g. `"heavy-rail-predictions-weekdays"`
+- `success` (boolean): Whether or not the check succeeded.
+
+## Examples
+
+<Examples
+  examples={[
+    {
+      description: (
+        <>
+          <p>This example includes a single event, indicating the success of a single check.</p>
+        </>
+      ),
+      json: example,
+    },
+  ]}
+/>
+
+## Schema
+
+<EventSchemaPath event="com.mbta.api-checker.check.v1" />
