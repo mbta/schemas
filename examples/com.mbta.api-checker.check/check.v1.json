@@ -1,0 +1,11 @@
+{
+  "data": {
+    "checkName": "heavy-rail-predictions-weekdays",
+    "success": true
+  },
+  "id": "1",
+  "source": "api-checker",
+  "specversion": "1.0",
+  "time": "2026-09-24T12:01:00.110000Z",
+  "type": "com.mbta.api-checker.check.v1"
+}

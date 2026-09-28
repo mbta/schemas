@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.api-checker.check.v1.json",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "cloudevents.json#/properties/id",
+      "examples": ["1"]
+    },
+    "source": {
+      "$ref": "cloudevents.json#/properties/source",
+      "examples": ["api-checker"]
+    },
+    "specversion": {
+      "const": "1.0",
+      "$ref": "cloudevents.json#/properties/specversion"
+    },
+    "type": {
+      "const": "com.mbta.api-checker.check.v1",
+      "$ref": "cloudevents.json#/properties/type"
+    },
+    "time": {
+      "$ref": "cloudevents.json#/properties/time"
+    },
+    "data": {
+      "$ref": "#/$defs/datadef"
+    }
+  },
+  "required": ["type", "specversion", "source", "id", "time", "data"],
+  "$defs": {
+    "datadef": {
+      "type": "object",
+      "required": ["checkName", "success"],
+      "properties": {
+        "checkName": {
+          "type": "string",
+          "examples": ["heavy-rail-predictions-weekdays"]
+        },
+        "success": {
+          "type": "boolean",
+          "examples": [true, false]
+        }
+      }
+    }
+  }
+}
