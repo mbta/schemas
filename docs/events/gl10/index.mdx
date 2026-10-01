@@ -1,0 +1,82 @@
+---
+sidebar_label: GL10
+sidebar_position: 1
+---
+
+import DocCard from "@theme/DocCard";
+
+# GL10 Events
+
+Information about Type 10 light rail vehicles, published by [GL10](https://github.com/mbta/gl10).
+
+For now, this will encompass only the Type 10 "heartbeat" message.
+
+## Events
+
+### heartbeat
+
+Type 10 vehicles send periodic "heartbeat" messages via cellular data to convey position, coupling status, AVI code, trip information, and other information about the vehicle.
+The GL10 app, receives these raw messages, processes them into a friendlier JSON format, and forwards them to other systems as cloud events.
+
+<DocCard
+  item={{
+    type: "link",
+    label: "com.mbta.gl10.heartbeat.v1",
+    href: "/events/gl10/com.mbta.gl10.heartbeat.v1",
+    docId: "events/gl10/com.mbta.gl10.heartbeat.v1",
+  }}
+/>
+
+## Details
+
+Events are in the [CloudEvents](https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md) format, and published via AWS Kinesis. See [RFC 19 Event Driven Architecture](https://github.com/mbta/technology-docs/blob/main/rfcs/accepted/0019-event-driven-architecture.md) for more about CTD's approach to publishing events.
+
+### Kinesis
+
+Events will be written as records to a Kinesis stream. Each GL10 environment (`dev` and `prod`) will have a separate stream, named `gl10-heartbeat-<environment>`.
+
+**TODO**: Define partition key details. Possibly a hash of the SIM card IP address, or vehicle road number.
+
+Multiple events can be included in a single Kinesis record, by wrapping them in a JSON array. This is an optimization for improving write speeds: further steps in the Kinesis pipeline may break up or rearrange these arrays.
+
+Kinesis only adds a limited (&lt;1s) latency between when the event is generated and when it is available to consumers.
+
+### Short-term storage
+
+Events are only maintained in Kinesis for 24 hours.
+
+### Long-term storage
+
+[LAMP](https://github.com/mbta/lamp) is planning to archive these events in AWS S3 for future use.
+
+**TODO**: Confirm with LAMP team.
+**TODO**: Confirm encryption-at-rest requirements from security pattern.
+
+### Compatibility
+
+These event schemas may be updated, according to [RFC 19 Event Driven Architecture #Compatibility](https://github.com/mbta/technology-docs/blob/main/rfcs/accepted/0019-event-driven-architecture.md#compatibility).
+
+A change is backwards-compatible if all old events are valid with the new schema, all new events are valid with the old schema, and their semantics have not changed. In that case, Glides MAY publish events with the new format without warning, and the event version number will not be bumped.
+
+In the case of a backwards-incompatible change, a new event `type` MUST be created (probably by bumping the `v1` version number). Glides MUST continue to generate old events alongside the new events until no more consumers depend on the old version.
+
+In either case, this documentation MUST be updated.
+
+Examples of backwards-compatible changes:
+
+- Adding an optional `pilot` field to the [heartbeat message](com.mbta.gl10.hearbeat.v1) to indicate if the car is a pilot or trailer when coupled.
+- Adding a new event `type` (which is not replacing an existing event `type`).
+
+#### Consumer Responsibilities
+
+- Consumers MUST ignore event `type`s that they do not understand.
+- Consumers MUST ignore fields in events (and in nested objects in events) which they do not understand, trusting that any additional fields are not required to process the event.
+- Consumers SHOULD ignore earlier versions of the same event if they can parse a later version (i.e. ignoring `v1` events if they can parse `v2`).
+
+### Message Ordering
+
+Each heartbeat message should convey the full current state of the vehicle, such that no prior messages are required for a client to converge on correct state.
+
+However, the GL10 application receives raw heartbeat messages via UDP, so message delivery and ordering is not guaranteed. For now the message lacks a sequence counter, but it should include a `vehicleClock` timestamp field, set by the vehicle clock at the time of sending. Therefore clients SHOULD discard messages with a `vehicleClock` timestamp older than the previous message for the same vehicle. (Note however that this timestamp is not guaranteed.)
+
+If an event is submitted to the stream twice, due to a network error, then the events will have the same event id, and the same data. Clients MAY ignore duplicate events.
