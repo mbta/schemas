@@ -1,0 +1,60 @@
+---
+sidebar_label: gl10.heartbeat
+sidebar_position: 1
+---
+
+import EventSchemaPath from "@site/src/components/EventSchemaPath.tsx";
+import Examples from "@site/src/components/Examples.tsx";
+
+# heartbeat
+
+event type: `com.mbta.gl10.heartbeat.v1`
+
+Published when the GL10 app receives a heartbeat message from a type-10 vehicle car. These messages contain information about the car's road number, coupling status, lat/long location, and AVI route, as well as additional supporting data, such as door status, passenger load, and subsystem health checks.
+
+**TODO**: We do not yet know the expected frequency of these messages. We should update This documentation when that information becomes available. Additionally, depending on message cadence, we may want to revise this schema to be less verbose as needed.
+
+**TODO**: Confirm whether heartbeat messages may be batched from individual vehicles, and if so decide whether to adopt the same batching.
+
+## Data
+
+Fields in the event's `data`:
+
+- `number` (string, required): The car's road number. Expected range is 4001-4102.
+
+- `latitude` (number, optional): Latitude relative to active cab. Absent if no cab is active.
+- `longitude` (number, optional): Longitude relative to active cab. Absent if no cab is active.
+- `activeCab` ("1" | "2", optional): Which of the two cabs is currently active, ie in "drive" or "permit". Absent if neither is active.
+- `numberOfPassengers` (number, optional): Estimated passenger count, range [0, 999].
+- `avi` (string, required): The selected or default route AVI code. Default route is "877".
+- `temporaryAvi` (string, optional): If present, a temporary AVI code set to override the selected (or default) code.
+
+**TODO**: Fill in more information about temporary AVI overrides when available.
+
+- `endDestinationStopId` (string, optional): An MBTA stop ID. Absent if no destination selected.
+- `serviceType` ("REVENUE" | "TEST_TRAIN" | "INSTRUCTION_CAR" | "NOT_IN_SEVICE" | "EXPRESS", required).
+- `expressDestinationStopId` (string, optional): An MBTA stop ID. Absent if no express destination is currently selected.
+- `loadInKg` (number, required): Weight load in kg.
+
+- `directionId` (integer, 0 | 1, optional): Current selected trip direction. Absent if not selected. 0 = westbound, 1 = eastbound.
+- `routeId` ("Green-B" | "Green-C" | "Green-D" | "Green-D" | "Mattapan", optional). Absent if not selected.
+- `lastBoardingStopId` (string, optional): An MBTA stop ID. Absent if invalid or unavailable. (TODO: Conditions for availability unclear.)
+- `lastBoardingDwellTimeInS` (number, optional): Dwell time in seconds of the last stop. Absent if invalid or unavailable.
+- `distanceSinceLastBoardingInFt` (number, optional): Distance travelled since previous stop, precise to 1 foot. Absent if invalid or unavailable.
+- `healthStatusFailures` (object, optional): Present if there are one or more active health status failures. If present, will contain keys for failing systems, each with value `true`. Possible keys are as follows:
+  - `PROP/D`: Propulsion System (TCUs)
+  - `BK/LVL`: Brake (BCUs) and leveling system
+  - `DOORS`: External access doors
+  - `SANDER`: Sanding system
+  - `HVAC`: Heating Ventilation and Air Conditioning system
+  - `APS`: Auxiliary AC Power system
+  - `LVPS`: Low Voltage DC Power Supply
+  - `BP`: Bridge plates
+  - `PANTO`: Pantograph
+  - `HSCB`: High Speed Circuit Breaker
+- `simCellularIpAddress` (string, optional): IPv4 address of SIM card. Absent of invalid or unavailable.
+- `coupledVehicle` ("NUMBER_UNKNOWN" | string, optional): If present, then the car is currently coupled. The value will either be the car number of the coupled car, or "NUMBER_UNKNOWN" if the car is in a state where there is no communication with the coupled car. If absent, the vehicle is assumed to be uncoupled.
+- `vehicleClock` (string, optional): A RFC3339 timestamp indicating the current on-board clock time of the vehicle at the time the heartbeat was sent. The timestamp must include a timezone offset.
+- `peiActive` (boolean, optional): Whether the Passenger Emergency Intercom (PEI) is active. Absent when invalid or unavailable. (TODO: What exactly does "active" mean? Does it mean the system is working, or currently engaged? Under what circumstances might this information be unavailable?)
+- `trainSpeedInMph` (number, optional): Current speed of vehicle, in MPH, in range [0, 99]. Absent when invalid or unavailable.
+- `doorStatus` (array of "OPEN" | "CLOSED", required): Array of length 10. Each value represents the open/closed status of door portal N, from 1-10.
