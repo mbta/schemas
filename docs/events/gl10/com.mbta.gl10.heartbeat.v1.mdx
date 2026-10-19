@@ -25,7 +25,7 @@ Fields in the event's `data`:
 - `latitude` (number, optional): Latitude relative to active cab. Absent if no cab is active.
 - `longitude` (number, optional): Longitude relative to active cab. Absent if no cab is active.
 - `activeCab` ("1" | "2", optional): Which of the two cabs is currently active, ie in "drive" or "permit". Absent if neither is active.
-- `numberOfPassengers` (number, optional): Estimated passenger count, range [0, 999].
+- `numberOfPassengers` (integer, optional): Estimated passenger count, range [0, 999].
 - `avi` (string, required): The selected or default route AVI code. Default route is "877".
 - `temporaryAvi` (string, optional): If present, a temporary AVI code set to override the selected (or default) code.
 

@@ -35,7 +35,7 @@
           "$comment": "The raw heartbeat message conveys this as longitude west, a positive value in [70, 72]. This message will negate that for consistency with other applications."
         },
         "numberOfPassengers": {
-          "type": "number",
+          "type": "integer",
           "minimum": 0,
           "maximum": 999
         },
