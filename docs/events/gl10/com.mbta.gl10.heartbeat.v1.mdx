@@ -56,5 +56,5 @@ Fields in the event's `data`:
 - `coupledVehicle` ("NUMBER_UNKNOWN" | string, optional): If present, then the car is currently coupled. The value will either be the car number of the coupled car, or "NUMBER_UNKNOWN" if the car is in a state where there is no communication with the coupled car. If absent, the vehicle is assumed to be uncoupled.
 - `vehicleClock` (string, optional): A RFC3339 timestamp indicating the current on-board clock time of the vehicle at the time the heartbeat was sent. The timestamp must include a timezone offset.
 - `peiActive` (boolean, optional): Whether the Passenger Emergency Intercom (PEI) is active. Absent when invalid or unavailable. (TODO: What exactly does "active" mean? Does it mean the system is working, or currently engaged? Under what circumstances might this information be unavailable?)
-- `trainSpeedInMph` (number, optional): Current speed of vehicle, in MPH, in range [0, 99]. Absent when invalid or unavailable.
+- `speedInMph` (number, optional): Current speed of vehicle, in MPH, in range [0, 99]. Absent when invalid or unavailable.
 - `doorStatus` (array of "OPEN" | "CLOSED", required): Array of length 10. Each value represents the open/closed status of door portal N, from 1-10.
