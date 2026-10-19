@@ -73,7 +73,7 @@
         },
         "routeId": {
           "type": "string",
-          "enum": ["Green-B", "Green-C", "Green-D", "Green-D", "Mattapan"],
+          "enum": ["Green-B", "Green-C", "Green-D", "Green-E", "Mattapan"],
           "$comment": "Naming this for consistency with RTR messages. Including Mattapan for now."
         },
         "lastBoardingStopId": { "$ref": "#/$defs/stopId" },
