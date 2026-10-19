@@ -139,7 +139,14 @@
           }
         }
       },
-      "required": ["number", "avi", "vehicleClock", "speedInMph", "doorStatus"]
+      "required": [
+        "number",
+        "avi",
+        "serviceType",
+        "vehicleClock",
+        "speedInMph",
+        "doorStatus"
+      ]
     }
   },
   "required": ["type", "specversion", "source", "id", "time", "data"],
