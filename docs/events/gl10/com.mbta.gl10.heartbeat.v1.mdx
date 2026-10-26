@@ -40,7 +40,7 @@ Fields in the event's `data`:
 - `routeId` ("Green-B" | "Green-C" | "Green-D" | "Green-E" | "Mattapan", optional). Absent if not selected.
 - `lastBoardingStopId` (string, optional): An MBTA stop ID. Absent if invalid or unavailable. (TODO: Conditions for availability unclear.)
 - `lastBoardingDwellTimeInS` (number, optional): Dwell time in seconds of the last stop. Absent if invalid or unavailable.
-- `distanceSinceLastBoardingInFt` (number, optional): Distance traveled since previous stop, precise to 1 foot. Absent if invalid or unavailable.
+- `distanceSinceLastBoardingInFt` (integer, optional): Distance traveled since previous stop, precise to 1 foot. Absent if invalid or unavailable.
 - `healthStatusFailures` (object, optional): Present if there are one or more active health status failures. If present, will contain keys for failing systems, each with value `true`. Possible keys are as follows:
   - `PROP/D`: Propulsion System (TCUs)
   - `BK/LVL`: Brake (BCUs) and leveling system

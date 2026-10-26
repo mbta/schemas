@@ -84,7 +84,7 @@
           "$comment": "In seconds. Warning: Max value based on GL10 docs. Doesn't seem long enough to account for very long holds."
         },
         "distanceSinceLastBoardingInFt": {
-          "type": "number",
+          "type": "integer",
           "minimum": 0,
           "maximum": 9999,
           "$comment": "Precision down to 1ft"
