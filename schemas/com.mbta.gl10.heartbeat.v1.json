@@ -110,7 +110,7 @@
           "$comment": "TODO: Do we need this? Would it be a good idea to omit it?"
         },
         "coupledVehicle": {
-          "$comment": "Absent if not coupled. Special value 'UNKNOWN' means coupled, but without communication to the coupled car.",
+          "$comment": "Absent if not coupled. Special value 'NUMBER_UNKNOWN' means coupled, but without communication to the coupled car.",
           "anyOf": [
             {
               "type": "string",
