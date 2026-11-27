@@ -60,6 +60,16 @@
           "$ref": "com.mbta.railds.control-system.variables.v1.json#/"
         }
       }
+    },
+    {
+      "properties": {
+        "type": {
+          "const": "com.mbta.railds.asset.event.v1"
+        },
+        "data": {
+          "$ref": "com.mbta.railds.asset.event.v1.json#/"
+        }
+      }
     }
   ],
   "required": ["type", "specversion", "source", "id", "time", "data"],
