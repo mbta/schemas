@@ -8,7 +8,7 @@
   "datacontenttype": "application/json",
   "data": {
     "asset_id": "ASSET-001",
-    "state_scope": "full",
+    "data_scope": "full",
     "control_system": {
       "type": "microlok",
       "name": "CONTROL-SYSTEM-001",
@@ -18,7 +18,7 @@
       },
       "mode": "Active"
     },
-    "variable_states": [
+    "changes": [
       {
         "index": 1,
         "name": "SYSTEM.READY",

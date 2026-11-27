@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mbta/schemas/blob/main/schemas/com.mbta.railds.asset.event.v1.json",
+  "title": "RailDS Asset Event Data",
+  "description": "Common data contract for durable events associated with a RailDS asset. The CloudEvent type identifies this as an asset event; event.type identifies the specific kind of asset event. Event-specific fields are defined and validated separately.",
+  "type": "object",
+  "$comment": "This schema intentionally defines only fields common to asset events. It does not enumerate every allowed event.type and does not define event-specific payload fields. Examples of event types are non-exhaustive.",
+  "properties": {
+    "asset": {
+      "$ref": "#/$defs/asset"
+    },
+    "event": {
+      "$ref": "#/$defs/event"
+    }
+  },
+  "required": ["asset", "event"],
+  "$defs": {
+    "asset": {
+      "type": "object",
+      "description": "The RailDS asset associated with the event.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Stable RailDS identifier for the asset."
+        },
+        "eam_asset_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional asset identifier from the owning agency's Enterprise Asset Management (EAM) system. This is distinct from the RailDS asset.id."
+        },
+        "key": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-manageable asset key when one is configured, for example 7-switch."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable asset name."
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Machine-readable asset type, for example switch_machine, signal, or track_circuit.",
+          "examples": ["switch_machine", "signal", "track_circuit"]
+        }
+      },
+      "required": ["id", "name", "type"]
+    },
+    "event": {
+      "type": "object",
+      "description": "Identity and version metadata for the configured or defined asset event. The outer CloudEvent id identifies the individual occurrence; event.id identifies the event definition/configuration that produced it.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Stable identifier for the configured or defined asset event, not the unique identifier of this individual occurrence."
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Machine-readable event type used to select the event-specific definition. Examples are illustrative, not an exhaustive list.",
+          "examples": [
+            "switch_throw",
+            "signal_state_change",
+            "track_circuit_occupancy_change",
+            "control_system_failover",
+            "threshold_crossing"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable configured event name."
+        },
+        "definition_version": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Version of the event-specific data definition used for this event type, for example switch-throw.v1."
+        },
+        "logic_version": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Version of event detection, correlation, or assembly logic, when the producer versions that logic."
+        },
+        "configuration_revision": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Revision of the producer configuration used to create the event, when configuration revisions are available."
+        }
+      },
+      "required": ["id", "type", "name", "definition_version"]
+    }
+  }
+}

@@ -1,18 +1,16 @@
 {
   "specversion": "1.0",
+  "id": "ca48fd24-0257-4940-821a-2e8671701a8b",
+  "source": "railds://controller/RB-RDS-MOXA-001/io",
   "type": "com.mbta.railds.io.frame.v1",
-  "source": "/edge-collector/EDGE-001",
-  "id": "5bc95463-86fe-4e63-8aa8-385d90d38e10",
-  "time": "2026-07-24T15:00:02.375Z",
+  "subject": "io/modules",
+  "time": "2026-09-22T09:05:10.610420Z",
   "datacontenttype": "application/json",
   "data": {
-    "asset_id": "SITE-001",
-    "acquired_utc": "2026-07-24T15:00:02.375Z",
+    "asset_id": "RB-RDS-MOXA-001",
+    "acquired_utc": "2026-09-22T09:05:10.610420Z",
     "sample_interval_sec": 0.08,
-    "io_device": {
-      "device_id": "IO-DEVICE-001",
-      "device_type": "moxa"
-    },
+    "io_device": { "device_id": "RB-RDS-MOXA-001", "device_type": "moxa" },
     "modules": [
       {
         "slot": 1,
@@ -20,32 +18,104 @@
           "model": "45MR-3810",
           "read_ok": true,
           "error": null,
-          "read_elapsed_ms": 0.42
+          "read_elapsed_ms": 0.135
         },
         "channels": [
           {
             "channel": 0,
             "configured": true,
-            "raw_value": 12.0,
-            "raw_format": "mA",
-            "scaled_value": 75.0,
+            "raw_value": 0.0056,
+            "raw_format": "0-10V",
+            "scaled_value": 0.0056,
             "scaled_format": "Volts",
-            "monitoring_target_type": "switch",
-            "monitoring_target_name": "SWITCH-001",
-            "monitoring_target_circuit": "NORMAL",
-            "monitoring_target_description": "Normal line voltage"
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "2 Switch",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": "2 Switch"
           },
           {
             "channel": 1,
             "configured": true,
-            "raw_value": 4.0,
-            "raw_format": "mA",
-            "scaled_value": 0.0,
+            "raw_value": 0.0041,
+            "raw_format": "0-10V",
+            "scaled_value": 0.0041,
             "scaled_format": "Volts",
-            "monitoring_target_type": "switch",
-            "monitoring_target_name": "SWITCH-001",
-            "monitoring_target_circuit": "REVERSE",
-            "monitoring_target_description": "Reverse line voltage"
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 2,
+            "configured": true,
+            "raw_value": 0.005,
+            "raw_format": "0-10V",
+            "scaled_value": 0.005,
+            "scaled_format": "Volts",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 3,
+            "configured": true,
+            "raw_value": 0.0041,
+            "raw_format": "0-10V",
+            "scaled_value": 0.0041,
+            "scaled_format": "Volts",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 4,
+            "configured": true,
+            "raw_value": 0.0024,
+            "raw_format": "0-10V",
+            "scaled_value": 0.0024,
+            "scaled_format": "Volts",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 5,
+            "configured": true,
+            "raw_value": 0.0037,
+            "raw_format": "0-10V",
+            "scaled_value": 0.0037,
+            "scaled_format": "Volts",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 6,
+            "configured": true,
+            "raw_value": 0.0041,
+            "raw_format": "0-10V",
+            "scaled_value": 0.0041,
+            "scaled_format": "Volts",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 7,
+            "configured": true,
+            "raw_value": 0.0055,
+            "raw_format": "0-10V",
+            "scaled_value": 0.0055,
+            "scaled_format": "Volts",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
           }
         ]
       },
@@ -55,26 +125,104 @@
           "model": "45MR-3800",
           "read_ok": true,
           "error": null,
-          "read_elapsed_ms": 0.35
+          "read_elapsed_ms": 0.078
         },
         "channels": [
           {
             "channel": 0,
             "configured": true,
-            "raw_value": 8.8,
-            "raw_format": "mA",
-            "scaled_value": 9.0,
-            "scaled_format": "Amps",
+            "raw_value": 4.0581,
+            "raw_format": "4-20mA",
+            "scaled_value": 0.5447,
+            "scaled_format": "Volts DC",
             "monitoring_target_type": "switch",
-            "monitoring_target_name": "SWITCH-001",
-            "monitoring_target_circuit": "NORMAL",
-            "monitoring_target_description": "Normal motor current"
+            "monitoring_target_name": "3 Switch",
+            "monitoring_target_circuit": "3NW",
+            "monitoring_target_description": "Normal Voltage"
           },
           {
             "channel": 1,
-            "configured": false,
+            "configured": true,
             "raw_value": 4.0,
-            "raw_format": "mA"
+            "raw_format": "4-20mA",
+            "scaled_value": 0.0,
+            "scaled_format": "Volts DC",
+            "monitoring_target_type": "switch",
+            "monitoring_target_name": "3 Switch",
+            "monitoring_target_circuit": "3RW",
+            "monitoring_target_description": "Reverse Voltage"
+          },
+          {
+            "channel": 2,
+            "configured": true,
+            "raw_value": 4.0015,
+            "raw_format": "4-20mA",
+            "scaled_value": 0.0092,
+            "scaled_format": "Amps",
+            "monitoring_target_type": "switch",
+            "monitoring_target_name": "3 Switch",
+            "monitoring_target_circuit": "3NW",
+            "monitoring_target_description": "Normal Current"
+          },
+          {
+            "channel": 3,
+            "configured": true,
+            "raw_value": 4.0,
+            "raw_format": "4-20mA",
+            "scaled_value": 0.0,
+            "scaled_format": "Amps",
+            "monitoring_target_type": "switch",
+            "monitoring_target_name": "3 Switch",
+            "monitoring_target_circuit": "3RW",
+            "monitoring_target_description": "Reverse Current"
+          },
+          {
+            "channel": 4,
+            "configured": true,
+            "raw_value": 4.0,
+            "raw_format": "4-20mA",
+            "scaled_value": 0.0,
+            "scaled_format": "Amps",
+            "monitoring_target_type": "switch",
+            "monitoring_target_name": "7 Switch",
+            "monitoring_target_circuit": "7NW",
+            "monitoring_target_description": "Normal Current"
+          },
+          {
+            "channel": 5,
+            "configured": true,
+            "raw_value": 4.0,
+            "raw_format": "4-20mA",
+            "scaled_value": 0.0,
+            "scaled_format": "Amps",
+            "monitoring_target_type": "switch",
+            "monitoring_target_name": "7 Switch",
+            "monitoring_target_circuit": "7RW",
+            "monitoring_target_description": "Reverse Current"
+          },
+          {
+            "channel": 6,
+            "configured": true,
+            "raw_value": 4.0015,
+            "raw_format": "4-20mA",
+            "scaled_value": 0.0137,
+            "scaled_format": "Volts DC",
+            "monitoring_target_type": "switch",
+            "monitoring_target_name": "7 Switch",
+            "monitoring_target_circuit": "TBD",
+            "monitoring_target_description": "Normal Voltage"
+          },
+          {
+            "channel": 7,
+            "configured": true,
+            "raw_value": 4.0337,
+            "raw_format": "4-20mA",
+            "scaled_value": 0.3159,
+            "scaled_format": "Volts DC",
+            "monitoring_target_type": "switch",
+            "monitoring_target_name": "7 Switch",
+            "monitoring_target_circuit": "TBD",
+            "monitoring_target_description": "Reverse Voltage"
           }
         ]
       },
@@ -84,7 +232,7 @@
           "model": "45MR-1600",
           "read_ok": true,
           "error": null,
-          "read_elapsed_ms": 0.31
+          "read_elapsed_ms": 0.102
         },
         "channels": [
           {
@@ -92,18 +240,192 @@
             "configured": true,
             "raw_value": 0,
             "raw_format": "Boolean",
-            "monitoring_target_type": "alarm",
-            "monitoring_target_name": "POWER-SUPPLY-001",
-            "monitoring_target_description": "Power supply alarm"
+            "scaled_value": 0,
+            "scaled_format": "binary",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
           },
           {
             "channel": 1,
             "configured": true,
-            "raw_value": 1,
+            "raw_value": 0,
             "raw_format": "Boolean",
-            "monitoring_target_type": "indication",
-            "monitoring_target_name": "ENCLOSURE-DOOR-001",
-            "monitoring_target_description": "Door closed indication"
+            "scaled_value": 0,
+            "scaled_format": "binary",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 2,
+            "configured": true,
+            "raw_value": 0,
+            "raw_format": "Boolean",
+            "scaled_value": 0,
+            "scaled_format": "binary",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 3,
+            "configured": true,
+            "raw_value": 0,
+            "raw_format": "Boolean",
+            "scaled_value": 0,
+            "scaled_format": "binary",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 4,
+            "configured": true,
+            "raw_value": 0,
+            "raw_format": "Boolean",
+            "scaled_value": 0,
+            "scaled_format": "binary",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 5,
+            "configured": true,
+            "raw_value": 0,
+            "raw_format": "Boolean",
+            "scaled_value": 0,
+            "scaled_format": "binary",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 6,
+            "configured": true,
+            "raw_value": 0,
+            "raw_format": "Boolean",
+            "scaled_value": 0,
+            "scaled_format": "binary",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 7,
+            "configured": true,
+            "raw_value": 0,
+            "raw_format": "Boolean",
+            "scaled_value": 0,
+            "scaled_format": "binary",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 8,
+            "configured": true,
+            "raw_value": 0,
+            "raw_format": "Boolean",
+            "scaled_value": 0,
+            "scaled_format": "binary",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 9,
+            "configured": true,
+            "raw_value": 0,
+            "raw_format": "Boolean",
+            "scaled_value": 0,
+            "scaled_format": "binary",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 10,
+            "configured": true,
+            "raw_value": 0,
+            "raw_format": "Boolean",
+            "scaled_value": 0,
+            "scaled_format": "binary",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 11,
+            "configured": true,
+            "raw_value": 0,
+            "raw_format": "Boolean",
+            "scaled_value": 0,
+            "scaled_format": "binary",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 12,
+            "configured": true,
+            "raw_value": 0,
+            "raw_format": "Boolean",
+            "scaled_value": 0,
+            "scaled_format": "binary",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 13,
+            "configured": true,
+            "raw_value": 0,
+            "raw_format": "Boolean",
+            "scaled_value": 0,
+            "scaled_format": "binary",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 14,
+            "configured": true,
+            "raw_value": 0,
+            "raw_format": "Boolean",
+            "scaled_value": 0,
+            "scaled_format": "binary",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
+          },
+          {
+            "channel": 15,
+            "configured": true,
+            "raw_value": 0,
+            "raw_format": "Boolean",
+            "scaled_value": 0,
+            "scaled_format": "binary",
+            "monitoring_target_type": "custom",
+            "monitoring_target_name": "",
+            "monitoring_target_circuit": "",
+            "monitoring_target_description": ""
           }
         ]
       }
